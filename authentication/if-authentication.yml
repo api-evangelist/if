@@ -1,0 +1,40 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.integrated.finance/docs/authentication
+docs: https://developer.integrated.finance/docs/authentication
+summary:
+  types: [oauth2, openIdConnect]
+  oauth2_flows: [clientCredentials]
+  client_authentication: private_key_jwt
+  token_type: Bearer
+  identity_provider: Keycloak (realm "ifp")
+schemes:
+- name: OAuth2
+  type: oauth2
+  description: >-
+    OAuth 2.0 client-credentials flow with a JWT client assertion. The client
+    generates an RSA key pair (4096-bit) and a self-signed certificate; the public
+    key certificate is registered with the IF team, which issues a client ID. The
+    client requests a short-lived access token from the Keycloak token endpoint and
+    presents it as a Bearer token on every API call.
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://account.integrated.finance/auth/realms/ifp/protocol/openid-connect/token
+  header: 'Authorization: Bearer <access_token>'
+  sources: [https://developer.integrated.finance/docs/authentication]
+- name: OpenIDConnect
+  type: openIdConnect
+  openIdConnectUrl: https://account.integrated.finance/auth/realms/ifp/.well-known/openid-configuration
+  sandbox_openIdConnectUrl: https://sandbox-account.integrated.finance/auth/realms/ifp/.well-known/openid-configuration
+  issuer: https://account.integrated.finance/auth/realms/ifp
+  sources: [well-known/if-openid-configuration.json]
+environments:
+  production:
+    issuer: https://account.integrated.finance/auth/realms/ifp
+    token_endpoint: https://account.integrated.finance/auth/realms/ifp/protocol/openid-connect/token
+    api_base: https://api.integrated.finance
+  sandbox:
+    issuer: https://sandbox-account.integrated.finance/auth/realms/ifp
+    token_endpoint: https://sandbox-account.integrated.finance/auth/realms/ifp/protocol/openid-connect/token
+    api_base: https://sandbox-api.integrated.finance
+transport_security: HTTPS with TLS v1.2 or above required
