@@ -1,0 +1,41 @@
+generated: '2026-07-19'
+method: searched
+source:
+- https://developer.integrated.finance/docs/webhook-overview
+- https://developer.integrated.finance/docs/webhooks
+spec_type: Webhooks
+surface: webhooks
+transport: HTTPS POST callbacks to subscriber-registered endpoints
+authentication:
+  signature_header: X-Webhook-Signature
+  algorithm: Ed25519
+  signing_base: 'Content-Digest | Event-Id | Event-Timestamp | Request-Id | Request-Timestamp | Key-Version'
+  verification: Verify the signature against the IF-published Ed25519 public key (Key-Version selects the key).
+retry:
+  automatic: true
+  max_attempts: 5
+  schedule:
+  - attempt: 1
+    after: 5m
+  - attempt: 2
+    after: 15m
+  - attempt: 3
+    after: 30m
+  - attempt: 4
+    after: 1h
+  manual_retry: Available via API for deliveries in "failed" status only (not "processing" or "successful").
+event_domains:
+  note: >-
+    The docs describe the delivery/authentication/retry infrastructure but do not
+    publish a full enumerated event catalog. Webhook-emitting domains observed in the
+    reference and changelog include:
+  domains:
+  - cards (including card tokenisation events — added 2025-09-22)
+  - card-transactions
+  - card-transaction-authentications (3DS)
+  - incoming-transfers
+  - outgoing-transfers
+  - exchanges
+  - generic-transactions
+  - open-banking-consents
+docs: https://developer.integrated.finance/docs/webhooks

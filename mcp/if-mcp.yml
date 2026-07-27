@@ -1,0 +1,284 @@
+generated: '2026-07-19'
+method: derived
+status: candidate
+source: llms/if-llms.txt
+server:
+  name: if
+  transport: http
+  note: No official hosted MCP server was found; this is a candidate tool set derived from the published
+    API reference operations. url is intentionally omitted until a real server exists.
+api: https://developer.integrated.finance/reference
+tools:
+- name: clientslist
+  description: List Clients
+  source_operation: llms/if-llms.txt#clientslist
+- name: clientscreate-1
+  description: Create a Client
+  source_operation: llms/if-llms.txt#clientscreate-1
+- name: clientsget
+  description: Get a Client
+  source_operation: llms/if-llms.txt#clientsget
+- name: clientsupdate-1
+  description: Update a Client
+  source_operation: llms/if-llms.txt#clientsupdate-1
+- name: client-relationslist
+  description: List Client Relations
+  source_operation: llms/if-llms.txt#client-relationslist
+- name: client-relationscreate
+  description: Create a Client Relation
+  source_operation: llms/if-llms.txt#client-relationscreate
+- name: client-relationsget
+  description: Get a Client Relation
+  source_operation: llms/if-llms.txt#client-relationsget
+- name: client-relationsdelete
+  description: Delete a Client Relation
+  source_operation: llms/if-llms.txt#client-relationsdelete
+- name: client-relationsupdate
+  description: Update a Client Relation
+  source_operation: llms/if-llms.txt#client-relationsupdate
+- name: user-client-relationslist
+  description: List User Client Relations
+  source_operation: llms/if-llms.txt#user-client-relationslist
+- name: user-client-relationscreate
+  description: Create a User Client Relation
+  source_operation: llms/if-llms.txt#user-client-relationscreate
+- name: user-client-relationsget
+  description: Get a User Client Relation
+  source_operation: llms/if-llms.txt#user-client-relationsget
+- name: user-client-relationsupdate
+  description: Update a User Client Relation
+  source_operation: llms/if-llms.txt#user-client-relationsupdate
+- name: userslist
+  description: List Users
+  source_operation: llms/if-llms.txt#userslist
+- name: userscreate
+  description: Create a User
+  source_operation: llms/if-llms.txt#userscreate
+- name: usersget
+  description: Get a User
+  source_operation: llms/if-llms.txt#usersget
+- name: usersupdate
+  description: Update a User
+  source_operation: llms/if-llms.txt#usersupdate
+- name: userslist_1
+  description: List User Invitations
+  source_operation: llms/if-llms.txt#userslist_1
+- name: user-invitationsget
+  description: Get a User Invitation
+  source_operation: llms/if-llms.txt#user-invitationsget
+- name: user-invitationsupdate
+  description: Update a User Invitation
+  source_operation: llms/if-llms.txt#user-invitationsupdate
+- name: accountslist
+  description: List Accounts
+  source_operation: llms/if-llms.txt#accountslist
+- name: accountscreate
+  description: Create an Account
+  source_operation: llms/if-llms.txt#accountscreate
+- name: accountsdeposit-informationget
+  description: Get Deposit Information of an Account
+  source_operation: llms/if-llms.txt#accountsdeposit-informationget
+- name: accountsget
+  description: Get an Account
+  source_operation: llms/if-llms.txt#accountsget
+- name: accountsupdate
+  description: Update an Account
+  source_operation: llms/if-llms.txt#accountsupdate
+- name: accountsbalance-adjustmentscreate
+  description: Create an Account Balance Adjustment
+  source_operation: llms/if-llms.txt#accountsbalance-adjustmentscreate
+- name: accountsstatementlist
+  description: List Statement of an Account
+  source_operation: llms/if-llms.txt#accountsstatementlist
+- name: bank-account-enrollmentlist-1
+  description: List Bank Account Enrollments
+  source_operation: llms/if-llms.txt#bank-account-enrollmentlist-1
+- name: accountsenrollmentsupdate-1
+  description: Update a Bank Account Enrollment
+  source_operation: llms/if-llms.txt#accountsenrollmentsupdate-1
+- name: querysingle-1
+  description: Get a Bank Account Enrollment
+  source_operation: llms/if-llms.txt#querysingle-1
+- name: bank-accountslist-1
+  description: List Bank Accounts
+  source_operation: llms/if-llms.txt#bank-accountslist-1
+- name: bank-accountscreate
+  description: Create a Bank Account
+  source_operation: llms/if-llms.txt#bank-accountscreate
+- name: bank-accountsget-1
+  description: Get a Bank Account
+  source_operation: llms/if-llms.txt#bank-accountsget-1
+- name: bank-accountsupdate
+  description: Update a Bank Account
+  source_operation: llms/if-llms.txt#bank-accountsupdate
+- name: transaction-accountslist-1
+  description: List Transaction Accounts
+  source_operation: llms/if-llms.txt#transaction-accountslist-1
+- name: transaction-accountscreate
+  description: Create a Transaction Account
+  source_operation: llms/if-llms.txt#transaction-accountscreate
+- name: transaction-accountsget-1
+  description: Get a Transaction Account
+  source_operation: llms/if-llms.txt#transaction-accountsget-1
+- name: transaction-accountsupdate
+  description: Update a Transaction Account
+  source_operation: llms/if-llms.txt#transaction-accountsupdate
+- name: transaction-accountsstatementslist-1
+  description: List Transaction Account Statements
+  source_operation: llms/if-llms.txt#transaction-accountsstatementslist-1
+- name: exchangesquotecreate
+  description: Create an Exchange Quote
+  source_operation: llms/if-llms.txt#exchangesquotecreate
+- name: exchangesquoterefresh
+  description: Refresh an Exchange Quote
+  source_operation: llms/if-llms.txt#exchangesquoterefresh
+- name: exchangestransactionlist
+  description: List Exchange Transactions
+  source_operation: llms/if-llms.txt#exchangestransactionlist
+- name: exchangestransactioncreate
+  description: Create an Exchange Transaction
+  source_operation: llms/if-llms.txt#exchangestransactioncreate
+- name: exchangestransactionget
+  description: Get an Exchange Transaction
+  source_operation: llms/if-llms.txt#exchangestransactionget
+- name: exchangestransactionupdate
+  description: Update an Exchange Transaction
+  source_operation: llms/if-llms.txt#exchangestransactionupdate
+- name: incoming-transferslist
+  description: List Incoming Transfers
+  source_operation: llms/if-llms.txt#incoming-transferslist
+- name: incoming-transfersget
+  description: Get an Incoming Transfer
+  source_operation: llms/if-llms.txt#incoming-transfersget
+- name: incoming-transfersupdate
+  description: Update an Incoming Transfer
+  source_operation: llms/if-llms.txt#incoming-transfersupdate
+- name: incoming-transferscompliance-checkget
+  description: Get Compliance Check of an Incoming Transfer
+  source_operation: llms/if-llms.txt#incoming-transferscompliance-checkget
+- name: incoming-transferscompliance-checkupdate
+  description: Update Compliance Check of an Incoming Transfer
+  source_operation: llms/if-llms.txt#incoming-transferscompliance-checkupdate
+- name: provisioned-account-creditlist
+  description: List Provisioned Account Credits
+  source_operation: llms/if-llms.txt#provisioned-account-creditlist
+- name: provisioned-account-creditcreate
+  description: Create a Provisioned Account Credit
+  source_operation: llms/if-llms.txt#provisioned-account-creditcreate
+- name: provisioned-account-creditget
+  description: Get a Provisioned Account Credit
+  source_operation: llms/if-llms.txt#provisioned-account-creditget
+- name: beneficiariesbankaccountsrequirementsget
+  description: Get Beneficiary Bank Account Metadata
+  source_operation: llms/if-llms.txt#beneficiariesbankaccountsrequirementsget
+- name: beneficiariesbankaccountslist
+  description: List Beneficiary Bank Accounts
+  source_operation: llms/if-llms.txt#beneficiariesbankaccountslist
+- name: beneficiariesbankaccountscreate
+  description: Create a Beneficiary Bank Account
+  source_operation: llms/if-llms.txt#beneficiariesbankaccountscreate
+- name: beneficiariesbankaccountsget
+  description: Get a Beneficiary Bank Account
+  source_operation: llms/if-llms.txt#beneficiariesbankaccountsget
+- name: beneficiariesbankaccountsupdate
+  description: Update a Beneficiary Bank Account
+  source_operation: llms/if-llms.txt#beneficiariesbankaccountsupdate
+- name: beneficiarieslist
+  description: List Beneficiaries
+  source_operation: llms/if-llms.txt#beneficiarieslist
+- name: beneficiariescreate
+  description: Create a Beneficiary
+  source_operation: llms/if-llms.txt#beneficiariescreate
+- name: beneficiariesget
+  description: Get a Beneficiary
+  source_operation: llms/if-llms.txt#beneficiariesget
+- name: beneficiariesupdate
+  description: Update a Beneficiary
+  source_operation: llms/if-llms.txt#beneficiariesupdate
+- name: beneficiary-verificationscreate
+  description: Verify Beneficiary
+  source_operation: llms/if-llms.txt#beneficiary-verificationscreate
+- name: outgoing-transfersdate-metadataget
+  description: Get Date Metadata
+  source_operation: llms/if-llms.txt#outgoing-transfersdate-metadataget
+- name: outgoing-transfersdate-metadataget_1
+  description: Get Transfer Date Metadata
+  source_operation: llms/if-llms.txt#outgoing-transfersdate-metadataget_1
+- name: outgoing-transferslist
+  description: List Outgoing Transfers
+  source_operation: llms/if-llms.txt#outgoing-transferslist
+- name: outgoing-transferscreate
+  description: Create an Outgoing Transfer
+  source_operation: llms/if-llms.txt#outgoing-transferscreate
+- name: outgoing-transfersget
+  description: Get an Outgoing Transfer
+  source_operation: llms/if-llms.txt#outgoing-transfersget
+- name: outgoing-transfersupdate
+  description: Update an Outgoing Transfer
+  source_operation: llms/if-llms.txt#outgoing-transfersupdate
+- name: outgoing-transferscompliance-checkget
+  description: Get Compliance Check of an Outgoing Transfer
+  source_operation: llms/if-llms.txt#outgoing-transferscompliance-checkget
+- name: outgoing-transferscompliance-checkupdate
+  description: Update Compliance Check of an Outgoing Transfer
+  source_operation: llms/if-llms.txt#outgoing-transferscompliance-checkupdate
+- name: generic-transactionslist
+  description: List Generic Transactions
+  source_operation: llms/if-llms.txt#generic-transactionslist
+- name: generic-transactionscreate
+  description: Create a Generic Transaction
+  source_operation: llms/if-llms.txt#generic-transactionscreate
+- name: generic-transactionsget
+  description: Get a Generic Transaction
+  source_operation: llms/if-llms.txt#generic-transactionsget
+- name: generic-transactionsupdate
+  description: Update a Generic Transaction
+  source_operation: llms/if-llms.txt#generic-transactionsupdate
+- name: cardslinkedaccountlist
+  description: List Linked Accounts
+  source_operation: llms/if-llms.txt#cardslinkedaccountlist
+- name: cardslinkedaccountadd
+  description: Add linked account to card
+  source_operation: llms/if-llms.txt#cardslinkedaccountadd
+- name: cardslist
+  description: List Cards
+  source_operation: llms/if-llms.txt#cardslist
+- name: cardscreate
+  description: Create a card
+  source_operation: llms/if-llms.txt#cardscreate
+- name: cardsotpcreate
+  description: Create a Card OTP
+  source_operation: llms/if-llms.txt#cardsotpcreate
+- name: cardsget
+  description: Get a Card
+  source_operation: llms/if-llms.txt#cardsget
+- name: cardsupdate
+  description: Update a card
+  source_operation: llms/if-llms.txt#cardsupdate
+- name: cardslinkedaccountremove
+  description: Remove linked account of a card
+  source_operation: llms/if-llms.txt#cardslinkedaccountremove
+- name: card-transaction-authenticationslist
+  description: List Card Transaction Authentications
+  source_operation: llms/if-llms.txt#card-transaction-authenticationslist
+- name: card-transaction-authenticationsget
+  description: Get a Card Transaction Authentication
+  source_operation: llms/if-llms.txt#card-transaction-authenticationsget
+- name: card-transaction-authenticationsupdate
+  description: Update a Card Transaction Authentication
+  source_operation: llms/if-llms.txt#card-transaction-authenticationsupdate
+- name: card-transactionslist
+  description: List Card Transactions
+  source_operation: llms/if-llms.txt#card-transactionslist
+- name: card-transactionsget
+  description: Get a Card Transaction
+  source_operation: llms/if-llms.txt#card-transactionsget
+- name: open-banking-consentlist
+  description: List Open Banking Consents
+  source_operation: llms/if-llms.txt#open-banking-consentlist
+- name: open-banking-consentget
+  description: Get an Open Banking Consent
+  source_operation: llms/if-llms.txt#open-banking-consentget
+- name: open-banking-consentupdate
+  description: Update an Open Banking Consent
+  source_operation: llms/if-llms.txt#open-banking-consentupdate

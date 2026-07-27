@@ -1,0 +1,28 @@
+generated: '2026-07-19'
+method: searched
+source:
+- https://developer.integrated.finance/docs/authentication
+- https://integrated.finance/access-sandbox
+environments:
+  sandbox:
+    api_base: https://sandbox-api.integrated.finance
+    oidc_issuer: https://sandbox-account.integrated.finance/auth/realms/ifp
+    token_endpoint: https://sandbox-account.integrated.finance/auth/realms/ifp/protocol/openid-connect/token
+  production:
+    api_base: https://api.integrated.finance
+    oidc_issuer: https://account.integrated.finance/auth/realms/ifp
+    token_endpoint: https://account.integrated.finance/auth/realms/ifp/protocol/openid-connect/token
+separation: >-
+  Sandbox and production are separated by host prefix (sandbox-api / sandbox-account)
+  and by separate Keycloak service-account credentials — the same URL/version/instance
+  pattern applies in both.
+access:
+  request_url: https://integrated.finance/access-sandbox
+  process: >-
+    Request a sandbox service account with API access during instance setup; register
+    a self-signed certificate (RSA 4096) with the IF team to obtain a client ID.
+test_values:
+  documented: false
+  note: >-
+    No published magic test identifiers / test card numbers were found; sandbox uses
+    real API objects created against the sandbox instance rather than fixed fixtures.

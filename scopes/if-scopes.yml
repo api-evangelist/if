@@ -1,0 +1,49 @@
+generated: '2026-07-19'
+method: searched
+source: well-known/if-openid-configuration.json
+docs: https://developer.integrated.finance/docs/authentication
+schemes:
+- name: OAuth2
+  source: https://account.integrated.finance/auth/realms/ifp/.well-known/openid-configuration
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://account.integrated.finance/auth/realms/ifp/protocol/openid-connect/token
+scopes:
+- scope: openid
+  description: OpenID Connect authentication; required to receive an ID token.
+  sources: [well-known/if-openid-configuration.json]
+- scope: api
+  description: Access to the Integrated Finance platform API surface.
+  sources: [well-known/if-openid-configuration.json]
+- scope: profile
+  description: Basic profile claims for the authenticated subject.
+  sources: [well-known/if-openid-configuration.json]
+- scope: email
+  description: Email address claim for the authenticated subject.
+  sources: [well-known/if-openid-configuration.json]
+- scope: address
+  description: Address claim for the authenticated subject.
+  sources: [well-known/if-openid-configuration.json]
+- scope: phone
+  description: Phone-number claim for the authenticated subject.
+  sources: [well-known/if-openid-configuration.json]
+- scope: roles
+  description: Realm and client role memberships for the subject.
+  sources: [well-known/if-openid-configuration.json]
+- scope: offline_access
+  description: Issue a refresh token for offline / long-lived access.
+  sources: [well-known/if-openid-configuration.json]
+- scope: microprofile-jwt
+  description: MicroProfile JWT claims (groups, upn) for service-to-service tokens.
+  sources: [well-known/if-openid-configuration.json]
+- scope: acr
+  description: Authentication Context Class Reference claim.
+  sources: [well-known/if-openid-configuration.json]
+- scope: web-origins
+  description: Allowed CORS web origins for the client.
+  sources: [well-known/if-openid-configuration.json]
+notes: >-
+  Scopes are the Keycloak realm ("ifp") supported scopes read from the live OIDC
+  discovery documents for the production and sandbox authorization servers. IF uses
+  a client-credentials (service-account) model; per-resource authorization is
+  carried by realm/client roles rather than fine-grained OAuth scopes.

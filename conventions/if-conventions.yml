@@ -1,0 +1,57 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.integrated.finance/docs/api-overview
+docs:
+- https://developer.integrated.finance/docs/api-overview
+- https://developer.integrated.finance/docs/idempotency-support
+- https://developer.integrated.finance/docs/authentication
+authentication:
+  style: oauth2-bearer
+  detail: OAuth 2.0 client-credentials with JWT client assertion (Keycloak realm "ifp"); see authentication/if-authentication.yml
+base_url_pattern: https://[sandbox-]api.integrated.finance/<version>/<instance-id>/<resource>
+versioning:
+  scheme: uri-path
+  current: v1
+  policy: >-
+    No breaking changes are released to an existing API version; a structural
+    redesign ships as a new version. Container objects let new workflows/connections
+    be added without breaking existing integrations.
+  docs: https://developer.integrated.finance/docs/changes-to-the-api
+idempotency:
+  supported: true
+  header: X-Idempotency-Key
+  response_status_header: X-Idempotency-Status
+  response_status_values: [processed, replayed]
+  applies_to: all POST endpoints
+  scope: same authenticated API service account + identical endpoint path
+  retention: >-
+    Docs do not state an expiry window; the key must be retained and reused on any
+    retry of the same operation.
+  docs: https://developer.integrated.finance/docs/idempotency-support
+pagination:
+  style: offset
+  params:
+    page_number: metadata.page.number
+    page_size: metadata.page.size
+    sort: sort
+  defaults:
+    page_number: 0
+    page_size: 10
+request_tracing:
+  request_id_header: Request-Id
+  request_timestamp_header: Request-Timestamp
+  note: >-
+    Request-Id and Request-Timestamp are part of the canonical string webhook
+    deliveries sign; they identify the originating API request.
+error_envelope:
+  documented: false
+  note: The API overview does not publish a formal error envelope / problem+json schema.
+rate_limiting:
+  documented: false
+transport_security: HTTPS with TLS v1.2 or above required
+cross_links:
+  authentication: authentication/if-authentication.yml
+  scopes: scopes/if-scopes.yml
+  webhooks: asyncapi/if-webhooks.yml
+  lifecycle: lifecycle/if-lifecycle.yml
+  changelog: changelog/if-changelog.yml

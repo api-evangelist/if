@@ -1,7 +1,28 @@
 aid: if
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/if.png
 name: IF
-description: IF is a company surfaced as a portfolio company of 500-global and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: Integrated Finance (IF) is a modular fintech infrastructure platform — a "financial
+  operating system" — that lets companies build banking, card, and payment experiences for their
+  users without becoming a bank. Its orchestration layers (IF API interface, IF CORE workflow, IF
+  CONNECT integration) sit on top of multiple banking, card-issuing, FX, and compliance providers
+  and expose a single REST API covering clients and users, real / virtual / shared-pool accounts,
+  incoming and outgoing bank transfers, currency exchanges, card issuing and processing (including
+  3DS and PIN management), beneficiary verification, generic transactions, and open-banking
+  consents. Authentication is OAuth 2.0 on Keycloak (JWT client assertion, client_credentials); the
+  API supports idempotency on all POST endpoints, Ed25519-signed webhooks with automatic retry, and
+  a full sandbox environment for testing.
 url: https://raw.githubusercontent.com/api-evangelist/if/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,10 +32,37 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- Financial Services
+- Embedded Finance
+- Banking as a Service
+- Payments
+- Cards
+- Foreign Exchange
+- Compliance
+- Open Banking
+- API
+apis:
+- name: Integrated Finance API
+  description: Single REST API for the Integrated Finance platform — clients, users, real / virtual /
+    shared-pool accounts, bank transfers, currency exchanges, card issuing and processing,
+    beneficiary verification, generic transactions, and open-banking consents. OAuth 2.0 (Keycloak,
+    JWT assertion), idempotent POSTs, Ed25519-signed webhooks.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Banking as a Service
+  - Payments
+  - Cards
+  - Foreign Exchange
+  - Open Banking
+  properties:
+  - type: Documentation
+    url: https://developer.integrated.finance/docs
+  - type: APIReference
+    url: https://developer.integrated.finance/reference
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -23,3 +71,58 @@ maintainers:
 common:
 - type: Website
   url: https://integrated.finance
+- type: DeveloperPortal
+  url: https://developer.integrated.finance
+- type: Documentation
+  url: https://developer.integrated.finance/docs
+- type: APIReference
+  url: https://developer.integrated.finance/reference
+- type: GettingStarted
+  url: https://developer.integrated.finance/docs/getting-started
+- type: Support
+  url: https://integrated.finance/support
+- type: Blog
+  url: https://integrated.finance/insights
+- type: GitHubOrganization
+  url: https://github.com/integrated-finance
+- type: StatusPage
+  url: https://integratedfinance.statuspage.io
+- type: Deprecation
+  url: https://developer.integrated.finance/docs/changes-to-the-api
+- type: PrivacyPolicy
+  url: https://integrated.finance/privacy-policy
+- type: TermsOfService
+  url: https://integrated.finance/terms-and-conditions
+- type: Compliance
+  url: https://integrated.finance/security-policy
+- type: LLMsTxt
+  url: llms/if-llms.txt
+- type: WellKnown
+  url: well-known/if-well-known.yml
+- type: Authentication
+  url: authentication/if-authentication.yml
+- type: OAuthScopes
+  url: scopes/if-scopes.yml
+- type: Conventions
+  url: conventions/if-conventions.yml
+- type: Idempotency
+  url: conventions/if-conventions.yml
+- type: ChangeLog
+  url: changelog/if-changelog.yml
+- type: Lifecycle
+  url: lifecycle/if-lifecycle.yml
+- type: Conformance
+  url: conformance/if-conformance.yml
+- type: Sandbox
+  url: sandbox/if-sandbox.yml
+- type: Webhooks
+  url: asyncapi/if-webhooks.yml
+- type: MCPServer
+  url: mcp/if-mcp.yml
+- type: DomainSecurity
+  url: security/if-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

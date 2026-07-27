@@ -1,0 +1,42 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.integrated.finance/docs/authentication
+hosts:
+- host: https://account.integrated.finance
+  documents:
+  - path: /auth/realms/ifp/.well-known/openid-configuration
+    status: 200
+    file: if-openid-configuration.json
+- host: https://sandbox-account.integrated.finance
+  documents:
+  - path: /auth/realms/ifp/.well-known/openid-configuration
+    status: 200
+    file: if-sandbox-openid-configuration.json
+- host: https://developer.integrated.finance
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://integrated.finance
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /security.txt
+    status: 404
+- host: https://api.integrated.finance
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 401
+    note: API host requires authentication (OAuth 2.0 bearer)
+notes: >-
+  Authentication is OAuth 2.0 on a Keycloak realm (ifp). The two live discovery
+  documents are the Keycloak OpenID Connect configuration for the production and
+  sandbox authorization servers; the docs and marketing hosts publish no
+  /.well-known surface.

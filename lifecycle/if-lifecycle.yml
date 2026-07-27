@@ -1,0 +1,22 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.integrated.finance/docs/changes-to-the-api
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://developer.integrated.finance/docs/changes-to-the-api
+deprecation:
+  policy_url: https://developer.integrated.finance/docs/changes-to-the-api
+  policy: >-
+    No breaking changes are released to an existing API version; a complete
+    redesign ships as a new API version. Backwards compatibility is preserved via
+    container objects that carry new workflows without changing existing input/output.
+  sunset_header: false
+  deprecation_header: false
+status_page: https://integratedfinance.statuspage.io
+changelog: https://developer.integrated.finance/changelog
+deprecated_operations:
+- id: accountsbalance-adjustmentscreate
+  name: Create an Account Balance Adjustment
+  note: Deprecated — use Generic Transactions.
+  source: https://developer.integrated.finance/reference/accountsbalance-adjustmentscreate.md
