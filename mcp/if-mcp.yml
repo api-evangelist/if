@@ -282,3 +282,9 @@ tools:
 - name: open-banking-consentupdate
   description: Update an Open Banking Consent
   source_operation: llms/if-llms.txt#open-banking-consentupdate
+deployment:
+  mode: none
+  verified: derived
+  tools: 91
+  checked: '2026-08-12'
+  source: catalog MCP census
