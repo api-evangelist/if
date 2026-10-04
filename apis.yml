@@ -44,9 +44,12 @@ x-tier-reason: portfolio-lead
 specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-07-19'
+x-docs-platform: readme
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-10-03
 tags:
 - Company
-- Financial-Services
+- Financial Services
 - Embedded Finance
 - Banking as a Service
 - Payments
@@ -65,6 +68,7 @@ tags_raw:
 - Compliance
 - Open Banking
 - API
+- Financial-Services
 apis:
 - name: Integrated Finance API
   description: Single REST API for the Integrated Finance platform — clients, users, real / virtual /
