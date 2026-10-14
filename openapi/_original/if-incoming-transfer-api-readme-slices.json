@@ -1,0 +1,2694 @@
+[
+ {
+  "page": "https://developer.integrated.finance/reference/incoming-transferslist.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/incoming-transfers": {
+     "get": {
+      "tags": [
+       "Incoming Transfers"
+      ],
+      "summary": "List Incoming Transfers",
+      "operationId": "incoming-transfers.list",
+      "responses": {
+       "200": {
+        "description": "Incoming transfer list returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/IncomingTransferListResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+       "bankName": {
+        "type": "string"
+       },
+       "accountHolderName": {
+        "type": "string",
+        "description": "name of the legal entity which account belongs to"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of account, refer to Accounts section in Guides for details"
+       },
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code"
+       },
+       "routingCodes": {
+        "$ref": "#/components/schemas/RoutingCodeMap"
+       },
+       "accountNumber": {
+        "maxLength": 20,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,20}$",
+        "type": "string",
+        "description": "account number of account",
+        "nullable": true
+       },
+       "iban": {
+        "maxLength": 31,
+        "minLength": 15,
+        "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+        "type": "string",
+        "description": "iban of account",
+        "nullable": true
+       },
+       "ledgerNumber": {
+        "maxLength": 8,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,8}$",
+        "type": "string",
+        "description": "unique ledger number of account generated internally"
+       }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+     },
+     "IncomingTransferListConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+     },
+     "IncomingTransferListDataContainer": {
+      "type": "object",
+      "properties": {
+       "incomingTransfer": {
+        "$ref": "#/components/schemas/IncomingTransferResourceQueryInput"
+       },
+       "incomingTransfers": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/IncomingTransferResource"
+        }
+       }
+      },
+      "description": "data container"
+     },
+     "IncomingTransferListMetadataContainer": {
+      "required": [
+       "page"
+      ],
+      "type": "object",
+      "properties": {
+       "page": {
+        "$ref": "#/components/schemas/PageMetadata"
+       }
+      },
+      "description": "metadata container"
+     },
+     "IncomingTransferListResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/IncomingTransferListWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/IncomingTransferListDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/IncomingTransferListConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/IncomingTransferListMetadataContainer"
+       }
+      },
+      "description": "response model"
+     },
+     "IncomingTransferListWorkflowContainer": {
+      "type": "object",
+      "description": "workflow container"
+     },
+     "IncomingTransferResource": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "id of incoming transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "clientId": {
+        "type": "string",
+        "description": "id of client",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "accountId": {
+        "type": "string",
+        "description": "id of account which is credited by this incoming transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "transactionNumber": {
+        "maxLength": 15,
+        "minLength": 15,
+        "type": "string",
+        "description": "unique transaction number",
+        "readOnly": true
+       },
+       "status": {
+        "$ref": "#/components/schemas/IncomingTransferStatus"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of incoming transfer",
+        "readOnly": true
+       },
+       "amount": {
+        "type": "number",
+        "description": "amount",
+        "format": "double",
+        "readOnly": true
+       },
+       "feeAmount": {
+        "type": "number",
+        "description": "fee amount",
+        "format": "double",
+        "readOnly": true
+       },
+       "feeCurrency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of incoming transfer fee",
+        "readOnly": true
+       },
+       "outgoingTransferId": {
+        "type": "string",
+        "description": "id of outgoing transfer if this is an internal transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "serviceProviderId": {
+        "type": "string",
+        "description": "id assigned by service provider",
+        "readOnly": true
+       },
+       "serviceProviderReference": {
+        "type": "string",
+        "description": "reference assigned by service provider",
+        "readOnly": true
+       },
+       "senderInformation": {
+        "type": "string",
+        "description": "free text filled by sender",
+        "readOnly": true
+       },
+       "senderName": {
+        "type": "string",
+        "description": "name of sender",
+        "readOnly": true
+       },
+       "transferDate": {
+        "type": "string",
+        "description": "the date when transfer amount is reflected to account balance",
+        "format": "date",
+        "readOnly": true
+       },
+       "totalAmount": {
+        "type": "number",
+        "description": "total amount including fee",
+        "readOnly": true
+       },
+       "provisionedAccountCreditId": {
+        "type": "string",
+        "description": "Provisioned account credit id of the transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider that incoming transfer received from",
+        "readOnly": true
+       },
+       "receiverAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "scope": {
+        "type": "string",
+        "description": "transfer scope",
+        "readOnly": true,
+        "enum": [
+         "internal",
+         "external"
+        ]
+       },
+       "scheme": {
+        "type": "string",
+        "description": "transfer scheme depending on the scope of the transfer",
+        "readOnly": true,
+        "enum": [
+         "swift",
+         "local",
+         "sepa",
+         "sepa-instant",
+         "sepa-target-2",
+         "sepa-target-2-pacs009",
+         "chaps",
+         "bacs",
+         "faster-payments",
+         "faster-payments-poo",
+         "ach",
+         "wire",
+         "eft"
+        ]
+       },
+       "owner": {
+        "$ref": "#/components/schemas/Owner"
+       },
+       "relatedTransaction": {
+        "$ref": "#/components/schemas/RelatedTransaction"
+       },
+       "returnContext": {
+        "$ref": "#/components/schemas/IncomingTransferReturnContextResource"
+       }
+      },
+      "description": "incoming transfer model"
+     },
+     "IncomingTransferResourceQueryInput": {
+      "type": "object",
+      "properties": {
+       "status": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/IncomingTransferStatus"
+        }
+       },
+       "transactionNumber": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "amountFrom": {
+        "type": "number"
+       },
+       "amountTo": {
+        "type": "number"
+       },
+       "currency": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "serviceProvider": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "serviceProviderId": {
+        "type": "string"
+       },
+       "serviceProviderReference": {
+        "type": "string"
+       },
+       "clientId": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "format": "uuid"
+        }
+       },
+       "accountId": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "format": "uuid"
+        }
+       },
+       "senderInformation": {
+        "type": "string"
+       },
+       "senderName": {
+        "type": "string"
+       },
+       "transferDateFrom": {
+        "type": "string",
+        "format": "date"
+       },
+       "transferDateTo": {
+        "type": "string",
+        "format": "date"
+       },
+       "provisionedAccountCreditId": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "format": "uuid"
+        }
+       },
+       "owner": {
+        "$ref": "#/components/schemas/Owner"
+       },
+       "hasRelatedTransaction": {
+        "type": "boolean"
+       },
+       "relatedTransactionId": {
+        "type": "string",
+        "format": "uuid"
+       },
+       "relatedTransactionNature": {
+        "$ref": "#/components/schemas/TransactionNature"
+       }
+      }
+     },
+     "IncomingTransferReturnContextResource": {
+      "type": "object",
+      "properties": {
+       "enabled": {
+        "type": "boolean",
+        "description": "return is enabled or not",
+        "readOnly": true
+       },
+       "cutOffDateTime": {
+        "type": "string",
+        "description": "cut-off time if return is enabled",
+        "format": "date-time",
+        "readOnly": true
+       },
+       "status": {
+        "$ref": "#/components/schemas/IncomingTransferReturnStatus"
+       },
+       "reason": {
+        "$ref": "#/components/schemas/IncomingTransferReturnReason"
+       }
+      },
+      "description": "incoming transfer return model"
+     },
+     "IncomingTransferReturnReason": {
+      "type": "string",
+      "description": "reason of incoming transfer return",
+      "enum": [
+       "account-closed",
+       "account-inactivated",
+       "account-not-found",
+       "user-requested",
+       "user-requested-as-duplicate",
+       "user-requested-as-wrong-amount",
+       "sender-recalled",
+       "rejected-by-compliance"
+      ]
+     },
+     "IncomingTransferReturnStatus": {
+      "type": "string",
+      "description": "status of incoming transfer return",
+      "enum": [
+       "processing",
+       "released",
+       "completed",
+       "failed"
+      ]
+     },
+     "IncomingTransferStatus": {
+      "type": "string",
+      "description": "status of incoming transfer",
+      "readOnly": true,
+      "enum": [
+       "pending",
+       "on-hold",
+       "completed",
+       "failed"
+      ]
+     },
+     "Owner": {
+      "type": "string",
+      "description": "owner of incoming transfer",
+      "readOnly": true,
+      "enum": [
+       "organization",
+       "client"
+      ]
+     },
+     "PageMetadata": {
+      "required": [
+       "number",
+       "size",
+       "totalElements",
+       "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+       "size": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of elements in this page",
+        "format": "int32"
+       },
+       "number": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "index of page starting from 0",
+        "format": "int32"
+       },
+       "totalElements": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "total number of elements in all of the pages",
+        "format": "int64",
+        "readOnly": true
+       },
+       "totalPages": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of total pages",
+        "format": "int32",
+        "readOnly": true
+       }
+      }
+     },
+     "RelatedTransaction": {
+      "type": "object",
+      "properties": {
+       "nature": {
+        "$ref": "#/components/schemas/TransactionNature"
+       },
+       "id": {
+        "type": "string",
+        "format": "uuid"
+       }
+      },
+      "description": "related transaction of this transfer",
+      "readOnly": true
+     },
+     "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+     },
+     "TransactionNature": {
+      "type": "string",
+      "enum": [
+       "actual",
+       "virtual"
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/incoming-transfersget.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/incoming-transfers/{id}": {
+     "get": {
+      "tags": [
+       "Incoming Transfers"
+      ],
+      "summary": "Get an Incoming Transfer",
+      "operationId": "incoming-transfers.get",
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "description": "ID of incoming transfer in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Incoming transfer returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/IncomingTransferGetResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+       "bankName": {
+        "type": "string"
+       },
+       "accountHolderName": {
+        "type": "string",
+        "description": "name of the legal entity which account belongs to"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of account, refer to Accounts section in Guides for details"
+       },
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code"
+       },
+       "routingCodes": {
+        "$ref": "#/components/schemas/RoutingCodeMap"
+       },
+       "accountNumber": {
+        "maxLength": 20,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,20}$",
+        "type": "string",
+        "description": "account number of account",
+        "nullable": true
+       },
+       "iban": {
+        "maxLength": 31,
+        "minLength": 15,
+        "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+        "type": "string",
+        "description": "iban of account",
+        "nullable": true
+       },
+       "ledgerNumber": {
+        "maxLength": 8,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,8}$",
+        "type": "string",
+        "description": "unique ledger number of account generated internally"
+       }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+     },
+     "IncomingTransferResource": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "id of incoming transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "clientId": {
+        "type": "string",
+        "description": "id of client",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "accountId": {
+        "type": "string",
+        "description": "id of account which is credited by this incoming transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "transactionNumber": {
+        "maxLength": 15,
+        "minLength": 15,
+        "type": "string",
+        "description": "unique transaction number",
+        "readOnly": true
+       },
+       "status": {
+        "$ref": "#/components/schemas/IncomingTransferStatus"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of incoming transfer",
+        "readOnly": true
+       },
+       "amount": {
+        "type": "number",
+        "description": "amount",
+        "format": "double",
+        "readOnly": true
+       },
+       "feeAmount": {
+        "type": "number",
+        "description": "fee amount",
+        "format": "double",
+        "readOnly": true
+       },
+       "feeCurrency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of incoming transfer fee",
+        "readOnly": true
+       },
+       "outgoingTransferId": {
+        "type": "string",
+        "description": "id of outgoing transfer if this is an internal transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "serviceProviderId": {
+        "type": "string",
+        "description": "id assigned by service provider",
+        "readOnly": true
+       },
+       "serviceProviderReference": {
+        "type": "string",
+        "description": "reference assigned by service provider",
+        "readOnly": true
+       },
+       "senderInformation": {
+        "type": "string",
+        "description": "free text filled by sender",
+        "readOnly": true
+       },
+       "senderName": {
+        "type": "string",
+        "description": "name of sender",
+        "readOnly": true
+       },
+       "transferDate": {
+        "type": "string",
+        "description": "the date when transfer amount is reflected to account balance",
+        "format": "date",
+        "readOnly": true
+       },
+       "totalAmount": {
+        "type": "number",
+        "description": "total amount including fee",
+        "readOnly": true
+       },
+       "provisionedAccountCreditId": {
+        "type": "string",
+        "description": "Provisioned account credit id of the transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider that incoming transfer received from",
+        "readOnly": true
+       },
+       "receiverAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "scope": {
+        "type": "string",
+        "description": "transfer scope",
+        "readOnly": true,
+        "enum": [
+         "internal",
+         "external"
+        ]
+       },
+       "scheme": {
+        "type": "string",
+        "description": "transfer scheme depending on the scope of the transfer",
+        "readOnly": true,
+        "enum": [
+         "swift",
+         "local",
+         "sepa",
+         "sepa-instant",
+         "sepa-target-2",
+         "sepa-target-2-pacs009",
+         "chaps",
+         "bacs",
+         "faster-payments",
+         "faster-payments-poo",
+         "ach",
+         "wire",
+         "eft"
+        ]
+       },
+       "owner": {
+        "$ref": "#/components/schemas/Owner"
+       },
+       "relatedTransaction": {
+        "$ref": "#/components/schemas/RelatedTransaction"
+       },
+       "returnContext": {
+        "$ref": "#/components/schemas/IncomingTransferReturnContextResource"
+       }
+      },
+      "description": "incoming transfer model"
+     },
+     "IncomingTransferReturnContextResource": {
+      "type": "object",
+      "properties": {
+       "enabled": {
+        "type": "boolean",
+        "description": "return is enabled or not",
+        "readOnly": true
+       },
+       "cutOffDateTime": {
+        "type": "string",
+        "description": "cut-off time if return is enabled",
+        "format": "date-time",
+        "readOnly": true
+       },
+       "status": {
+        "$ref": "#/components/schemas/IncomingTransferReturnStatus"
+       },
+       "reason": {
+        "$ref": "#/components/schemas/IncomingTransferReturnReason"
+       }
+      },
+      "description": "incoming transfer return model"
+     },
+     "IncomingTransferReturnReason": {
+      "type": "string",
+      "description": "reason of incoming transfer return",
+      "enum": [
+       "account-closed",
+       "account-inactivated",
+       "account-not-found",
+       "user-requested",
+       "user-requested-as-duplicate",
+       "user-requested-as-wrong-amount",
+       "sender-recalled",
+       "rejected-by-compliance"
+      ]
+     },
+     "IncomingTransferReturnStatus": {
+      "type": "string",
+      "description": "status of incoming transfer return",
+      "enum": [
+       "processing",
+       "released",
+       "completed",
+       "failed"
+      ]
+     },
+     "IncomingTransferStatus": {
+      "type": "string",
+      "description": "status of incoming transfer",
+      "readOnly": true,
+      "enum": [
+       "pending",
+       "on-hold",
+       "completed",
+       "failed"
+      ]
+     },
+     "Owner": {
+      "type": "string",
+      "description": "owner of incoming transfer",
+      "readOnly": true,
+      "enum": [
+       "organization",
+       "client"
+      ]
+     },
+     "RelatedTransaction": {
+      "type": "object",
+      "properties": {
+       "nature": {
+        "$ref": "#/components/schemas/TransactionNature"
+       },
+       "id": {
+        "type": "string",
+        "format": "uuid"
+       }
+      },
+      "description": "related transaction of this transfer",
+      "readOnly": true
+     },
+     "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+     },
+     "TransactionNature": {
+      "type": "string",
+      "enum": [
+       "actual",
+       "virtual"
+      ]
+     },
+     "IncomingTransferGetConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+     },
+     "IncomingTransferGetDataContainer": {
+      "required": [
+       "incomingTransfer"
+      ],
+      "type": "object",
+      "properties": {
+       "incomingTransfer": {
+        "$ref": "#/components/schemas/IncomingTransferResource"
+       }
+      },
+      "description": "data container"
+     },
+     "IncomingTransferGetMetadataContainer": {
+      "type": "object",
+      "description": "metadata container"
+     },
+     "IncomingTransferGetResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/IncomingTransferGetWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/IncomingTransferGetDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/IncomingTransferGetConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/IncomingTransferGetMetadataContainer"
+       }
+      },
+      "description": "response model"
+     },
+     "IncomingTransferGetWorkflowContainer": {
+      "type": "object",
+      "description": "workflow container"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/incoming-transfersupdate.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/incoming-transfers/{id}": {
+     "patch": {
+      "tags": [
+       "Incoming Transfers"
+      ],
+      "summary": "Update an Incoming Transfer",
+      "operationId": "incoming-transfers.update",
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "description": "ID of incoming transfer in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "*/*": {
+         "schema": {
+          "$ref": "#/components/schemas/IncomingTransferUpdateRequest"
+         }
+        }
+       },
+       "required": true
+      },
+      "responses": {
+       "202": {
+        "description": "Incoming transfer updated successfully",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/IncomingTransferUpdateResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+       "bankName": {
+        "type": "string"
+       },
+       "accountHolderName": {
+        "type": "string",
+        "description": "name of the legal entity which account belongs to"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of account, refer to Accounts section in Guides for details"
+       },
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code"
+       },
+       "routingCodes": {
+        "$ref": "#/components/schemas/RoutingCodeMap"
+       },
+       "accountNumber": {
+        "maxLength": 20,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,20}$",
+        "type": "string",
+        "description": "account number of account",
+        "nullable": true
+       },
+       "iban": {
+        "maxLength": 31,
+        "minLength": 15,
+        "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+        "type": "string",
+        "description": "iban of account",
+        "nullable": true
+       },
+       "ledgerNumber": {
+        "maxLength": 8,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,8}$",
+        "type": "string",
+        "description": "unique ledger number of account generated internally"
+       }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+     },
+     "IncomingTransferResource": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "id of incoming transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "clientId": {
+        "type": "string",
+        "description": "id of client",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "accountId": {
+        "type": "string",
+        "description": "id of account which is credited by this incoming transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "transactionNumber": {
+        "maxLength": 15,
+        "minLength": 15,
+        "type": "string",
+        "description": "unique transaction number",
+        "readOnly": true
+       },
+       "status": {
+        "$ref": "#/components/schemas/IncomingTransferStatus"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of incoming transfer",
+        "readOnly": true
+       },
+       "amount": {
+        "type": "number",
+        "description": "amount",
+        "format": "double",
+        "readOnly": true
+       },
+       "feeAmount": {
+        "type": "number",
+        "description": "fee amount",
+        "format": "double",
+        "readOnly": true
+       },
+       "feeCurrency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of incoming transfer fee",
+        "readOnly": true
+       },
+       "outgoingTransferId": {
+        "type": "string",
+        "description": "id of outgoing transfer if this is an internal transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "serviceProviderId": {
+        "type": "string",
+        "description": "id assigned by service provider",
+        "readOnly": true
+       },
+       "serviceProviderReference": {
+        "type": "string",
+        "description": "reference assigned by service provider",
+        "readOnly": true
+       },
+       "senderInformation": {
+        "type": "string",
+        "description": "free text filled by sender",
+        "readOnly": true
+       },
+       "senderName": {
+        "type": "string",
+        "description": "name of sender",
+        "readOnly": true
+       },
+       "transferDate": {
+        "type": "string",
+        "description": "the date when transfer amount is reflected to account balance",
+        "format": "date",
+        "readOnly": true
+       },
+       "totalAmount": {
+        "type": "number",
+        "description": "total amount including fee",
+        "readOnly": true
+       },
+       "provisionedAccountCreditId": {
+        "type": "string",
+        "description": "Provisioned account credit id of the transfer",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider that incoming transfer received from",
+        "readOnly": true
+       },
+       "receiverAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "scope": {
+        "type": "string",
+        "description": "transfer scope",
+        "readOnly": true,
+        "enum": [
+         "internal",
+         "external"
+        ]
+       },
+       "scheme": {
+        "type": "string",
+        "description": "transfer scheme depending on the scope of the transfer",
+        "readOnly": true,
+        "enum": [
+         "swift",
+         "local",
+         "sepa",
+         "sepa-instant",
+         "sepa-target-2",
+         "sepa-target-2-pacs009",
+         "chaps",
+         "bacs",
+         "faster-payments",
+         "faster-payments-poo",
+         "ach",
+         "wire",
+         "eft"
+        ]
+       },
+       "owner": {
+        "$ref": "#/components/schemas/Owner"
+       },
+       "relatedTransaction": {
+        "$ref": "#/components/schemas/RelatedTransaction"
+       },
+       "returnContext": {
+        "$ref": "#/components/schemas/IncomingTransferReturnContextResource"
+       }
+      },
+      "description": "incoming transfer model"
+     },
+     "IncomingTransferReturnContextResource": {
+      "type": "object",
+      "properties": {
+       "enabled": {
+        "type": "boolean",
+        "description": "return is enabled or not",
+        "readOnly": true
+       },
+       "cutOffDateTime": {
+        "type": "string",
+        "description": "cut-off time if return is enabled",
+        "format": "date-time",
+        "readOnly": true
+       },
+       "status": {
+        "$ref": "#/components/schemas/IncomingTransferReturnStatus"
+       },
+       "reason": {
+        "$ref": "#/components/schemas/IncomingTransferReturnReason"
+       }
+      },
+      "description": "incoming transfer return model"
+     },
+     "IncomingTransferReturnReason": {
+      "type": "string",
+      "description": "reason of incoming transfer return",
+      "enum": [
+       "account-closed",
+       "account-inactivated",
+       "account-not-found",
+       "user-requested",
+       "user-requested-as-duplicate",
+       "user-requested-as-wrong-amount",
+       "sender-recalled",
+       "rejected-by-compliance"
+      ]
+     },
+     "IncomingTransferReturnStatus": {
+      "type": "string",
+      "description": "status of incoming transfer return",
+      "enum": [
+       "processing",
+       "released",
+       "completed",
+       "failed"
+      ]
+     },
+     "IncomingTransferStatus": {
+      "type": "string",
+      "description": "status of incoming transfer",
+      "readOnly": true,
+      "enum": [
+       "pending",
+       "on-hold",
+       "completed",
+       "failed"
+      ]
+     },
+     "Owner": {
+      "type": "string",
+      "description": "owner of incoming transfer",
+      "readOnly": true,
+      "enum": [
+       "organization",
+       "client"
+      ]
+     },
+     "RelatedTransaction": {
+      "type": "object",
+      "properties": {
+       "nature": {
+        "$ref": "#/components/schemas/TransactionNature"
+       },
+       "id": {
+        "type": "string",
+        "format": "uuid"
+       }
+      },
+      "description": "related transaction of this transfer",
+      "readOnly": true
+     },
+     "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+     },
+     "TransactionNature": {
+      "type": "string",
+      "enum": [
+       "actual",
+       "virtual"
+      ]
+     },
+     "IncomingTransferMetadataConnectContainer": {
+      "type": "object",
+      "description": "metadata container"
+     },
+     "IncomingTransferUpdateConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+     },
+     "IncomingTransferUpdateDataContainer": {
+      "required": [
+       "incomingTransfer"
+      ],
+      "type": "object",
+      "properties": {
+       "incomingTransfer": {
+        "$ref": "#/components/schemas/IncomingTransferResource"
+       }
+      }
+     },
+     "IncomingTransferUpdateResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/IncomingTransferUpdateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/IncomingTransferUpdateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/IncomingTransferUpdateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/IncomingTransferMetadataConnectContainer"
+       }
+      },
+      "description": "response model"
+     },
+     "IncomingTransferUpdateWorkflowContainer": {
+      "required": [
+       "code"
+      ],
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "description": "workflow code",
+        "enum": [
+         "client.direct",
+         "organization.direct"
+        ]
+       }
+      },
+      "description": "workflow container"
+     },
+     "IncomingTransferUpdateRequest": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/IncomingTransferUpdateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/IncomingTransferUpdateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/IncomingTransferUpdateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/IncomingTransferMetadataConnectContainer"
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/incoming-transferscompliance-checkget.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/incoming-transfers/{id}/compliance-check": {
+     "get": {
+      "tags": [
+       "Incoming Transfers - Compliance"
+      ],
+      "summary": "Get Compliance Check of an Incoming Transfer",
+      "operationId": "incoming-transfers.compliance-check.get",
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "description": "ID of incoming transfer in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Compliance check of incoming transfer returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ComplianceCheckGetResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "ComplianceCheckGetConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+     },
+     "ComplianceCheckGetDataContainer": {
+      "required": [
+       "complianceCheck"
+      ],
+      "type": "object",
+      "properties": {
+       "complianceCheck": {
+        "$ref": "#/components/schemas/ComplianceCheckResource"
+       }
+      },
+      "description": "data container"
+     },
+     "ComplianceCheckGetMetadataContainer": {
+      "type": "object",
+      "description": "metadata container"
+     },
+     "ComplianceCheckGetResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/ComplianceCheckGetWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ComplianceCheckGetDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/ComplianceCheckGetConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/ComplianceCheckGetMetadataContainer"
+       }
+      },
+      "description": "response model"
+     },
+     "ComplianceCheckGetWorkflowContainer": {
+      "type": "object",
+      "description": "workflow container"
+     },
+     "ComplianceCheckResource": {
+      "required": [
+       "procedureResults",
+       "status"
+      ],
+      "type": "object",
+      "properties": {
+       "status": {
+        "$ref": "#/components/schemas/ComplianceCheckStatus"
+       },
+       "procedureResults": {
+        "type": "object",
+        "additionalProperties": {
+         "$ref": "#/components/schemas/ComplianceProcedureResultResource"
+        },
+        "description": "procedure results of compliance check"
+       }
+      },
+      "description": "compliance check model",
+      "readOnly": true
+     },
+     "ComplianceCheckStatus": {
+      "type": "string",
+      "description": "status of compliance check",
+      "enum": [
+       "in-review",
+       "suspended",
+       "rejected",
+       "approved",
+       "redundant",
+       "skipped"
+      ]
+     },
+     "ComplianceProcedureResultResource": {
+      "type": "object",
+      "properties": {
+       "result": {
+        "type": "string"
+       }
+      },
+      "description": "compliance procedure result model"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/incoming-transferscompliance-checkupdate.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/incoming-transfers/{id}/compliance-check": {
+     "patch": {
+      "tags": [
+       "Incoming Transfers - Compliance"
+      ],
+      "summary": "Update Compliance Check of an Incoming Transfer",
+      "operationId": "incoming-transfers.compliance-check.update",
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "description": "ID of incoming transfer in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "*/*": {
+         "schema": {
+          "$ref": "#/components/schemas/ComplianceCheckUpdateRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "202": {
+        "description": "Compliance check updated successfully",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ComplianceCheckUpdateResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "ComplianceCheckResource": {
+      "required": [
+       "procedureResults",
+       "status"
+      ],
+      "type": "object",
+      "properties": {
+       "status": {
+        "$ref": "#/components/schemas/ComplianceCheckStatus"
+       },
+       "procedureResults": {
+        "type": "object",
+        "additionalProperties": {
+         "$ref": "#/components/schemas/ComplianceProcedureResultResource"
+        },
+        "description": "procedure results of compliance check"
+       }
+      },
+      "description": "compliance check model",
+      "readOnly": true
+     },
+     "ComplianceCheckStatus": {
+      "type": "string",
+      "description": "status of compliance check",
+      "enum": [
+       "in-review",
+       "suspended",
+       "rejected",
+       "approved",
+       "redundant",
+       "skipped"
+      ]
+     },
+     "ComplianceProcedureResultResource": {
+      "type": "object",
+      "properties": {
+       "result": {
+        "type": "string"
+       }
+      },
+      "description": "compliance procedure result model"
+     },
+     "ComplianceCheckUpdateConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+     },
+     "ComplianceCheckUpdateDataContainer": {
+      "required": [
+       "complianceCheck"
+      ],
+      "type": "object",
+      "properties": {
+       "complianceCheck": {
+        "$ref": "#/components/schemas/ComplianceCheckResource"
+       }
+      },
+      "description": "data container"
+     },
+     "ComplianceCheckUpdateMetadataContainer": {
+      "type": "object",
+      "description": "metadata container"
+     },
+     "ComplianceCheckUpdateResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateMetadataContainer"
+       }
+      },
+      "description": "response model"
+     },
+     "ComplianceCheckUpdateWorkflowContainer": {
+      "required": [
+       "code"
+      ],
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "description": "workflow code",
+        "enum": [
+         "direct"
+        ]
+       }
+      },
+      "description": "workflow container"
+     },
+     "ComplianceCheckUpdateRequest": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/ComplianceCheckUpdateMetadataContainer"
+       }
+      },
+      "description": "request model"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/provisioned-account-creditlist.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/provisioned-account-credits": {
+     "get": {
+      "tags": [
+       "Provisioned Account Credits"
+      ],
+      "summary": "List Provisioned Account Credits",
+      "operationId": "provisioned-account-credit.list",
+      "responses": {
+       "200": {
+        "description": "Provisioned account credit returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ProvisionedAccountCreditListResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+       "bankName": {
+        "type": "string"
+       },
+       "accountHolderName": {
+        "type": "string",
+        "description": "name of the legal entity which account belongs to"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of account, refer to Accounts section in Guides for details"
+       },
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code"
+       },
+       "routingCodes": {
+        "$ref": "#/components/schemas/RoutingCodeMap"
+       },
+       "accountNumber": {
+        "maxLength": 20,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,20}$",
+        "type": "string",
+        "description": "account number of account",
+        "nullable": true
+       },
+       "iban": {
+        "maxLength": 31,
+        "minLength": 15,
+        "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+        "type": "string",
+        "description": "iban of account",
+        "nullable": true
+       },
+       "ledgerNumber": {
+        "maxLength": 8,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,8}$",
+        "type": "string",
+        "description": "unique ledger number of account generated internally"
+       }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+     },
+     "PageMetadata": {
+      "required": [
+       "number",
+       "size",
+       "totalElements",
+       "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+       "size": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of elements in this page",
+        "format": "int32"
+       },
+       "number": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "index of page starting from 0",
+        "format": "int32"
+       },
+       "totalElements": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "total number of elements in all of the pages",
+        "format": "int64",
+        "readOnly": true
+       },
+       "totalPages": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of total pages",
+        "format": "int32",
+        "readOnly": true
+       }
+      }
+     },
+     "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+     },
+     "ProvisionedAccountCreditListWorkflowContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit List Workflow Container"
+     },
+     "ProvisionedAccountCreditResource": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "ID of provisioned account credit",
+        "format": "uuid"
+       },
+       "status": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditStatus"
+       },
+       "amount": {
+        "type": "number",
+        "description": "amount",
+        "format": "double"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of provisioned account credit"
+       },
+       "scope": {
+        "$ref": "#/components/schemas/TransferScope"
+       },
+       "scheme": {
+        "$ref": "#/components/schemas/TransferScheme"
+       },
+       "senderAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderName": {
+        "type": "string",
+        "description": "name of sender"
+       },
+       "senderAddress": {
+        "type": "string",
+        "description": "address of sender"
+       },
+       "receiverAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderToReceiverInformation": {
+        "type": "string",
+        "description": "sender to receiver information"
+       },
+       "accountId": {
+        "type": "string",
+        "description": "id of account which is credited by this provisioned account credit",
+        "format": "uuid"
+       },
+       "accountType": {
+        "$ref": "#/components/schemas/ProvisionedAccountType"
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider that provisioned account credit received from"
+       },
+       "serviceProviderId": {
+        "type": "string",
+        "description": "id assigned by service provider"
+       }
+      },
+      "description": "Provisioned Account Credit Model"
+     },
+     "ProvisionedAccountCreditStatus": {
+      "type": "string",
+      "description": "status of provisioned account credit",
+      "enum": [
+       "new",
+       "unmatched",
+       "matched",
+       "completed",
+       "failed",
+       "pending"
+      ]
+     },
+     "ProvisionedAccountType": {
+      "type": "string",
+      "description": "type of account which is credited by this provisioned account credit",
+      "enum": [
+       "client-account",
+       "transaction-account"
+      ]
+     },
+     "TransferScheme": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+       "swift",
+       "local",
+       "sepa",
+       "sepa-instant",
+       "sepa-target-2",
+       "sepa-target-2-pacs009",
+       "chaps",
+       "bacs",
+       "faster-payments",
+       "faster-payments-poo",
+       "ach",
+       "wire",
+       "eft"
+      ]
+     },
+     "TransferScope": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+       "internal",
+       "external",
+       "internal",
+       "external"
+      ]
+     },
+     "ProvisionedAccountCreditListConnectContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit List Connect Container"
+     },
+     "ProvisionedAccountCreditListDataContainer": {
+      "type": "object",
+      "properties": {
+       "provisionedAccountCredit": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditResourceQueryInput"
+       },
+       "provisionedAccountCredits": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/ProvisionedAccountCreditResource"
+        }
+       }
+      },
+      "description": "Provisioned Account Credit List Data Container"
+     },
+     "ProvisionedAccountCreditListMetadataContainer": {
+      "required": [
+       "page"
+      ],
+      "type": "object",
+      "properties": {
+       "page": {
+        "$ref": "#/components/schemas/PageMetadata"
+       }
+      },
+      "description": "Provisioned Account Credit List Metadata Container"
+     },
+     "ProvisionedAccountCreditListResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditListWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditListDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditListConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditListMetadataContainer"
+       }
+      },
+      "description": "Provisioned Account Credit List Response"
+     },
+     "ProvisionedAccountCreditResourceQueryInput": {
+      "type": "object",
+      "properties": {
+       "amountFrom": {
+        "type": "number"
+       },
+       "amountTo": {
+        "type": "number"
+       },
+       "currency": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "accountId": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "format": "uuid"
+        }
+       },
+       "accountType": {
+        "$ref": "#/components/schemas/ProvisionedAccountType"
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/provisioned-account-creditcreate.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/provisioned-account-credits": {
+     "post": {
+      "tags": [
+       "Provisioned Account Credits"
+      ],
+      "summary": "Create a Provisioned Account Credit",
+      "operationId": "provisioned-account-credit.create",
+      "requestBody": {
+       "content": {
+        "*/*": {
+         "schema": {
+          "$ref": "#/components/schemas/ProvisionedAccountCreditCreateRequest"
+         }
+        }
+       },
+       "required": true
+      },
+      "responses": {
+       "201": {
+        "description": "Provisioned account credit created successfully",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ProvisionedAccountCreditCreateResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+       "bankName": {
+        "type": "string"
+       },
+       "accountHolderName": {
+        "type": "string",
+        "description": "name of the legal entity which account belongs to"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of account, refer to Accounts section in Guides for details"
+       },
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code"
+       },
+       "routingCodes": {
+        "$ref": "#/components/schemas/RoutingCodeMap"
+       },
+       "accountNumber": {
+        "maxLength": 20,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,20}$",
+        "type": "string",
+        "description": "account number of account",
+        "nullable": true
+       },
+       "iban": {
+        "maxLength": 31,
+        "minLength": 15,
+        "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+        "type": "string",
+        "description": "iban of account",
+        "nullable": true
+       },
+       "ledgerNumber": {
+        "maxLength": 8,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,8}$",
+        "type": "string",
+        "description": "unique ledger number of account generated internally"
+       }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+     },
+     "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+     },
+     "ProvisionedAccountCreditCreateConnectContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit Create Connect Container"
+     },
+     "ProvisionedAccountCreditCreateDataContainer": {
+      "required": [
+       "provisionedAccountCredit"
+      ],
+      "type": "object",
+      "properties": {
+       "provisionedAccountCredit": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditResource"
+       }
+      },
+      "description": "Provisioned Account Credit Create Data Container"
+     },
+     "ProvisionedAccountCreditCreateMetadataContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit Create Metadata Container"
+     },
+     "ProvisionedAccountCreditCreateResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditListWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditCreateMetadataContainer"
+       }
+      },
+      "description": "Provisioned Account Credit Create Response"
+     },
+     "ProvisionedAccountCreditListWorkflowContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit List Workflow Container"
+     },
+     "ProvisionedAccountCreditResource": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "ID of provisioned account credit",
+        "format": "uuid"
+       },
+       "status": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditStatus"
+       },
+       "amount": {
+        "type": "number",
+        "description": "amount",
+        "format": "double"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of provisioned account credit"
+       },
+       "scope": {
+        "$ref": "#/components/schemas/TransferScope"
+       },
+       "scheme": {
+        "$ref": "#/components/schemas/TransferScheme"
+       },
+       "senderAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderName": {
+        "type": "string",
+        "description": "name of sender"
+       },
+       "senderAddress": {
+        "type": "string",
+        "description": "address of sender"
+       },
+       "receiverAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderToReceiverInformation": {
+        "type": "string",
+        "description": "sender to receiver information"
+       },
+       "accountId": {
+        "type": "string",
+        "description": "id of account which is credited by this provisioned account credit",
+        "format": "uuid"
+       },
+       "accountType": {
+        "$ref": "#/components/schemas/ProvisionedAccountType"
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider that provisioned account credit received from"
+       },
+       "serviceProviderId": {
+        "type": "string",
+        "description": "id assigned by service provider"
+       }
+      },
+      "description": "Provisioned Account Credit Model"
+     },
+     "ProvisionedAccountCreditStatus": {
+      "type": "string",
+      "description": "status of provisioned account credit",
+      "enum": [
+       "new",
+       "unmatched",
+       "matched",
+       "completed",
+       "failed",
+       "pending"
+      ]
+     },
+     "ProvisionedAccountType": {
+      "type": "string",
+      "description": "type of account which is credited by this provisioned account credit",
+      "enum": [
+       "client-account",
+       "transaction-account"
+      ]
+     },
+     "TransferScheme": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+       "swift",
+       "local",
+       "sepa",
+       "sepa-instant",
+       "sepa-target-2",
+       "sepa-target-2-pacs009",
+       "chaps",
+       "bacs",
+       "faster-payments",
+       "faster-payments-poo",
+       "ach",
+       "wire",
+       "eft"
+      ]
+     },
+     "TransferScope": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+       "internal",
+       "external",
+       "internal",
+       "external"
+      ]
+     },
+     "ProvisionedAccountCreditCreateRequest": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditListWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditCreateMetadataContainer"
+       }
+      },
+      "description": "Provisioned Account Credit Create Request Model"
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/provisioned-account-creditget.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Incoming Transfer API",
+    "description": "Operations for Incoming Transfers",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/provisioned-account-credits/{id}": {
+     "get": {
+      "tags": [
+       "Provisioned Account Credits"
+      ],
+      "summary": "Get a Provisioned Account Credit",
+      "operationId": "provisioned-account-credit.get",
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "description": "ID of provisioned account credit in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Provisioned account credit resource returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/ProvisionedAccountCreditGetResponse"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+       "bankName": {
+        "type": "string"
+       },
+       "accountHolderName": {
+        "type": "string",
+        "description": "name of the legal entity which account belongs to"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of account, refer to Accounts section in Guides for details"
+       },
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code"
+       },
+       "routingCodes": {
+        "$ref": "#/components/schemas/RoutingCodeMap"
+       },
+       "accountNumber": {
+        "maxLength": 20,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,20}$",
+        "type": "string",
+        "description": "account number of account",
+        "nullable": true
+       },
+       "iban": {
+        "maxLength": 31,
+        "minLength": 15,
+        "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+        "type": "string",
+        "description": "iban of account",
+        "nullable": true
+       },
+       "ledgerNumber": {
+        "maxLength": 8,
+        "minLength": 8,
+        "pattern": "^[0-9]{8,8}$",
+        "type": "string",
+        "description": "unique ledger number of account generated internally"
+       }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+     },
+     "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+     },
+     "ProvisionedAccountCreditResource": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "ID of provisioned account credit",
+        "format": "uuid"
+       },
+       "status": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditStatus"
+       },
+       "amount": {
+        "type": "number",
+        "description": "amount",
+        "format": "double"
+       },
+       "currency": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "ISO 4217 currency code of provisioned account credit"
+       },
+       "scope": {
+        "$ref": "#/components/schemas/TransferScope"
+       },
+       "scheme": {
+        "$ref": "#/components/schemas/TransferScheme"
+       },
+       "senderAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderName": {
+        "type": "string",
+        "description": "name of sender"
+       },
+       "senderAddress": {
+        "type": "string",
+        "description": "address of sender"
+       },
+       "receiverAccount": {
+        "$ref": "#/components/schemas/IncomingMoneyTransferBankAccount"
+       },
+       "senderToReceiverInformation": {
+        "type": "string",
+        "description": "sender to receiver information"
+       },
+       "accountId": {
+        "type": "string",
+        "description": "id of account which is credited by this provisioned account credit",
+        "format": "uuid"
+       },
+       "accountType": {
+        "$ref": "#/components/schemas/ProvisionedAccountType"
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider that provisioned account credit received from"
+       },
+       "serviceProviderId": {
+        "type": "string",
+        "description": "id assigned by service provider"
+       }
+      },
+      "description": "Provisioned Account Credit Model"
+     },
+     "ProvisionedAccountCreditStatus": {
+      "type": "string",
+      "description": "status of provisioned account credit",
+      "enum": [
+       "new",
+       "unmatched",
+       "matched",
+       "completed",
+       "failed",
+       "pending"
+      ]
+     },
+     "ProvisionedAccountType": {
+      "type": "string",
+      "description": "type of account which is credited by this provisioned account credit",
+      "enum": [
+       "client-account",
+       "transaction-account"
+      ]
+     },
+     "TransferScheme": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+       "swift",
+       "local",
+       "sepa",
+       "sepa-instant",
+       "sepa-target-2",
+       "sepa-target-2-pacs009",
+       "chaps",
+       "bacs",
+       "faster-payments",
+       "faster-payments-poo",
+       "ach",
+       "wire",
+       "eft"
+      ]
+     },
+     "TransferScope": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+       "internal",
+       "external",
+       "internal",
+       "external"
+      ]
+     },
+     "ProvisionedAccountCreditGetConnectContainer": {
+      "type": "object",
+      "description": "provisioned account credit connect container"
+     },
+     "ProvisionedAccountCreditGetDataContainer": {
+      "required": [
+       "provisionedAccountCredit"
+      ],
+      "type": "object",
+      "properties": {
+       "provisionedAccountCredit": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditResource"
+       }
+      },
+      "description": "provisioned account credit data container"
+     },
+     "ProvisionedAccountCreditGetMetadataContainer": {
+      "type": "object",
+      "description": "provisioned account credit metadata container"
+     },
+     "ProvisionedAccountCreditGetResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditGetWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditGetDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditGetConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/ProvisionedAccountCreditGetMetadataContainer"
+       }
+      },
+      "description": "provisioned account credit response model"
+     },
+     "ProvisionedAccountCreditGetWorkflowContainer": {
+      "type": "object",
+      "description": "provisioned account credit workflow container"
+     }
+    }
+   }
+  }
+ }
+]

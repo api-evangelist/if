@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-outgoing-transfer-date-metadata-response-schema.json",
+  "title": "OutgoingTransferDateMetadataResponse",
+  "description": "response model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-outgoing-transfer-api-openapi.yml#/components/schemas/OutgoingTransferDateMetadataResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/OutgoingTransferDateMetadataWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/OutgoingTransferDateMetadataDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/OutgoingTransferDateMetadataConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/OutgoingTransferDateMetadataMetadataContainer"
+    }
+  },
+  "$defs": {
+    "OutgoingTransferDateMetadataConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+    },
+    "OutgoingTransferDateMetadataDataContainer": {
+      "type": "object",
+      "properties": {
+        "nextAvailableDateFrom": {
+          "type": "string",
+          "format": "date"
+        },
+        "nextAvailableDate": {
+          "type": "string",
+          "description": "next available date for transfers with given properties",
+          "format": "date",
+          "readOnly": true
+        },
+        "nextCutoffDateTime": {
+          "type": "string",
+          "description": "cutoff date time for next available date, null if payment scheme supports 24/7",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "unavailableDates": {
+          "uniqueItems": true,
+          "type": "array",
+          "description": "array of unavailable dates for transfer with given properties",
+          "readOnly": true,
+          "items": {
+            "type": "string",
+            "description": "array of unavailable dates for transfer with given properties",
+            "format": "date",
+            "readOnly": true
+          }
+        }
+      },
+      "description": "data container"
+    },
+    "OutgoingTransferDateMetadataMetadataContainer": {
+      "type": "object",
+      "description": "metadata container"
+    },
+    "OutgoingTransferDateMetadataWorkflowContainer": {
+      "type": "object",
+      "description": "workflow container"
+    }
+  }
+}

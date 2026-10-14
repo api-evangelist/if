@@ -1,0 +1,75 @@
+generated: '2026-10-14'
+method: probed
+source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
+registry: all/0-working/vendors.yml
+areas_vocabulary:
+- documentation
+- developer-portal
+- api-gateway
+- cdn
+- hosting
+- sdk-generation
+- api-collections
+- status-page
+- support
+- community
+- identity
+- mcp-hosting
+vendors:
+- vendor: cloudflare
+  name: Cloudflare
+  area: cdn
+  host: developer.integrated.finance
+  evidence: header:cf-ray
+  signal: header
+  confidence: high
+  kin_score:
+  - https_enforced
+  - hsts
+- vendor: vercel
+  name: Vercel
+  area: hosting
+  host: integrated.finance
+  evidence: header:x-vercel-id
+  signal: header
+  confidence: high
+  kin_score: []
+- vendor: keycloak
+  name: Keycloak
+  area: identity
+  host: account.integrated.finance
+  evidence: if-openid-configuration.json names keycloak in its OAuth metadata
+  signal: oauth-metadata
+  confidence: high
+  kin_score:
+  - authentication
+- vendor: statuspage
+  name: Atlassian Statuspage
+  area: status-page
+  host: integratedfinance.statuspage.io
+  evidence: https://integratedfinance.statuspage.io
+  signal: url:statuspage.io
+  confidence: high
+  kin_score:
+  - status_page
+reliance:
+  areas_vendor_served:
+  - cdn
+  - hosting
+  - identity
+  - status-page
+  vendor_count: 4
+  areas_observed: 12
+  share_of_observable_areas: 0.333
+  note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
+    cannot tell those apart
+checked:
+- 'docs-platform: not probed'
+- integrated.finance (Website)
+- developer.integrated.finance (DeveloperPortal)
+- developer.integrated.finance (Documentation)
+- developer.integrated.finance (APIReference)
+- developer.integrated.finance (GettingStarted)
+- integrated.finance (Support)
+- integratedfinance.statuspage.io (StatusPage)
+- api.integrated.finance (baseURL)

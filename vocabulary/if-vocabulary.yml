@@ -1,0 +1,423 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/if-account-api-openapi.yml
+- openapi/if-card-api-openapi.yml
+- openapi/if-card-transaction-api-openapi.yml
+- openapi/if-client-api-openapi.yml
+- openapi/if-exchange-api-openapi.yml
+vocabulary:
+  name: IF Domain Vocabulary
+  description: 'Terms declared by IF''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions. Derived,
+    not authored.'
+  version: '2026-10-14'
+  terms:
+  - term: Account
+    definition: 'Object declared by the contract with fields: id, clientId, status, country, currency, alias, routingCodes, iban, accountNumber,
+      accountHolderName, ledgerNumber, availableBalance. (7 more)'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/Account
+  - term: AccountConnectionResource
+    definition: Account Connection Resource Object
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountConnectionResource
+  - term: AccountStatus
+    definition: status of account
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountStatus
+  - term: AttributeMap
+    definition: attributes of account
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AttributeMap
+  - term: ConnectMethod
+    definition: 'Enumeration declared by the contract with values: built-in, plug-in.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ConnectMethod
+  - term: ConnectionErrorResource
+    definition: 'Object declared by the contract with fields: category, origin, code, message, attributes.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ConnectionErrorResource
+  - term: ErrorCategory
+    definition: 'Enumeration declared by the contract with values: functional, technical.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ErrorCategory
+  - term: ErrorOrigin
+    definition: 'Enumeration declared by the contract with values: customer, platform, provider.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ErrorOrigin
+  - term: LegalEntityType
+    definition: type of account holder client's identity
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/LegalEntityType
+  - term: RoutingCodeMap
+    definition: routing codes of account as map, refer to Accounts section in Guides for details
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/RoutingCodeMap
+  - term: ServiceProviderConnectionState
+    definition: 'Enumeration declared by the contract with values: pending, creation-in-progress, update-in-progress, dependency-completed, completed-up-to-date,
+      completed-outdated, dependency-failed, creation-failed.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ServiceProviderConnectionState
+  - term: ThirdPartyAccountStatus
+    definition: 'Enumeration declared by the contract with values: active, inactive, closed.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ThirdPartyAccountStatus
+  - term: AccountListDataContainer
+    definition: 'Object declared by the contract with fields: account, accounts.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountListDataContainer
+  - term: AccountListMetadataContainer
+    definition: 'Object declared by the contract with fields: page.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountListMetadataContainer
+  - term: AccountListResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountListResponse
+  - term: AccountResourceQueryInput
+    definition: 'Object declared by the contract with fields: clientId, status, currency, alias, routingCodeKey, routingCodeValue, iban, accountNumber,
+      ledgerNumber, availableBalanceFrom, availableBalanceTo, serviceProvider. (4 more)'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountResourceQueryInput
+  - term: AccountType
+    definition: 'Enumeration declared by the contract with values: main-account, sub-account, standalone-account.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountType
+  - term: PageMetadata
+    definition: 'Object declared by the contract with fields: size, number, totalElements, totalPages.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/PageMetadata
+  - term: RoutingCodeType
+    definition: 'Enumeration declared by the contract with values: bic, sort-code, aba, rtn-canada, clabe, bsb-code, ifsc, cnaps, bank-code, branch-code.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/RoutingCodeType
+  - term: AccountCreateConnectContainer
+    definition: 'Object declared by the contract with fields: type, serviceProvider, method.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountCreateConnectContainer
+  - term: AccountCreateDataContainer
+    definition: 'Object declared by the contract with fields: account, sourceId.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountCreateDataContainer
+  - term: AccountCreateResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountCreateResponse
+  - term: AccountCreateWorkflowContainer
+    definition: 'Object declared by the contract with fields: code.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountCreateWorkflowContainer
+  - term: AccountCreateRequest
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountCreateRequest
+  - term: AccountDepositInformationGetDataContainer
+    definition: 'Object declared by the contract with fields: depositInformation.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountDepositInformationGetDataContainer
+  - term: AccountDepositInformationResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountDepositInformationResponse
+  - term: AccountGetConnectContainer
+    definition: 'Object declared by the contract with fields: connection.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountGetConnectContainer
+  - term: AccountGetDataContainer
+    definition: 'Object declared by the contract with fields: account, client.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountGetDataContainer
+  - term: AccountGetResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountGetResponse
+  - term: Address
+    definition: residential address object for individual clients
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/Address
+  - term: Client
+    definition: 'Object declared by the contract with fields: attributes, id, clientNumber, status, identity, profile, relations.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/Client
+  - term: ClientProfile
+    definition: 'Object declared by the contract with fields: identityType.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ClientProfile
+  - term: ClientRelatedLegalEntityRelation
+    definition: relation of legal entity with client
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ClientRelatedLegalEntityRelation
+  - term: ClientRelation
+    definition: client related legal entities
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ClientRelation
+  - term: ClientStatus
+    definition: status of the client
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/ClientStatus
+  - term: CorporationType
+    definition: 'Enumeration declared by the contract with values: ltd, plc, llp, lp, gp, st, other.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/CorporationType
+  - term: LegalEntityIdentification
+    definition: 'Object declared by the contract with fields: type, identificationNumber, issuingCountry, issueDate, expirationDate.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/LegalEntityIdentification
+  - term: LegalEntityIdentificationType
+    definition: 'Enumeration declared by the contract with values: registration-number, passport, identity-card, driving-licence, foreign-identity-card,
+      tax-number.'
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/LegalEntityIdentificationType
+  - term: LegalEntityIdentity
+    definition: 'Object declared by the contract with fields: type.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/LegalEntityIdentity
+  - term: AccountUpdateDataContainer
+    definition: 'Object declared by the contract with fields: account.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountUpdateDataContainer
+  - term: AccountUpdateResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountUpdateResponse
+  - term: AccountUpdateWorkflowContainer
+    definition: 'Object declared by the contract with fields: code.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountUpdateWorkflowContainer
+  - term: AccountUpdateRequest
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountUpdateRequest
+  - term: AccountAdjustmentConfiguration
+    definition: 'Object declared by the contract with fields: unconnectedServiceProvider.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountAdjustmentConfiguration
+  - term: AccountAdjustmentCreateDataContainer
+    definition: 'Object declared by the contract with fields: balanceAdjustment.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountAdjustmentCreateDataContainer
+  - term: AccountAdjustmentCreateResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountAdjustmentCreateResponse
+  - term: AccountAdjustmentCreateWorkflowContainer
+    definition: 'Object declared by the contract with fields: code, type, transactionType.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountAdjustmentCreateWorkflowContainer
+  - term: AccountAdjustmentResource
+    definition: 'Object declared by the contract with fields: configuration, ledgerNumber, id, accountId, direction, transactionNumber, amount,
+      currency, description, unconnectedServiceProvider.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountAdjustmentResource
+  - term: TransactionDirection
+    definition: direction of adjustment
+    tags:
+    - Enumeration
+    source: openapi/if-account-api-openapi.yml#/components/schemas/TransactionDirection
+  - term: AccountAdjustmentCreateRequest
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountAdjustmentCreateRequest
+  - term: AccountStatements
+    definition: 'Object declared by the contract with fields: accountId, transactionNumber, transactionType, entryType, entryDateTime, direction,
+      amount, balance, currency, narrative.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountStatements
+  - term: AccountStatementsListDataContainer
+    definition: 'Object declared by the contract with fields: accountStatement, accountStatements.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountStatementsListDataContainer
+  - term: AccountStatementsListMetadataContainer
+    definition: 'Object declared by the contract with fields: page.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountStatementsListMetadataContainer
+  - term: AccountStatementsListResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountStatementsListResponse
+  - term: AccountStatementsResourceQueryInput
+    definition: 'Object declared by the contract with fields: accountId, transactionNumber, entryDateTimeFrom, entryDateTimeTo.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountStatementsResourceQueryInput
+  - term: AccountStatementsListRequest
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-account-api-openapi.yml#/components/schemas/AccountStatementsListRequest
+  - term: LinkedAccount
+    definition: Linked Account Resource Object
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/LinkedAccount
+  - term: CardAccountListDataContainer
+    definition: 'Object declared by the contract with fields: linkedAccount, linkedAccounts.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountListDataContainer
+  - term: CardAccountListMetadataContainer
+    definition: 'Object declared by the contract with fields: page.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountListMetadataContainer
+  - term: CardAccountListResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountListResponse
+  - term: CardAccountResourceQueryInput
+    definition: 'Object declared by the contract with fields: accountStatus.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountResourceQueryInput
+  - term: CardAccountCreateDataContainer
+    definition: 'Object declared by the contract with fields: linkedAccount.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountCreateDataContainer
+  - term: CardAccountCreateResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountCreateResponse
+  - term: CardAccountCreateWorkflowContainer
+    definition: 'Object declared by the contract with fields: code.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountCreateWorkflowContainer
+  - term: CardAccountCreateRequest
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountCreateRequest
+  - term: Card
+    definition: Card Resource Object
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/Card
+  - term: CardAccountListQueryOutput
+    definition: accounts linked to card
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardAccountListQueryOutput
+  - term: CardConnection
+    definition: Card Connection Resource Object
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardConnection
+  - term: CardStatus
+    definition: status of card
+    tags:
+    - Enumeration
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardStatus
+  - term: CardSuspensionReason
+    definition: suspension reason of card
+    tags:
+    - Enumeration
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardSuspensionReason
+  - term: CardTerminationReason
+    definition: termination reason of card
+    tags:
+    - Enumeration
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardTerminationReason
+  - term: CardType
+    definition: type of card
+    tags:
+    - Enumeration
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardType
+  - term: ThirdPartyCardStatus
+    definition: 'Enumeration declared by the contract with values: active, inactive, suspended-user-requested, suspended-suspected-fraud, suspended-by-third-party,
+      terminated-lost-card, terminated-stolen-card, terminated-expired-card, termination-requested, terminated-by-third-party.'
+    tags:
+    - Enumeration
+    source: openapi/if-card-api-openapi.yml#/components/schemas/ThirdPartyCardStatus
+  - term: CardListDataContainer
+    definition: 'Object declared by the contract with fields: card, cards.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardListDataContainer
+  - term: CardListMetadataContainer
+    definition: 'Object declared by the contract with fields: page.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardListMetadataContainer
+  - term: CardListResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardListResponse
+  - term: CardResourceQueryInput
+    definition: 'Object declared by the contract with fields: clientId, userId, type, alias, status, serviceProvider, pan, attributes, clientTitle,
+      clientNumber, username.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardResourceQueryInput
+  - term: CardCreateConnectContainer
+    definition: 'Object declared by the contract with fields: type, serviceProvider.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardCreateConnectContainer
+  - term: CardCreateDataContainer
+    definition: 'Object declared by the contract with fields: card.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardCreateDataContainer
+  - term: CardCreateResponse
+    definition: 'Object declared by the contract with fields: workflow, data, connect, metadata.'
+    tags:
+    - Object
+    source: openapi/if-card-api-openapi.yml#/components/schemas/CardCreateResponse

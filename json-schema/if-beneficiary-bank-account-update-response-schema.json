@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-beneficiary-bank-account-update-response-schema.json",
+  "title": "BeneficiaryBankAccountUpdateResponse",
+  "description": "Beneficiary Bank Accounts API Update Response",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-outgoing-transfer-api-openapi.yml#/components/schemas/BeneficiaryBankAccountUpdateResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/BeneficiaryBankAccountsUpdateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/BeneficiaryBankAccountsUpdateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/BeneficiaryBankAccountsUpdateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/BeneficiaryBankAccountsUpdateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "BeneficiaryBankAccountsUpdateConnect": {
+      "type": "string",
+      "description": "service provider selection type",
+      "enum": [
+        "explicit",
+        "implicit",
+        "explicit"
+      ]
+    },
+    "BeneficiaryBankAccountsUpdateConnectContainer": {
+      "required": [
+        "serviceProvider",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/BeneficiaryBankAccountsUpdateConnect"
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "account is connected to this service provider "
+        }
+      },
+      "description": "connect container"
+    },
+    "BeneficiaryBankAccountsUpdateDataContainer": {
+      "type": "object",
+      "properties": {
+        "bank account": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "description": "beneficiary bank account data model"
+          },
+          "description": "beneficiary bank account data model"
+        }
+      }
+    },
+    "BeneficiaryBankAccountsUpdateMetadataContainer": {
+      "type": "object"
+    },
+    "BeneficiaryBankAccountsUpdateWorkflow": {
+      "type": "string",
+      "description": "workflow code",
+      "enum": [
+        "direct",
+        "client.direct",
+        "organization.direct",
+        "migrate",
+        "direct"
+      ]
+    },
+    "BeneficiaryBankAccountsUpdateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/BeneficiaryBankAccountsUpdateWorkflow"
+        }
+      },
+      "description": "workflow container"
+    }
+  }
+}

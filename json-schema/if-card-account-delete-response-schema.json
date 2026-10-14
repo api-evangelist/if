@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-card-account-delete-response-schema.json",
+  "title": "CardAccountDeleteResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-card-api-openapi.yml#/components/schemas/CardAccountDeleteResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/CardAccountDeleteWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/CardAccountDeleteDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/CardAccountDeleteConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CardAccountDeleteMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AccountStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "active",
+        "inactive",
+        "suspended",
+        "closed",
+        "declined"
+      ]
+    },
+    "CardAccountDeleteConnectContainer": {
+      "type": "object"
+    },
+    "CardAccountDeleteDataContainer": {
+      "type": "object",
+      "properties": {
+        "cardAccount": {
+          "$ref": "#/$defs/LinkedAccount"
+        }
+      }
+    },
+    "CardAccountDeleteMetadataContainer": {
+      "type": "object"
+    },
+    "CardAccountDeleteWorkflowContainer": {
+      "type": "object"
+    },
+    "LinkedAccount": {
+      "required": [
+        "accountId"
+      ],
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "description": "ID of the account linked to the card",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "accountStatus": {
+          "$ref": "#/$defs/AccountStatus"
+        }
+      },
+      "description": "Linked Account Resource Object"
+    }
+  }
+}

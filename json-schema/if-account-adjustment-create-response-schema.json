@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-account-adjustment-create-response-schema.json",
+  "title": "AccountAdjustmentCreateResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-account-api-openapi.yml#/components/schemas/AccountAdjustmentCreateResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/AccountAdjustmentCreateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/AccountAdjustmentCreateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/AccountAdjustmentCreateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/AccountAdjustmentCreateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AccountAdjustmentConfiguration": {
+      "type": "object",
+      "properties": {
+        "unconnectedServiceProvider": {
+          "type": "string"
+        }
+      }
+    },
+    "AccountAdjustmentCreateConnectContainer": {
+      "type": "object"
+    },
+    "AccountAdjustmentCreateDataContainer": {
+      "required": [
+        "balanceAdjustment"
+      ],
+      "type": "object",
+      "properties": {
+        "balanceAdjustment": {
+          "$ref": "#/$defs/AccountAdjustmentResource"
+        }
+      }
+    },
+    "AccountAdjustmentCreateMetadataContainer": {
+      "type": "object"
+    },
+    "AccountAdjustmentCreateWorkflowContainer": {
+      "required": [
+        "code",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "correction",
+            "synchronization"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "fee",
+            "unknown"
+          ]
+        },
+        "transactionType": {
+          "type": "string",
+          "enum": [
+            "incoming-transfer",
+            "outgoing-transfer"
+          ]
+        }
+      }
+    },
+    "AccountAdjustmentResource": {
+      "type": "object",
+      "properties": {
+        "configuration": {
+          "$ref": "#/$defs/AccountAdjustmentConfiguration"
+        },
+        "ledgerNumber": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "description": "id of account balance adjustment",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "accountId": {
+          "type": "string",
+          "description": "id of account",
+          "format": "uuid"
+        },
+        "direction": {
+          "$ref": "#/$defs/TransactionDirection"
+        },
+        "transactionNumber": {
+          "maxLength": 15,
+          "minLength": 15,
+          "type": "string",
+          "description": "unique transaction number",
+          "readOnly": true
+        },
+        "amount": {
+          "type": "number",
+          "description": "adjustment amount"
+        },
+        "currency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code"
+        },
+        "description": {
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string",
+          "description": "free text description of adjustment"
+        },
+        "unconnectedServiceProvider": {
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string",
+          "description": "unconnected service provider name"
+        }
+      }
+    },
+    "TransactionDirection": {
+      "type": "string",
+      "description": "direction of adjustment",
+      "enum": [
+        "credit",
+        "debit"
+      ]
+    }
+  }
+}

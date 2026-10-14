@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-transaction-account-create-response-schema.json",
+  "title": "TransactionAccountCreateResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-transaction-account-api-openapi.yml#/components/schemas/TransactionAccountCreateResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/TransactionAccountCreateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/TransactionAccountCreateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/TransactionAccountCreateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/TransactionAccountCreateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AttributeMap": {
+      "type": "object",
+      "description": "attributes of this transaction account",
+      "readOnly": true
+    },
+    "DepositInformationMap": {
+      "type": "object",
+      "description": "deposit information of this transaction account",
+      "readOnly": true
+    },
+    "Owner": {
+      "type": "string",
+      "description": "owner of transaction account",
+      "readOnly": true,
+      "enum": [
+        "organization",
+        "client"
+      ]
+    },
+    "TransactionAccount": {
+      "required": [
+        "currency",
+        "hierarchy",
+        "id",
+        "inboundTransferSchemes",
+        "outboundTransferSchemes",
+        "owner",
+        "status",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id of transaction account",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "type": {
+          "$ref": "#/$defs/TransactionAccountRoutingType"
+        },
+        "hierarchy": {
+          "$ref": "#/$defs/TransactionAccountHierarchy"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "client id of transaction account",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "bankAccountId": {
+          "type": "string",
+          "description": "bank account id of transaction account",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "mainAccountId": {
+          "type": "string",
+          "description": "main account id of transaction account",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "currency": {
+          "type": "string",
+          "description": "currency of this transaction account",
+          "readOnly": true
+        },
+        "alias": {
+          "type": "string",
+          "description": "alias of this transaction account",
+          "readOnly": true
+        },
+        "availableBalance": {
+          "type": "number",
+          "description": "available balance of transaction account",
+          "format": "double",
+          "readOnly": true
+        },
+        "receivableBalance": {
+          "type": "number",
+          "description": "receivable balance of transaction account",
+          "format": "double",
+          "readOnly": true
+        },
+        "payableBalance": {
+          "type": "number",
+          "description": "payable balance of transaction account",
+          "format": "double",
+          "readOnly": true
+        },
+        "inboundTransferSchemes": {
+          "uniqueItems": true,
+          "type": "array",
+          "description": "inbound transfer schemes of this transaction account",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/$defs/TransferScheme"
+          }
+        },
+        "outboundTransferSchemes": {
+          "uniqueItems": true,
+          "type": "array",
+          "description": "outbound transfer schemes of this transaction account",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/$defs/TransferScheme"
+          }
+        },
+        "status": {
+          "$ref": "#/$defs/TransactionAccountStatus"
+        },
+        "attributes": {
+          "$ref": "#/$defs/AttributeMap"
+        },
+        "depositInformation": {
+          "$ref": "#/$defs/DepositInformationMap"
+        }
+      }
+    },
+    "TransactionAccountCreateConnectContainer": {
+      "type": "object"
+    },
+    "TransactionAccountCreateDataContainer": {
+      "required": [
+        "transactionAccount"
+      ],
+      "type": "object",
+      "properties": {
+        "transactionAccount": {
+          "$ref": "#/$defs/TransactionAccount"
+        }
+      }
+    },
+    "TransactionAccountCreateMetadataContainer": {
+      "type": "object"
+    },
+    "TransactionAccountCreateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "client.integrated-pool-account",
+            "client.internal-ledger-only-account",
+            "client.sub-account"
+          ]
+        }
+      }
+    },
+    "TransactionAccountHierarchy": {
+      "type": "string",
+      "description": "hierarchy of transaction account",
+      "readOnly": true,
+      "enum": [
+        "main-account",
+        "sub-account",
+        "standalone-account"
+      ]
+    },
+    "TransactionAccountRoutingType": {
+      "type": "string",
+      "description": "type of transaction account",
+      "readOnly": true,
+      "enum": [
+        "external-dedicated",
+        "external-shared",
+        "internal-only"
+      ]
+    },
+    "TransactionAccountStatus": {
+      "type": "string",
+      "description": "status of this transaction account",
+      "readOnly": true,
+      "enum": [
+        "pending",
+        "active",
+        "inactive",
+        "suspended",
+        "closed",
+        "declined"
+      ]
+    },
+    "TransferScheme": {
+      "type": "string",
+      "description": "outbound transfer schemes of this transaction account",
+      "readOnly": true,
+      "enum": [
+        "swift",
+        "local",
+        "sepa",
+        "sepa-instant",
+        "sepa-target-2",
+        "sepa-target-2-pacs009",
+        "sepa-direct-debit",
+        "chaps",
+        "bacs",
+        "faster-payments",
+        "faster-payments-poo",
+        "npp",
+        "becs",
+        "rits",
+        "tips-dkk",
+        "intradag",
+        "t2-dkk",
+        "rix-inst",
+        "rix-rtgs",
+        "swish",
+        "nbo",
+        "viber",
+        "sic-inst",
+        "sic-ach",
+        "sic-rtgs",
+        "chats",
+        "ach",
+        "wire",
+        "eft"
+      ]
+    }
+  }
+}

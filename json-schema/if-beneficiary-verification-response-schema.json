@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-beneficiary-verification-response-schema.json",
+  "title": "BeneficiaryVerificationResponse",
+  "description": "Beneficiaries verification response",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-outgoing-transfer-api-openapi.yml#/components/schemas/BeneficiaryVerificationResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/BeneficiaryVerificationWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/BeneficiaryVerificationResponseDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/BeneficiaryVerificationConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/BeneficiaryCreateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AttributeMap": {
+      "type": "object",
+      "description": "outgoing transfer attributes"
+    },
+    "BeneficiaryCreateMetadataContainer": {
+      "type": "object"
+    },
+    "BeneficiaryVerificationBankAccount": {
+      "type": "object",
+      "properties": {
+        "iban": {
+          "type": "string",
+          "description": "Iban of beneficiary bank account"
+        },
+        "routingCodes": {
+          "$ref": "#/$defs/RoutingCodeMap"
+        },
+        "accountNumber": {
+          "type": "string",
+          "description": "Account number of beneficiary bank account"
+        },
+        "country": {
+          "type": "string",
+          "description": "Two-letter code for the country in which the beneficiary's bank account is held"
+        }
+      },
+      "description": "Bank Account Details"
+    },
+    "BeneficiaryVerificationConnectContainer": {
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Beneficiary verification connect type",
+          "enum": [
+            "explicit",
+            "implicit"
+          ]
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "Beneficiary verification connect service provider"
+        }
+      }
+    },
+    "BeneficiaryVerificationIdentity": {
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "description": "Beneficiary identity"
+    },
+    "BeneficiaryVerificationReasonCode": {
+      "type": "string",
+      "enum": [
+        "account-switched",
+        "account-type-not-supported",
+        "close-match",
+        "corporate-account-close-match",
+        "corporate-account-name-matched",
+        "incorrect-account-number",
+        "individual-account-close-match",
+        "individual-account-name-matched",
+        "invalid-secondary-identifier",
+        "not-applicable",
+        "not-matched",
+        "opted-out",
+        "sort-code-not-supported"
+      ]
+    },
+    "BeneficiaryVerificationResponseDataContainer": {
+      "type": "object",
+      "properties": {
+        "beneficiaryVerification": {
+          "$ref": "#/$defs/BeneficiaryVerificationResponseResource"
+        }
+      },
+      "description": "Beneficiary verification response data container"
+    },
+    "BeneficiaryVerificationResponseResource": {
+      "required": [
+        "beneficiaryBankAccount",
+        "beneficiaryIdentity",
+        "clientId",
+        "directory",
+        "id",
+        "serviceProvider"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of beneficiary verification",
+          "format": "uuid"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "ID of client in UUID format",
+          "format": "uuid"
+        },
+        "directory": {
+          "type": "string",
+          "description": "Directory of beneficiary verification"
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "Service provider"
+        },
+        "beneficiaryIdentity": {
+          "$ref": "#/$defs/BeneficiaryVerificationIdentity"
+        },
+        "beneficiaryBankAccount": {
+          "$ref": "#/$defs/BeneficiaryVerificationBankAccount"
+        },
+        "attributes": {
+          "$ref": "#/$defs/AttributeMap"
+        },
+        "result": {
+          "$ref": "#/$defs/BeneficiaryVerificationResult"
+        }
+      },
+      "description": "Beneficiary Verification Request Resource Object"
+    },
+    "BeneficiaryVerificationResult": {
+      "type": "object",
+      "properties": {
+        "matched": {
+          "type": "boolean"
+        },
+        "reason": {
+          "$ref": "#/$defs/BeneficiaryVerificationReasonCode"
+        },
+        "accountHolderName": {
+          "type": "string"
+        }
+      },
+      "description": "Beneficiary verification result"
+    },
+    "BeneficiaryVerificationWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "client.pay-uk.cop"
+          ]
+        }
+      }
+    },
+    "RoutingCodeMap": {
+      "type": "object"
+    }
+  }
+}

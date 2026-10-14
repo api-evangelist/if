@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-beneficiary-verification-request-schema.json",
+  "title": "BeneficiaryVerificationRequest",
+  "description": "Beneficiary verification request model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-outgoing-transfer-api-openapi.yml#/components/schemas/BeneficiaryVerificationRequest",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/BeneficiaryVerificationWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/BeneficiaryVerificationRequestDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/BeneficiaryVerificationConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/BeneficiaryCreateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AttributeMap": {
+      "type": "object",
+      "description": "outgoing transfer attributes"
+    },
+    "BeneficiaryCreateMetadataContainer": {
+      "type": "object"
+    },
+    "BeneficiaryVerificationBankAccount": {
+      "type": "object",
+      "properties": {
+        "iban": {
+          "type": "string",
+          "description": "Iban of beneficiary bank account"
+        },
+        "routingCodes": {
+          "$ref": "#/$defs/RoutingCodeMap"
+        },
+        "accountNumber": {
+          "type": "string",
+          "description": "Account number of beneficiary bank account"
+        },
+        "country": {
+          "type": "string",
+          "description": "Two-letter code for the country in which the beneficiary's bank account is held"
+        }
+      },
+      "description": "Bank Account Details"
+    },
+    "BeneficiaryVerificationConnectContainer": {
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Beneficiary verification connect type",
+          "enum": [
+            "explicit",
+            "implicit"
+          ]
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "Beneficiary verification connect service provider"
+        }
+      }
+    },
+    "BeneficiaryVerificationIdentity": {
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "description": "Beneficiary identity"
+    },
+    "BeneficiaryVerificationRequestDataContainer": {
+      "required": [
+        "beneficiary"
+      ],
+      "type": "object",
+      "properties": {
+        "beneficiary": {
+          "$ref": "#/$defs/BeneficiaryVerificationRequestResource"
+        }
+      }
+    },
+    "BeneficiaryVerificationRequestResource": {
+      "required": [
+        "bankAccount",
+        "clientId",
+        "identity"
+      ],
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "description": "ID of client in UUID format",
+          "format": "uuid"
+        },
+        "identity": {
+          "type": "object",
+          "description": "Beneficiary identity",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Corporate"
+            },
+            {
+              "$ref": "#/$defs/Individual"
+            }
+          ]
+        },
+        "bankAccount": {
+          "$ref": "#/$defs/BeneficiaryVerificationBankAccount"
+        },
+        "attributes": {
+          "$ref": "#/$defs/AttributeMap"
+        }
+      },
+      "description": "Beneficiary Details"
+    },
+    "BeneficiaryVerificationWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "client.pay-uk.cop"
+          ]
+        }
+      }
+    },
+    "Corporate": {
+      "required": [
+        "legalName",
+        "type"
+      ],
+      "type": "object",
+      "description": "Beneficiary Corporate Identity Details",
+      "allOf": [
+        {
+          "$ref": "#/$defs/BeneficiaryVerificationIdentity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/LegalEntityType"
+            },
+            "legalName": {
+              "type": "string",
+              "description": "Legal name of corporate beneficiary"
+            },
+            "identifications": {
+              "type": "array",
+              "description": "Identification numbers of legal entity",
+              "items": {
+                "$ref": "#/$defs/LegalEntityIdentification"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Individual": {
+      "required": [
+        "familyName",
+        "givenName",
+        "type"
+      ],
+      "type": "object",
+      "description": "Beneficiary Individual Identity Details",
+      "allOf": [
+        {
+          "$ref": "#/$defs/BeneficiaryVerificationIdentity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/LegalEntityType"
+            },
+            "givenName": {
+              "type": "string",
+              "description": "Given name of individual beneficiary"
+            },
+            "familyName": {
+              "type": "string",
+              "description": "Family name of individual beneficiary"
+            }
+          }
+        }
+      ]
+    },
+    "LegalEntityIdentification": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/LegalEntityIdentificationType"
+        },
+        "identificationNumber": {
+          "type": "string"
+        },
+        "issuingCountry": {
+          "maxLength": 2,
+          "minLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "type": "string"
+        },
+        "issueDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "LegalEntityIdentificationType": {
+      "type": "string",
+      "enum": [
+        "registration-number",
+        "passport",
+        "identity-card",
+        "driving-licence",
+        "foreign-identity-card",
+        "tax-number"
+      ]
+    },
+    "LegalEntityType": {
+      "type": "string",
+      "enum": [
+        "corporate",
+        "individual"
+      ]
+    },
+    "RoutingCodeMap": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-card-transaction-authentication-update-response-schema.json",
+  "title": "CardTransactionAuthenticationUpdateResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-card-transaction-api-openapi.yml#/components/schemas/CardTransactionAuthenticationUpdateResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/CardTransactionAuthenticationUpdateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/CardTransactionAuthenticationUpdateRequestDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/CardTransactionAuthenticationUpdateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CardTransactionAuthenticationUpdateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "CardTransactionAuthentication": {
+      "required": [
+        "cardId",
+        "clientId",
+        "id",
+        "merchant",
+        "serviceProvider",
+        "status",
+        "transaction",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of card transaction authentication",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "clientId": {
+          "type": "string",
+          "description": "ID of client",
+          "format": "uuid"
+        },
+        "cardId": {
+          "type": "string",
+          "description": "ID of card",
+          "format": "uuid"
+        },
+        "type": {
+          "$ref": "#/$defs/ThirdPartyCardAuthenticationEnrollmentType"
+        },
+        "status": {
+          "$ref": "#/$defs/CardTransactionAuthenticationStatus"
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "service provider of card"
+        },
+        "merchant": {
+          "$ref": "#/$defs/ThirdPartyCardTransactionAuthenticationMerchantInfo"
+        },
+        "transaction": {
+          "$ref": "#/$defs/ThirdPartyCardTransactionAuthenticationTransactionInfo"
+        },
+        "connection": {
+          "$ref": "#/$defs/CardTransactionAuthenticationConnection"
+        }
+      },
+      "description": "Card Transaction Authentication Resource Object",
+      "readOnly": true
+    },
+    "CardTransactionAuthenticationConnection": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "serviceProvider": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ServiceProviderConnectionState"
+        },
+        "status": {
+          "$ref": "#/$defs/ThirdPartyCardTransactionAuthenticationStatus"
+        },
+        "error": {
+          "$ref": "#/$defs/ConnectionErrorResource"
+        }
+      },
+      "description": "Card Transaction Authentication Connection Resource Object",
+      "readOnly": true
+    },
+    "CardTransactionAuthenticationStatus": {
+      "type": "string",
+      "description": "status of card transaction authentication",
+      "readOnly": true,
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "cancelled"
+      ]
+    },
+    "CardTransactionAuthenticationUpdateConnectContainer": {
+      "type": "object"
+    },
+    "CardTransactionAuthenticationUpdateMetadataContainer": {
+      "type": "object"
+    },
+    "CardTransactionAuthenticationUpdateRequestDataContainer": {
+      "required": [
+        "cardTransactionAuthentication"
+      ],
+      "type": "object",
+      "properties": {
+        "cardTransactionAuthentication": {
+          "$ref": "#/$defs/CardTransactionAuthentication"
+        }
+      }
+    },
+    "CardTransactionAuthenticationUpdateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "direct"
+          ]
+        }
+      }
+    },
+    "ConnectionErrorResource": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/ErrorCategory"
+        },
+        "origin": {
+          "$ref": "#/$defs/ErrorOrigin"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ErrorCategory": {
+      "type": "string",
+      "enum": [
+        "functional",
+        "technical"
+      ]
+    },
+    "ErrorOrigin": {
+      "type": "string",
+      "enum": [
+        "customer",
+        "platform",
+        "provider"
+      ]
+    },
+    "ServiceProviderConnectionState": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "creation-in-progress",
+        "update-in-progress",
+        "dependency-completed",
+        "completed-up-to-date",
+        "completed-outdated",
+        "dependency-failed",
+        "creation-failed"
+      ]
+    },
+    "ThirdPartyCardAuthenticationEnrollmentType": {
+      "type": "string",
+      "description": "type of authentication",
+      "enum": [
+        "all",
+        "sms",
+        "email",
+        "biometric",
+        "out-of-band",
+        "kba"
+      ]
+    },
+    "ThirdPartyCardTransactionAuthenticationMerchantInfo": {
+      "type": "object",
+      "properties": {
+        "acquirer": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "categoryCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "appRedirectUrl": {
+          "type": "string"
+        }
+      },
+      "description": "merchant info of card"
+    },
+    "ThirdPartyCardTransactionAuthenticationStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "success",
+        "failure",
+        "cancelled",
+        "error",
+        "step-up",
+        "timeout"
+      ]
+    },
+    "ThirdPartyCardTransactionAuthenticationTransactionInfo": {
+      "type": "object",
+      "properties": {
+        "creationDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "description": "transaction info of card"
+    }
+  }
+}

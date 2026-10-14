@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-provisioned-account-credit-create-request-schema.json",
+  "title": "ProvisionedAccountCreditCreateRequest",
+  "description": "Provisioned Account Credit Create Request Model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-incoming-transfer-api-openapi.yml#/components/schemas/ProvisionedAccountCreditCreateRequest",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/ProvisionedAccountCreditListWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/ProvisionedAccountCreditCreateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/ProvisionedAccountCreditCreateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/ProvisionedAccountCreditCreateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+        "bankName": {
+          "type": "string"
+        },
+        "accountHolderName": {
+          "type": "string",
+          "description": "name of the legal entity which account belongs to"
+        },
+        "alias": {
+          "maxLength": 30,
+          "type": "string",
+          "description": "alias of account, refer to Accounts section in Guides for details"
+        },
+        "country": {
+          "maxLength": 2,
+          "minLength": 2,
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code"
+        },
+        "currency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code"
+        },
+        "routingCodes": {
+          "$ref": "#/$defs/RoutingCodeMap"
+        },
+        "accountNumber": {
+          "maxLength": 20,
+          "minLength": 8,
+          "pattern": "^[0-9]{8,20}$",
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "account number of account"
+        },
+        "iban": {
+          "maxLength": 31,
+          "minLength": 15,
+          "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "iban of account"
+        },
+        "ledgerNumber": {
+          "maxLength": 8,
+          "minLength": 8,
+          "pattern": "^[0-9]{8,8}$",
+          "type": "string",
+          "description": "unique ledger number of account generated internally"
+        }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+    },
+    "ProvisionedAccountCreditCreateConnectContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit Create Connect Container"
+    },
+    "ProvisionedAccountCreditCreateDataContainer": {
+      "required": [
+        "provisionedAccountCredit"
+      ],
+      "type": "object",
+      "properties": {
+        "provisionedAccountCredit": {
+          "$ref": "#/$defs/ProvisionedAccountCreditResource"
+        }
+      },
+      "description": "Provisioned Account Credit Create Data Container"
+    },
+    "ProvisionedAccountCreditCreateMetadataContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit Create Metadata Container"
+    },
+    "ProvisionedAccountCreditListWorkflowContainer": {
+      "type": "object",
+      "description": "Provisioned Account Credit List Workflow Container"
+    },
+    "ProvisionedAccountCreditResource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of provisioned account credit",
+          "format": "uuid"
+        },
+        "status": {
+          "$ref": "#/$defs/ProvisionedAccountCreditStatus"
+        },
+        "amount": {
+          "type": "number",
+          "description": "amount",
+          "format": "double"
+        },
+        "currency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code of provisioned account credit"
+        },
+        "scope": {
+          "$ref": "#/$defs/TransferScope"
+        },
+        "scheme": {
+          "$ref": "#/$defs/TransferScheme"
+        },
+        "senderAccount": {
+          "$ref": "#/$defs/IncomingMoneyTransferBankAccount"
+        },
+        "senderName": {
+          "type": "string",
+          "description": "name of sender"
+        },
+        "senderAddress": {
+          "type": "string",
+          "description": "address of sender"
+        },
+        "receiverAccount": {
+          "$ref": "#/$defs/IncomingMoneyTransferBankAccount"
+        },
+        "senderToReceiverInformation": {
+          "type": "string",
+          "description": "sender to receiver information"
+        },
+        "accountId": {
+          "type": "string",
+          "description": "id of account which is credited by this provisioned account credit",
+          "format": "uuid"
+        },
+        "accountType": {
+          "$ref": "#/$defs/ProvisionedAccountType"
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "service provider that provisioned account credit received from"
+        },
+        "serviceProviderId": {
+          "type": "string",
+          "description": "id assigned by service provider"
+        }
+      },
+      "description": "Provisioned Account Credit Model"
+    },
+    "ProvisionedAccountCreditStatus": {
+      "type": "string",
+      "description": "status of provisioned account credit",
+      "enum": [
+        "new",
+        "unmatched",
+        "matched",
+        "completed",
+        "failed",
+        "pending"
+      ]
+    },
+    "ProvisionedAccountType": {
+      "type": "string",
+      "description": "type of account which is credited by this provisioned account credit",
+      "enum": [
+        "client-account",
+        "transaction-account"
+      ]
+    },
+    "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+    },
+    "TransferScheme": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+        "swift",
+        "local",
+        "sepa",
+        "sepa-instant",
+        "sepa-target-2",
+        "sepa-target-2-pacs009",
+        "chaps",
+        "bacs",
+        "faster-payments",
+        "faster-payments-poo",
+        "ach",
+        "wire",
+        "eft"
+      ]
+    },
+    "TransferScope": {
+      "type": "string",
+      "description": "transfer scheme depending on the scope of the transfer",
+      "enum": [
+        "internal",
+        "external",
+        "internal",
+        "external"
+      ]
+    }
+  }
+}

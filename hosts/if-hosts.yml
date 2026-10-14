@@ -1,0 +1,72 @@
+generated: '2026-10-14'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 5
+  own: 3
+  other_domain: 1
+  platform: 1
+  roles:
+  - api
+  - portal
+  - source
+  - status
+  - website
+hosts:
+- host: api.integrated.finance
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: integrated.finance
+  role: api
+  relation: own
+- host: developer.integrated.finance
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - DeveloperPortal
+  - Documentation
+  - APIReference
+  - GettingStarted
+  - Deprecation
+  serves:
+  - docs
+  registrable_domain: integrated.finance
+  role: portal
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: integrated.finance
+  found_by:
+  - pointer
+  types:
+  - Website
+  - Support
+  - Blog
+  - PrivacyPolicy
+  - TermsOfService
+  - Compliance
+  serves: []
+  registrable_domain: integrated.finance
+  role: website
+  relation: own
+- host: integratedfinance.statuspage.io
+  found_by:
+  - pointer
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: statuspage.io
+  role: status
+  relation: other-domain

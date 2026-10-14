@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-incoming-transfer-update-response-schema.json",
+  "title": "IncomingTransferUpdateResponse",
+  "description": "response model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-incoming-transfer-api-openapi.yml#/components/schemas/IncomingTransferUpdateResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/IncomingTransferUpdateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/IncomingTransferUpdateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/IncomingTransferUpdateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/IncomingTransferMetadataConnectContainer"
+    }
+  },
+  "$defs": {
+    "IncomingMoneyTransferBankAccount": {
+      "type": "object",
+      "properties": {
+        "bankName": {
+          "type": "string"
+        },
+        "accountHolderName": {
+          "type": "string",
+          "description": "name of the legal entity which account belongs to"
+        },
+        "alias": {
+          "maxLength": 30,
+          "type": "string",
+          "description": "alias of account, refer to Accounts section in Guides for details"
+        },
+        "country": {
+          "maxLength": 2,
+          "minLength": 2,
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code"
+        },
+        "currency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code"
+        },
+        "routingCodes": {
+          "$ref": "#/$defs/RoutingCodeMap"
+        },
+        "accountNumber": {
+          "maxLength": 20,
+          "minLength": 8,
+          "pattern": "^[0-9]{8,20}$",
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "account number of account"
+        },
+        "iban": {
+          "maxLength": 31,
+          "minLength": 15,
+          "pattern": "^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\\d{5}[0-9A-Z]{13}$",
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "iban of account"
+        },
+        "ledgerNumber": {
+          "maxLength": 8,
+          "minLength": 8,
+          "pattern": "^[0-9]{8,8}$",
+          "type": "string",
+          "description": "unique ledger number of account generated internally"
+        }
+      },
+      "description": "bank account model of incoming transfers",
+      "readOnly": true
+    },
+    "IncomingTransferMetadataConnectContainer": {
+      "type": "object",
+      "description": "metadata container"
+    },
+    "IncomingTransferResource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id of incoming transfer",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "clientId": {
+          "type": "string",
+          "description": "id of client",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "accountId": {
+          "type": "string",
+          "description": "id of account which is credited by this incoming transfer",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "transactionNumber": {
+          "maxLength": 15,
+          "minLength": 15,
+          "type": "string",
+          "description": "unique transaction number",
+          "readOnly": true
+        },
+        "status": {
+          "$ref": "#/$defs/IncomingTransferStatus"
+        },
+        "currency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code of incoming transfer",
+          "readOnly": true
+        },
+        "amount": {
+          "type": "number",
+          "description": "amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "feeAmount": {
+          "type": "number",
+          "description": "fee amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "feeCurrency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code of incoming transfer fee",
+          "readOnly": true
+        },
+        "outgoingTransferId": {
+          "type": "string",
+          "description": "id of outgoing transfer if this is an internal transfer",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "serviceProviderId": {
+          "type": "string",
+          "description": "id assigned by service provider",
+          "readOnly": true
+        },
+        "serviceProviderReference": {
+          "type": "string",
+          "description": "reference assigned by service provider",
+          "readOnly": true
+        },
+        "senderInformation": {
+          "type": "string",
+          "description": "free text filled by sender",
+          "readOnly": true
+        },
+        "senderName": {
+          "type": "string",
+          "description": "name of sender",
+          "readOnly": true
+        },
+        "transferDate": {
+          "type": "string",
+          "description": "the date when transfer amount is reflected to account balance",
+          "format": "date",
+          "readOnly": true
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "total amount including fee",
+          "readOnly": true
+        },
+        "provisionedAccountCreditId": {
+          "type": "string",
+          "description": "Provisioned account credit id of the transfer",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "service provider that incoming transfer received from",
+          "readOnly": true
+        },
+        "receiverAccount": {
+          "$ref": "#/$defs/IncomingMoneyTransferBankAccount"
+        },
+        "senderAccount": {
+          "$ref": "#/$defs/IncomingMoneyTransferBankAccount"
+        },
+        "scope": {
+          "type": "string",
+          "description": "transfer scope",
+          "readOnly": true,
+          "enum": [
+            "internal",
+            "external"
+          ]
+        },
+        "scheme": {
+          "type": "string",
+          "description": "transfer scheme depending on the scope of the transfer",
+          "readOnly": true,
+          "enum": [
+            "swift",
+            "local",
+            "sepa",
+            "sepa-instant",
+            "sepa-target-2",
+            "sepa-target-2-pacs009",
+            "chaps",
+            "bacs",
+            "faster-payments",
+            "faster-payments-poo",
+            "ach",
+            "wire",
+            "eft"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "relatedTransaction": {
+          "$ref": "#/$defs/RelatedTransaction"
+        },
+        "returnContext": {
+          "$ref": "#/$defs/IncomingTransferReturnContextResource"
+        }
+      },
+      "description": "incoming transfer model"
+    },
+    "IncomingTransferReturnContextResource": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "return is enabled or not",
+          "readOnly": true
+        },
+        "cutOffDateTime": {
+          "type": "string",
+          "description": "cut-off time if return is enabled",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "status": {
+          "$ref": "#/$defs/IncomingTransferReturnStatus"
+        },
+        "reason": {
+          "$ref": "#/$defs/IncomingTransferReturnReason"
+        }
+      },
+      "description": "incoming transfer return model"
+    },
+    "IncomingTransferReturnReason": {
+      "type": "string",
+      "description": "reason of incoming transfer return",
+      "enum": [
+        "account-closed",
+        "account-inactivated",
+        "account-not-found",
+        "user-requested",
+        "user-requested-as-duplicate",
+        "user-requested-as-wrong-amount",
+        "sender-recalled",
+        "rejected-by-compliance"
+      ]
+    },
+    "IncomingTransferReturnStatus": {
+      "type": "string",
+      "description": "status of incoming transfer return",
+      "enum": [
+        "processing",
+        "released",
+        "completed",
+        "failed"
+      ]
+    },
+    "IncomingTransferStatus": {
+      "type": "string",
+      "description": "status of incoming transfer",
+      "readOnly": true,
+      "enum": [
+        "pending",
+        "on-hold",
+        "completed",
+        "failed"
+      ]
+    },
+    "IncomingTransferUpdateConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+    },
+    "IncomingTransferUpdateDataContainer": {
+      "required": [
+        "incomingTransfer"
+      ],
+      "type": "object",
+      "properties": {
+        "incomingTransfer": {
+          "$ref": "#/$defs/IncomingTransferResource"
+        }
+      }
+    },
+    "IncomingTransferUpdateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "client.direct",
+            "organization.direct"
+          ]
+        }
+      },
+      "description": "workflow container"
+    },
+    "Owner": {
+      "type": "string",
+      "description": "owner of incoming transfer",
+      "readOnly": true,
+      "enum": [
+        "organization",
+        "client"
+      ]
+    },
+    "RelatedTransaction": {
+      "type": "object",
+      "properties": {
+        "nature": {
+          "$ref": "#/$defs/TransactionNature"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "description": "related transaction of this transfer",
+      "readOnly": true
+    },
+    "RoutingCodeMap": {
+      "type": "object",
+      "description": "routing codes of account as map, refer to Accounts section in Guides for details"
+    },
+    "TransactionNature": {
+      "type": "string",
+      "enum": [
+        "actual",
+        "virtual"
+      ]
+    }
+  }
+}

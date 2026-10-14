@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-generic-transaction-list-response-schema.json",
+  "title": "GenericTransactionListResponse",
+  "description": "response model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-generic-transaction-api-openapi.yml#/components/schemas/GenericTransactionListResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/GenericTransactionListWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/GenericTransactionListDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/GenericTransactionListConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/GenericTransactionListMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AttributeMap": {
+      "type": "object",
+      "description": "Generic Transaction Attributes"
+    },
+    "GenericTransactionListConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+    },
+    "GenericTransactionListDataContainer": {
+      "type": "object",
+      "properties": {
+        "genericTransaction": {
+          "$ref": "#/$defs/GenericTransactionResourceQueryInput"
+        },
+        "genericTransactions": {
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/$defs/GenericTransactionResource"
+          }
+        }
+      },
+      "description": "data container"
+    },
+    "GenericTransactionListMetadataContainer": {
+      "required": [
+        "page"
+      ],
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/$defs/PageMetadata"
+        }
+      },
+      "description": "metadata container"
+    },
+    "GenericTransactionListWorkflowContainer": {
+      "type": "object",
+      "description": "workflow container"
+    },
+    "GenericTransactionResource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of generic transaction",
+          "format": "uuid"
+        },
+        "type": {
+          "type": "string",
+          "description": "type"
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "id of client",
+          "format": "uuid"
+        },
+        "accountId": {
+          "type": "string",
+          "description": "id of account",
+          "format": "uuid"
+        },
+        "transactionNumber": {
+          "type": "string",
+          "description": "transaction number"
+        },
+        "amount": {
+          "type": "number",
+          "description": "transaction amount"
+        },
+        "currency": {
+          "type": "string",
+          "description": "transaction currency"
+        },
+        "status": {
+          "$ref": "#/$defs/GenericTransactionStatus"
+        },
+        "attributes": {
+          "$ref": "#/$defs/AttributeMap"
+        },
+        "narrative": {
+          "type": "string",
+          "description": "Generic Transaction Narrative"
+        },
+        "creationDateTime": {
+          "type": "string",
+          "description": "Generic Transaction Creation Date Time",
+          "format": "date-time"
+        }
+      },
+      "description": "generic transaction model",
+      "readOnly": true
+    },
+    "GenericTransactionResourceQueryInput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "clientId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "accountId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "transactionNumber": {
+          "type": "string"
+        },
+        "amountFrom": {
+          "type": "number"
+        },
+        "amountTo": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "creationDateTimeFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "creationDateTimeTo": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        }
+      }
+    },
+    "GenericTransactionStatus": {
+      "type": "string",
+      "description": "Generic Transaction Status",
+      "enum": [
+        "completed"
+      ]
+    },
+    "Owner": {
+      "type": "string",
+      "description": "owner of generic transaction",
+      "enum": [
+        "organization",
+        "client"
+      ]
+    },
+    "PageMetadata": {
+      "required": [
+        "number",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+        "size": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of elements in this page",
+          "format": "int32"
+        },
+        "number": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "index of page starting from 0",
+          "format": "int32"
+        },
+        "totalElements": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "total number of elements in all of the pages",
+          "format": "int64",
+          "readOnly": true
+        },
+        "totalPages": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of total pages",
+          "format": "int32",
+          "readOnly": true
+        }
+      }
+    }
+  }
+}

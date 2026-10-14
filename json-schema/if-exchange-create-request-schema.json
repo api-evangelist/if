@@ -1,0 +1,383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-exchange-create-request-schema.json",
+  "title": "ExchangeCreateRequest",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-exchange-api-openapi.yml#/components/schemas/ExchangeCreateRequest",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/ExchangeCreateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/ExchangeCreateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/QuoteCreateConnect"
+    },
+    "metadata": {
+      "$ref": "#/$defs/ExchangeCreateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "ConnectMethod": {
+      "type": "string",
+      "enum": [
+        "built-in",
+        "plug-in"
+      ]
+    },
+    "ConnectionErrorResource": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/ErrorCategory"
+        },
+        "origin": {
+          "$ref": "#/$defs/ErrorOrigin"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ErrorCategory": {
+      "type": "string",
+      "enum": [
+        "functional",
+        "technical"
+      ]
+    },
+    "ErrorOrigin": {
+      "type": "string",
+      "enum": [
+        "customer",
+        "platform",
+        "provider"
+      ]
+    },
+    "ExchangeCreateDataContainer": {
+      "required": [
+        "exchange"
+      ],
+      "type": "object",
+      "properties": {
+        "exchange": {
+          "$ref": "#/$defs/ExchangeResource"
+        }
+      }
+    },
+    "ExchangeCreateMetadataContainer": {
+      "type": "object"
+    },
+    "ExchangeCreateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "client.direct.spot"
+          ]
+        }
+      }
+    },
+    "ExchangeFixedSideType": {
+      "type": "string",
+      "description": "which side is fixed as amount",
+      "enum": [
+        "buy",
+        "sell"
+      ]
+    },
+    "ExchangeResource": {
+      "required": [
+        "buyAccountId",
+        "buyAmount",
+        "buyCurrency",
+        "clientId",
+        "creditAmount",
+        "cutOffDateTime",
+        "debitAmount",
+        "exchangeDate",
+        "fixedSide",
+        "originalExchangeDate",
+        "quoteId",
+        "rate",
+        "rollCount",
+        "sellAccountId",
+        "sellAmount",
+        "sellCurrency",
+        "serviceProviderBuyAmount",
+        "serviceProviderRate",
+        "serviceProviderSellAmount",
+        "settlementDate",
+        "status",
+        "transactionNumber"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of exchange",
+          "format": "uuid"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "ID of client",
+          "format": "uuid"
+        },
+        "quoteId": {
+          "type": "string",
+          "description": "ID of quote",
+          "format": "uuid"
+        },
+        "transactionNumber": {
+          "type": "string",
+          "description": "Transaction number of exchange"
+        },
+        "fixedSide": {
+          "$ref": "#/$defs/ExchangeFixedSideType"
+        },
+        "rate": {
+          "type": "number",
+          "description": "Rate"
+        },
+        "serviceProviderRate": {
+          "type": "number",
+          "description": "Service provider rate"
+        },
+        "buyAccountId": {
+          "type": "string",
+          "description": "ID of buy account",
+          "format": "uuid"
+        },
+        "buyCurrency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code"
+        },
+        "buyAmount": {
+          "type": "number",
+          "description": "Buy amount of exchange"
+        },
+        "serviceProviderBuyAmount": {
+          "type": "number",
+          "description": "Buy amount of service provider"
+        },
+        "sellAccountId": {
+          "type": "string",
+          "description": "ID of sell account",
+          "format": "uuid"
+        },
+        "sellCurrency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code"
+        },
+        "sellAmount": {
+          "type": "number",
+          "description": "Sell amount of exchange"
+        },
+        "serviceProviderSellAmount": {
+          "type": "number",
+          "description": "Sell amount of service provider"
+        },
+        "feeAmount": {
+          "type": "number",
+          "description": "Fee amount"
+        },
+        "feeCurrency": {
+          "type": "string",
+          "description": "Fee currency"
+        },
+        "debitAmount": {
+          "type": "number",
+          "description": "amount to be debited from the account, equals to sell amount if fee amount is 0"
+        },
+        "creditAmount": {
+          "type": "number",
+          "description": "amount to be credited to the account, equals to buy amount if fee amount is 0"
+        },
+        "rollCount": {
+          "type": "integer",
+          "description": "Roll count of exchange",
+          "format": "int32"
+        },
+        "originalExchangeDate": {
+          "type": "string",
+          "description": "Original exchange date",
+          "format": "date"
+        },
+        "exchangeDate": {
+          "type": "string",
+          "description": "Calculated exchange date",
+          "format": "date"
+        },
+        "cutOffDateTime": {
+          "type": "string",
+          "description": "Exchange cut-off date time",
+          "format": "date-time"
+        },
+        "settlementDate": {
+          "type": "string",
+          "description": "Calculated exchange settlement date",
+          "format": "date"
+        },
+        "status": {
+          "$ref": "#/$defs/ExchangeTransactionStatus"
+        },
+        "cancellationFee": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Cancellation fee"
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "relatedTransaction": {
+          "$ref": "#/$defs/RelatedTransaction"
+        },
+        "connection": {
+          "$ref": "#/$defs/ExchangeTransactionConnectionResource"
+        }
+      },
+      "description": "exchange transaction model",
+      "readOnly": true
+    },
+    "ExchangeTransactionConnectionResource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "serviceProvider": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ServiceProviderConnectionState"
+        },
+        "status": {
+          "$ref": "#/$defs/ThirdPartyExchangeTransactionStatus"
+        },
+        "method": {
+          "$ref": "#/$defs/ConnectMethod"
+        },
+        "error": {
+          "$ref": "#/$defs/ConnectionErrorResource"
+        }
+      },
+      "description": "Exchange Transaction Connection Resource Object",
+      "readOnly": true
+    },
+    "ExchangeTransactionStatus": {
+      "type": "string",
+      "description": "Status of Exchange",
+      "enum": [
+        "pending",
+        "completed",
+        "cancelled",
+        "failed"
+      ]
+    },
+    "Owner": {
+      "type": "string",
+      "enum": [
+        "organization",
+        "client"
+      ]
+    },
+    "QuoteCreateConnect": {
+      "required": [
+        "serviceProvider",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "service provider selection type",
+          "enum": [
+            "explicit"
+          ]
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "account is connected to this service provider ",
+          "enum": [
+            "railsbank"
+          ]
+        }
+      }
+    },
+    "RelatedTransaction": {
+      "type": "object",
+      "properties": {
+        "nature": {
+          "$ref": "#/$defs/TransactionNature"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "ServiceProviderConnectionState": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "creation-in-progress",
+        "update-in-progress",
+        "dependency-completed",
+        "completed-up-to-date",
+        "completed-outdated",
+        "dependency-failed",
+        "creation-failed"
+      ]
+    },
+    "ThirdPartyExchangeTransactionStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "processing",
+        "completed",
+        "cancelled",
+        "failed"
+      ]
+    },
+    "TransactionNature": {
+      "type": "string",
+      "enum": [
+        "actual",
+        "virtual"
+      ]
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-card-account-list-response-schema.json",
+  "title": "CardAccountListResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-card-api-openapi.yml#/components/schemas/CardAccountListResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/CardAccountListWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/CardAccountListDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/CardAccountListConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CardAccountListMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AccountStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "active",
+        "inactive",
+        "suspended",
+        "closed",
+        "declined"
+      ]
+    },
+    "CardAccountListConnectContainer": {
+      "type": "object"
+    },
+    "CardAccountListDataContainer": {
+      "type": "object",
+      "properties": {
+        "linkedAccount": {
+          "$ref": "#/$defs/CardAccountResourceQueryInput"
+        },
+        "linkedAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LinkedAccount"
+          }
+        }
+      }
+    },
+    "CardAccountListMetadataContainer": {
+      "required": [
+        "page"
+      ],
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/$defs/PageMetadata"
+        }
+      }
+    },
+    "CardAccountListWorkflowContainer": {
+      "type": "object"
+    },
+    "CardAccountResourceQueryInput": {
+      "type": "object",
+      "properties": {
+        "accountStatus": {
+          "$ref": "#/$defs/AccountStatus"
+        }
+      }
+    },
+    "LinkedAccount": {
+      "required": [
+        "accountId"
+      ],
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "description": "ID of the account linked to the card",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "accountStatus": {
+          "$ref": "#/$defs/AccountStatus"
+        }
+      },
+      "description": "Linked Account Resource Object"
+    },
+    "PageMetadata": {
+      "required": [
+        "number",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+        "size": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of elements in this page",
+          "format": "int32"
+        },
+        "number": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "index of page starting from 0",
+          "format": "int32"
+        },
+        "totalElements": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "total number of elements in all of the pages",
+          "format": "int64",
+          "readOnly": true
+        },
+        "totalPages": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of total pages",
+          "format": "int32",
+          "readOnly": true
+        }
+      }
+    }
+  }
+}

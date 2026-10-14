@@ -1,0 +1,446 @@
+openapi: 3.0.1
+info:
+  title: Generic Transaction API
+  description: Operations for Generic Transactions
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+paths:
+  /generic-transactions:
+    get:
+      tags:
+      - Generic Transactions
+      summary: List Generic Transactions
+      operationId: generic-transactions.list
+      responses:
+        '200':
+          description: Generic transaction list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericTransactionListResponse'
+    post:
+      tags:
+      - Generic Transactions
+      summary: Create a Generic Transaction
+      operationId: generic-transactions.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/GenericTransactionCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Generic transaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericTransactionCreateResponse'
+  /generic-transactions/{id}:
+    get:
+      tags:
+      - Generic Transactions
+      summary: Get a Generic Transaction
+      operationId: generic-transactions.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of generic transaction in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Generic transaction resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericTransactionGetResponse'
+    patch:
+      tags:
+      - Generic Transactions
+      summary: Update a Generic Transaction
+      operationId: generic-transactions.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of generic transaction in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/GenericTransactionUpdateRequest'
+        required: true
+      responses:
+        '202':
+          description: Generic transaction updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericTransactionUpdateResponse'
+components:
+  schemas:
+    AttributeMap:
+      type: object
+      description: Generic Transaction Attributes
+    GenericTransactionResource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of generic transaction
+          format: uuid
+        type:
+          type: string
+          description: type
+        owner:
+          $ref: '#/components/schemas/Owner'
+        clientId:
+          type: string
+          description: id of client
+          format: uuid
+        accountId:
+          type: string
+          description: id of account
+          format: uuid
+        transactionNumber:
+          type: string
+          description: transaction number
+        amount:
+          type: number
+          description: transaction amount
+        currency:
+          type: string
+          description: transaction currency
+        status:
+          $ref: '#/components/schemas/GenericTransactionStatus'
+        attributes:
+          $ref: '#/components/schemas/AttributeMap'
+        narrative:
+          type: string
+          description: Generic Transaction Narrative
+        creationDateTime:
+          type: string
+          description: Generic Transaction Creation Date Time
+          format: date-time
+      description: generic transaction model
+      readOnly: true
+    GenericTransactionStatus:
+      type: string
+      description: Generic Transaction Status
+      enum:
+      - completed
+    Owner:
+      type: string
+      description: owner of generic transaction
+      enum:
+      - organization
+      - client
+    GenericTransactionListConnectContainer:
+      type: object
+      description: connect container
+    GenericTransactionListDataContainer:
+      type: object
+      properties:
+        genericTransaction:
+          $ref: '#/components/schemas/GenericTransactionResourceQueryInput'
+        genericTransactions:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/GenericTransactionResource'
+      description: data container
+    GenericTransactionListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+      description: metadata container
+    GenericTransactionListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/GenericTransactionListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/GenericTransactionListDataContainer'
+        connect:
+          $ref: '#/components/schemas/GenericTransactionListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/GenericTransactionListMetadataContainer'
+      description: response model
+    GenericTransactionListWorkflowContainer:
+      type: object
+      description: workflow container
+    GenericTransactionResourceQueryInput:
+      type: object
+      properties:
+        type:
+          type: string
+        clientId:
+          type: string
+          format: uuid
+        accountId:
+          type: string
+          format: uuid
+        transactionNumber:
+          type: string
+        amountFrom:
+          type: number
+        amountTo:
+          type: number
+        currency:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        creationDateTimeFrom:
+          type: string
+          format: date-time
+        creationDateTimeTo:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/Owner'
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    GenericTransactionCreateConnectContainer:
+      type: object
+      description: connect container
+    GenericTransactionCreateDataContainer:
+      required:
+      - genericTransaction
+      type: object
+      properties:
+        genericTransaction:
+          $ref: '#/components/schemas/GenericTransactionResource'
+        narrative:
+          $ref: '#/components/schemas/NarrativeWorkflowDataInput'
+      description: generic transaction data container
+    GenericTransactionCreateMetadataContainer:
+      type: object
+      description: metadata container
+    GenericTransactionCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/GenericTransactionCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/GenericTransactionCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/GenericTransactionCreateMetadataContainer'
+      description: response model
+    InformationSourcingMethod:
+      type: string
+      description: configures where the information for narrative will be sourced
+      enum:
+      - explicit
+      - implicit
+    NarrativeWorkflowConfiguration:
+      type: object
+      properties:
+        sourcingMethod:
+          $ref: '#/components/schemas/InformationSourcingMethod'
+        enabled:
+          type: boolean
+          description: determines whether narrative will be applied or not
+      description: narrative workflow context
+    NarrativeWorkflowDataInput:
+      type: object
+      properties:
+        template:
+          type: string
+          description: template of narrative
+      description: narrative workflow data input
+    OutgoingTransferCreateWorkflowContainer:
+      required:
+      - code
+      - narrative
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+          - client.direct
+          - organization.direct
+        narrative:
+          $ref: '#/components/schemas/NarrativeWorkflowConfiguration'
+      description: workflow container
+    GenericTransactionCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/GenericTransactionCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/GenericTransactionCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/GenericTransactionCreateMetadataContainer'
+      description: request model
+    GenericTransactionGetConnectContainer:
+      type: object
+      description: connect container
+    GenericTransactionGetDataContainer:
+      type: object
+      properties:
+        genericTransaction:
+          $ref: '#/components/schemas/GenericTransactionResource'
+      description: data container
+    GenericTransactionGetMetadataContainer:
+      type: object
+      description: metadata container
+    GenericTransactionGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/GenericTransactionGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/GenericTransactionGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/GenericTransactionGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/GenericTransactionGetMetadataContainer'
+      description: response model
+    GenericTransactionGetWorkflowContainer:
+      type: object
+      description: workflow container
+    GenericTransactionMetadataConnectContainer:
+      type: object
+      description: metadata container
+    GenericTransactionUpdateConnectContainer:
+      type: object
+      description: connect container
+    GenericTransactionUpdateDataContainer:
+      required:
+      - genericTransaction
+      type: object
+      properties:
+        genericTransaction:
+          $ref: '#/components/schemas/GenericTransactionResource'
+      description: data container
+    GenericTransactionUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/GenericTransactionUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/GenericTransactionUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/GenericTransactionUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/GenericTransactionMetadataConnectContainer'
+      description: response model
+    GenericTransactionUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+      description: workflow container
+    GenericTransactionUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/GenericTransactionUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/GenericTransactionUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/GenericTransactionUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/GenericTransactionMetadataConnectContainer'
+      description: request model
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/generic-transactionscreate.md
+  - https://developer.integrated.finance/reference/generic-transactionsget.md
+  - https://developer.integrated.finance/reference/generic-transactionslist.md
+  - https://developer.integrated.finance/reference/generic-transactionsupdate.md
+  merge:
+    pages: 4
+    deduped: 12
+    conflicts_kept_first: 0

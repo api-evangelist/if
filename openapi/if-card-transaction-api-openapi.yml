@@ -1,0 +1,1015 @@
+openapi: 3.0.1
+info:
+  title: Card Transaction API
+  description: Operations for Card Transactions
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+paths:
+  /card-transaction-authentications:
+    get:
+      tags:
+      - Card Transaction Authentications
+      summary: List Card Transaction Authentications
+      operationId: card-transaction-authentications.list
+      responses:
+        '200':
+          description: Card transaction authentication list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardTransactionAuthenticationListResponse'
+  /card-transaction-authentications/{id}:
+    get:
+      tags:
+      - Card Transaction Authentications
+      summary: Get a Card Transaction Authentication
+      operationId: card-transaction-authentications.get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Card transaction authentication returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardTransactionAuthenticationGetResponse'
+    patch:
+      tags:
+      - Card Transaction Authentications
+      summary: Update a Card Transaction Authentication
+      operationId: card-transaction-authentications.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of card in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CardTransactionAuthenticationUpdateRequest'
+      responses:
+        '202':
+          description: Card Transaction Authentication updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardTransactionAuthenticationUpdateResponse'
+  /card-transactions:
+    get:
+      tags:
+      - Card Transactions
+      summary: List Card Transactions
+      operationId: card-transactions.list
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.alias,desc
+      - name: data.cardTransaction.cardId
+        in: query
+        schema:
+          type: string
+      - name: data.cardTransaction.clientId
+        in: query
+        schema:
+          type: string
+      - name: data.cardTransaction.accountId
+        in: query
+        schema:
+          type: string
+      - name: data.cardTransaction.type
+        in: query
+        schema:
+          type: string
+          enum:
+          - payment
+          - refund
+          - chargeback
+          - atm-withdrawal
+          - money-transfer
+      - name: data.cardTransaction.status
+        in: query
+        schema:
+          type: string
+          enum:
+          - authorised
+          - declined
+          - settled
+          - reversed
+      - name: data.cardTransaction.transactionNumber
+        in: query
+        schema:
+          type: string
+      - name: data.cardTransaction.transactionCurrency
+        in: query
+        schema:
+          type: string
+      - name: data.cardTransaction.serviceProvider
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Card transaction list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardTransactionListResponse'
+  /card-transactions/{id}:
+    get:
+      tags:
+      - Card Transactions
+      summary: Get a Card Transaction
+      operationId: card-transactions.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of the card transaction in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Card transaction resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardTransactionGetResponse'
+components:
+  schemas:
+    CardTransactionAuthentication:
+      required:
+      - cardId
+      - clientId
+      - id
+      - merchant
+      - serviceProvider
+      - status
+      - transaction
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of card transaction authentication
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          description: ID of client
+          format: uuid
+        cardId:
+          type: string
+          description: ID of card
+          format: uuid
+        type:
+          $ref: '#/components/schemas/ThirdPartyCardAuthenticationEnrollmentType'
+        status:
+          $ref: '#/components/schemas/CardTransactionAuthenticationStatus'
+        serviceProvider:
+          type: string
+          description: service provider of card
+        merchant:
+          $ref: '#/components/schemas/ThirdPartyCardTransactionAuthenticationMerchantInfo'
+        transaction:
+          $ref: '#/components/schemas/ThirdPartyCardTransactionAuthenticationTransactionInfo'
+        connection:
+          $ref: '#/components/schemas/CardTransactionAuthenticationConnection'
+      description: Card Transaction Authentication Resource Object
+      readOnly: true
+    CardTransactionAuthenticationConnection:
+      type: object
+      properties:
+        id:
+          type: string
+        serviceProvider:
+          type: string
+        reference:
+          type: string
+        state:
+          $ref: '#/components/schemas/ServiceProviderConnectionState'
+        status:
+          $ref: '#/components/schemas/ThirdPartyCardTransactionAuthenticationStatus'
+        error:
+          $ref: '#/components/schemas/ConnectionErrorResource'
+      description: Card Transaction Authentication Connection Resource Object
+      readOnly: true
+    CardTransactionAuthenticationListConnectContainer:
+      type: object
+    CardTransactionAuthenticationListDataContainer:
+      type: object
+      properties:
+        cardTransactionAuthentication:
+          $ref: '#/components/schemas/CardTransactionAuthenticationResourceQueryInput'
+        cardTransactionAuthentications:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardTransactionAuthentication'
+    CardTransactionAuthenticationListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    CardTransactionAuthenticationListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardTransactionAuthenticationListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardTransactionAuthenticationListDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardTransactionAuthenticationListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardTransactionAuthenticationListMetadataContainer'
+    CardTransactionAuthenticationListWorkflowContainer:
+      type: object
+    CardTransactionAuthenticationResourceQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        cardId:
+          type: string
+          format: uuid
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThirdPartyCardAuthenticationEnrollmentType'
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardTransactionAuthenticationStatus'
+        serviceProvider:
+          type: array
+          items:
+            type: string
+        clientTitle:
+          type: string
+        clientNumber:
+          type: array
+          items:
+            type: string
+    CardTransactionAuthenticationStatus:
+      type: string
+      description: status of card transaction authentication
+      readOnly: true
+      enum:
+      - pending
+      - approved
+      - rejected
+      - cancelled
+    ConnectionErrorResource:
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/ErrorCategory'
+        origin:
+          $ref: '#/components/schemas/ErrorOrigin'
+        code:
+          type: string
+        message:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+    ErrorCategory:
+      type: string
+      enum:
+      - functional
+      - technical
+    ErrorOrigin:
+      type: string
+      enum:
+      - customer
+      - platform
+      - provider
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    ServiceProviderConnectionState:
+      type: string
+      enum:
+      - pending
+      - creation-in-progress
+      - update-in-progress
+      - dependency-completed
+      - completed-up-to-date
+      - completed-outdated
+      - dependency-failed
+      - creation-failed
+    ThirdPartyCardAuthenticationEnrollmentType:
+      type: string
+      description: type of authentication
+      enum:
+      - all
+      - sms
+      - email
+      - biometric
+      - out-of-band
+      - kba
+    ThirdPartyCardTransactionAuthenticationMerchantInfo:
+      type: object
+      properties:
+        acquirer:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+        categoryCode:
+          type: string
+        country:
+          type: string
+        appRedirectUrl:
+          type: string
+      description: merchant info of card
+    ThirdPartyCardTransactionAuthenticationStatus:
+      type: string
+      enum:
+      - pending
+      - success
+      - failure
+      - cancelled
+      - error
+      - step-up
+      - timeout
+    ThirdPartyCardTransactionAuthenticationTransactionInfo:
+      type: object
+      properties:
+        creationDateTime:
+          type: string
+          format: date-time
+        amount:
+          type: number
+        currency:
+          type: string
+      description: transaction info of card
+    CardTransactionAuthenticationGetConnectContainer:
+      type: object
+    CardTransactionAuthenticationGetDataContainer:
+      type: object
+      properties:
+        cardTransactionAuthentication:
+          $ref: '#/components/schemas/CardTransactionAuthentication'
+    CardTransactionAuthenticationGetMetadataContainer:
+      type: object
+    CardTransactionAuthenticationGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardTransactionAuthenticationGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardTransactionAuthenticationGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardTransactionAuthenticationGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardTransactionAuthenticationGetMetadataContainer'
+    CardTransactionAuthenticationGetWorkflowContainer:
+      type: object
+    CardTransactionAuthenticationUpdateConnectContainer:
+      type: object
+    CardTransactionAuthenticationUpdateMetadataContainer:
+      type: object
+    CardTransactionAuthenticationUpdateRequestDataContainer:
+      required:
+      - cardTransactionAuthentication
+      type: object
+      properties:
+        cardTransactionAuthentication:
+          $ref: '#/components/schemas/CardTransactionAuthentication'
+    CardTransactionAuthenticationUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateMetadataContainer'
+    CardTransactionAuthenticationUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+    CardTransactionAuthenticationUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardTransactionAuthenticationUpdateMetadataContainer'
+    Address:
+      required:
+      - city
+      - country
+      - street
+      type: object
+      properties:
+        country:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        houseNumber:
+          type: string
+        refinement:
+          type: string
+    CardAuthentication3DSecureMethod:
+      type: string
+      enum:
+      - unknown
+      - unrecognized
+      - no-authentication
+      - password
+      - secret-key
+      - pki
+      - otp-sms
+      - otp-card-reader
+      - otp-app
+      - otp-other
+      - other
+      - kba
+      - oob-biometric
+      - oob-app
+      - oob-other
+      - push-confirmation
+      - frictionless-rba
+      - frictionless
+      - server-responding
+      - delegated
+      - challenge-unknown
+      - idcx
+      - aav-refresh
+    CardDataInputMethod:
+      type: string
+      enum:
+      - not-provided
+      - manual
+      - magnetic-stripe
+      - barcode
+      - optical-character-recognition
+      - emv-contact
+      - key-entered
+      - emv-contactless
+      - e-commerce
+      - e-commerce-emv-cryptogram
+      - magnetic-stripe-contactless
+      - account-data-on-file
+      - key-entered-by-acquirer
+      - micr-reader
+      - qr-code
+    CardPresentType:
+      type: string
+      enum:
+      - present
+      - not-present
+      - unknown
+    CardTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the card transaction
+          format: uuid
+          readOnly: true
+        cardId:
+          type: string
+          description: ID of the card
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          description: ID of the client
+          format: uuid
+          readOnly: true
+        matchingTransactionId:
+          type: string
+          description: ID of matching card transaction
+          format: uuid
+          readOnly: true
+        accountId:
+          type: string
+          description: ID of the account
+          format: uuid
+          readOnly: true
+        accountCurrency:
+          type: string
+          description: account currency
+          readOnly: true
+        transactionNumber:
+          type: string
+          description: transaction number
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/CardTransactionType'
+        status:
+          $ref: '#/components/schemas/CardTransactionStatus'
+        transactionAmount:
+          type: number
+          description: transaction amount
+          format: double
+          readOnly: true
+        transactionCurrency:
+          type: string
+          description: transaction currency
+          readOnly: true
+        feeAmount:
+          type: number
+          description: fee amount
+          format: double
+          readOnly: true
+        feeCurrency:
+          type: string
+          description: fee currency
+          readOnly: true
+        billingAmount:
+          type: number
+          description: billing amount
+          format: double
+          readOnly: true
+        billingCurrency:
+          type: string
+          description: billing currency
+          readOnly: true
+        settlementAmount:
+          type: number
+          description: settlement amount
+          format: double
+          readOnly: true
+        settlementCurrency:
+          type: string
+          description: settlement currency
+          readOnly: true
+        effectiveTransactionAmount:
+          type: number
+          description: effective transaction amount
+          format: double
+          readOnly: true
+        effectiveFeeAmount:
+          type: number
+          description: effective fee amount
+          format: double
+          readOnly: true
+        transactionExchangeRate:
+          type: number
+          description: transaction exchange rate
+          format: double
+          readOnly: true
+        feeExchangeRate:
+          type: number
+          description: fee exchange rate
+          format: double
+          readOnly: true
+        merchant:
+          $ref: '#/components/schemas/Merchant'
+        pos:
+          $ref: '#/components/schemas/Pos'
+        serviceProvider:
+          type: string
+          description: service provider of the card transaction
+          readOnly: true
+        serviceProviderEntityId:
+          type: string
+          description: service provider ID of the card transaction
+          readOnly: true
+        serviceProviderEntityReference:
+          type: string
+          description: service provider reference of the card transaction
+          readOnly: true
+        description:
+          type: string
+          description: card transaction description
+          readOnly: true
+        reason:
+          type: string
+          description: reason
+          readOnly: true
+        direction:
+          $ref: '#/components/schemas/TransactionDirection'
+        totalAmount:
+          type: number
+          description: total amount
+          format: double
+          readOnly: true
+        creationDateTime:
+          type: string
+          description: creation time of the card transaction
+          format: date-time
+          readOnly: true
+        enrichment:
+          $ref: '#/components/schemas/CardTransactionEnrichmentMap'
+      description: Card Transaction Resource Object
+    CardTransactionEnrichmentMap:
+      type: object
+      description: Card transaction enrichment data
+      readOnly: true
+    CardTransactionListConnectContainer:
+      type: object
+    CardTransactionListDataContainer:
+      type: object
+      properties:
+        cardTransaction:
+          $ref: '#/components/schemas/CardTransactionResourceQueryInput'
+        cardTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardTransaction'
+    CardTransactionListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    CardTransactionListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardTransactionListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardTransactionListDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardTransactionListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardTransactionListMetadataContainer'
+    CardTransactionListWorkflowContainer:
+      type: object
+    CardTransactionResourceQueryInput:
+      type: object
+      properties:
+        geCardId:
+          type: string
+          format: uuid
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accountId:
+          type: string
+          format: uuid
+        transactionCurrency:
+          type: array
+          items:
+            type: string
+        transactionNumber:
+          type: string
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardTransactionType'
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardTransactionStatus'
+        clientTitle:
+          type: string
+        clientNumber:
+          type: array
+          items:
+            type: string
+        username:
+          type: string
+        cardAlias:
+          type: string
+        lastFourDigits:
+          type: string
+        firstSixDigits:
+          type: string
+        accountAlias:
+          type: string
+        iban:
+          type: array
+          items:
+            type: string
+        accountNumber:
+          type: array
+          items:
+            type: string
+        maxAmount:
+          type: number
+        minAmount:
+          type: number
+        currency:
+          type: array
+          items:
+            type: string
+        serviceProvider:
+          type: array
+          items:
+            type: string
+        serviceProviderId:
+          type: string
+        serviceProviderReference:
+          type: string
+        creationDateFrom:
+          type: string
+          format: date
+        creationDateTo:
+          type: string
+          format: date
+        merchantName:
+          type: string
+        description:
+          type: string
+        reason:
+          type: string
+    CardTransactionStatus:
+      type: string
+      description: status of the card transaction
+      readOnly: true
+      enum:
+      - authorised
+      - declined
+      - settled
+      - reversed
+    CardTransactionType:
+      type: string
+      description: type of the card transaction
+      readOnly: true
+      enum:
+      - payment
+      - refund
+      - chargeback
+      - atm-withdrawal
+      - incoming-transfer
+    CardholderAuthentication:
+      type: object
+      properties:
+        method:
+          $ref: '#/components/schemas/CardholderAuthenticationMethod'
+        entity:
+          $ref: '#/components/schemas/CardholderAuthenticationEntityType'
+    CardholderAuthenticationEntityType:
+      type: string
+      enum:
+      - not-authenticated
+      - card-chip
+      - electronic-signature-analysis
+      - authorising-agent
+      - merchant
+      - other
+      - unknown
+      - cardholder-device
+      - token-requestor
+    CardholderAuthenticationMethod:
+      type: string
+      enum:
+      - not-authenticated
+      - pin
+      - electronic-signature-analysis
+      - biometric
+      - biographic
+      - manual-signature-verification
+      - other-manual-verification
+      - other
+      - unknown
+      - smartphone-passcode
+      - smartphone-pattern
+      - hardware-device
+      - hardware-device-user-verification
+      - software-application
+      - software-application-user-verification
+      - 3d-secure
+    CardholderPresentType:
+      type: string
+      enum:
+      - present
+      - not-present-unknown
+      - not-present-mail-order
+      - not-present-telephone-order
+      - not-present-standing-auth
+      - not-present-e-commerce
+      - not-present-installment
+      - unknown
+    ChipFallbackIndicator:
+      type: string
+      enum:
+      - not-available
+      - previous-not-fallback
+      - previous-fallback
+    Merchant:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        networkId:
+          type: string
+        taxId:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+        website:
+          type: string
+        category:
+          $ref: '#/components/schemas/MerchantCategory'
+      description: merchant
+      readOnly: true
+    MerchantCategory:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    Pos:
+      type: object
+      properties:
+        cardholderPresent:
+          $ref: '#/components/schemas/CardholderPresentType'
+        cardPresent:
+          $ref: '#/components/schemas/CardPresentType'
+        cardDataInputMethod:
+          $ref: '#/components/schemas/CardDataInputMethod'
+        authentication:
+          $ref: '#/components/schemas/CardholderAuthentication'
+        chipFallback:
+          $ref: '#/components/schemas/ChipFallbackIndicator'
+        fraud:
+          $ref: '#/components/schemas/PosFraudIndicator'
+        securityProtocol:
+          $ref: '#/components/schemas/SecurityProtocolType'
+        cardAuthentication3DSecureMethod:
+          $ref: '#/components/schemas/CardAuthentication3DSecureMethod'
+      description: pos data
+      readOnly: true
+    PosFraudIndicator:
+      type: string
+      enum:
+      - no-problem
+      - merchant-suspicious
+      - merchant-verified-cardholder-id
+    SecurityProtocolType:
+      type: string
+      enum:
+      - none
+      - channel-encryption
+      - not-applicable
+    TransactionDirection:
+      type: string
+      description: Direction
+      readOnly: true
+      enum:
+      - credit
+      - debit
+    CardTransactionGetConnectContainer:
+      type: object
+    CardTransactionGetDataContainer:
+      type: object
+      properties:
+        cardTransaction:
+          $ref: '#/components/schemas/CardTransaction'
+    CardTransactionGetMetadataContainer:
+      type: object
+    CardTransactionGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardTransactionGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardTransactionGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardTransactionGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardTransactionGetMetadataContainer'
+    CardTransactionGetWorkflowContainer:
+      type: object
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/card-transaction-authenticationsget.md
+  - https://developer.integrated.finance/reference/card-transaction-authenticationslist.md
+  - https://developer.integrated.finance/reference/card-transaction-authenticationsupdate.md
+  - https://developer.integrated.finance/reference/card-transactionsget.md
+  - https://developer.integrated.finance/reference/card-transactionslist.md
+  merge:
+    pages: 5
+    deduped: 42
+    conflicts_kept_first: 0

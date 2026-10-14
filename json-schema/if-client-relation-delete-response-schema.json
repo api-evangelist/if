@@ -1,0 +1,372 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-client-relation-delete-response-schema.json",
+  "title": "ClientRelationDeleteResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-client-api-openapi.yml#/components/schemas/ClientRelationDeleteResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/ClientRelationDeleteWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/ClientRelationDeleteDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/ClientRelationDeleteConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/ClientRelationDeleteMetadataContainer"
+    }
+  },
+  "$defs": {
+    "Address": {
+      "required": [
+        "city",
+        "country",
+        "street"
+      ],
+      "type": "object",
+      "properties": {
+        "country": {
+          "maxLength": 2,
+          "minLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "houseNumber": {
+          "type": "string"
+        },
+        "refinement": {
+          "type": "string"
+        }
+      },
+      "description": "residential address object for individual clients"
+    },
+    "AttributeMap": {
+      "type": "object"
+    },
+    "ClientProfile": {
+      "required": [
+        "identityType"
+      ],
+      "type": "object",
+      "properties": {
+        "identityType": {
+          "type": "string"
+        }
+      }
+    },
+    "ClientProfileCorporate": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/ClientProfile"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "identityType": {
+              "$ref": "#/$defs/LegalEntityType"
+            },
+            "phone": {
+              "type": "string",
+              "description": "client contact phone number"
+            },
+            "email": {
+              "type": "string",
+              "description": "client contact email"
+            },
+            "registrationAddress": {
+              "$ref": "#/$defs/Address"
+            }
+          }
+        }
+      ]
+    },
+    "ClientProfileIndividual": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/ClientProfile"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "identityType": {
+              "$ref": "#/$defs/LegalEntityType"
+            },
+            "phone": {
+              "type": "string",
+              "description": "client contact phone number"
+            },
+            "email": {
+              "type": "string",
+              "description": "client contact email"
+            },
+            "residentialAddress": {
+              "$ref": "#/$defs/Address"
+            }
+          }
+        }
+      ]
+    },
+    "ClientRelatedLegalEntityRelation": {
+      "type": "string",
+      "description": "relation of legal entity with client",
+      "enum": [
+        "director",
+        "shareholder",
+        "director-and-shareholder",
+        "authorized-person"
+      ]
+    },
+    "ClientRelation": {
+      "required": [
+        "clientId",
+        "id",
+        "identity",
+        "relation"
+      ],
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "$ref": "#/$defs/AttributeMap"
+        },
+        "id": {
+          "type": "string",
+          "description": "client relation id",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "clientId": {
+          "type": "string",
+          "description": "id of client",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "relation": {
+          "$ref": "#/$defs/ClientRelatedLegalEntityRelation"
+        },
+        "identity": {
+          "type": "object",
+          "description": "client relation identity object",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/LegalEntityIdentityCorporate"
+            },
+            {
+              "$ref": "#/$defs/LegalEntityIdentityIndividual"
+            }
+          ]
+        },
+        "percentageOfOwnership": {
+          "type": "number",
+          "description": "percentage of ownership"
+        },
+        "profile": {
+          "type": "object",
+          "description": "client relation profile object",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ClientProfileCorporate"
+            },
+            {
+              "$ref": "#/$defs/ClientProfileIndividual"
+            }
+          ]
+        }
+      },
+      "description": "client relation data model"
+    },
+    "ClientRelationDeleteConnectContainer": {
+      "type": "object"
+    },
+    "ClientRelationDeleteDataContainer": {
+      "required": [
+        "clientRelation"
+      ],
+      "type": "object",
+      "properties": {
+        "clientRelation": {
+          "$ref": "#/$defs/ClientRelation"
+        }
+      }
+    },
+    "ClientRelationDeleteMetadataContainer": {
+      "type": "object"
+    },
+    "ClientRelationDeleteWorkflowContainer": {
+      "type": "object"
+    },
+    "CorporationType": {
+      "type": "string",
+      "enum": [
+        "ltd",
+        "plc",
+        "llp",
+        "lp",
+        "gp",
+        "st",
+        "other"
+      ]
+    },
+    "LegalEntityIdentification": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/LegalEntityIdentificationType"
+        },
+        "identificationNumber": {
+          "type": "string"
+        },
+        "issuingCountry": {
+          "maxLength": 2,
+          "minLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "type": "string"
+        },
+        "issueDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "LegalEntityIdentificationType": {
+      "type": "string",
+      "enum": [
+        "registration-number",
+        "passport",
+        "identity-card",
+        "driving-licence",
+        "foreign-identity-card",
+        "tax-number"
+      ]
+    },
+    "LegalEntityIdentity": {
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "LegalEntityIdentityCorporate": {
+      "required": [
+        "legalName"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/LegalEntityIdentity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/LegalEntityType"
+            },
+            "country": {
+              "maxLength": 2,
+              "minLength": 2,
+              "pattern": "^[A-Z]{2}$",
+              "type": "string"
+            },
+            "identifications": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/LegalEntityIdentification"
+              }
+            },
+            "legalName": {
+              "type": "string"
+            },
+            "incorporationDate": {
+              "type": "string",
+              "format": "date"
+            },
+            "corporationType": {
+              "$ref": "#/$defs/CorporationType"
+            }
+          }
+        }
+      ]
+    },
+    "LegalEntityIdentityIndividual": {
+      "required": [
+        "familyName",
+        "givenName"
+      ],
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/LegalEntityIdentity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/LegalEntityType"
+            },
+            "country": {
+              "maxLength": 2,
+              "minLength": 2,
+              "pattern": "^[A-Z]{2}$",
+              "type": "string"
+            },
+            "identifications": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/LegalEntityIdentification"
+              }
+            },
+            "givenName": {
+              "type": "string"
+            },
+            "familyName": {
+              "type": "string"
+            },
+            "birthDate": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        }
+      ]
+    },
+    "LegalEntityType": {
+      "type": "string",
+      "enum": [
+        "corporate",
+        "individual"
+      ]
+    }
+  }
+}

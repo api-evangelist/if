@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-generic-transaction-create-request-schema.json",
+  "title": "GenericTransactionCreateRequest",
+  "description": "request model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-generic-transaction-api-openapi.yml#/components/schemas/GenericTransactionCreateRequest",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/OutgoingTransferCreateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/GenericTransactionCreateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/GenericTransactionCreateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/GenericTransactionCreateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AttributeMap": {
+      "type": "object",
+      "description": "Generic Transaction Attributes"
+    },
+    "GenericTransactionCreateConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+    },
+    "GenericTransactionCreateDataContainer": {
+      "required": [
+        "genericTransaction"
+      ],
+      "type": "object",
+      "properties": {
+        "genericTransaction": {
+          "$ref": "#/$defs/GenericTransactionResource"
+        },
+        "narrative": {
+          "$ref": "#/$defs/NarrativeWorkflowDataInput"
+        }
+      },
+      "description": "generic transaction data container"
+    },
+    "GenericTransactionCreateMetadataContainer": {
+      "type": "object",
+      "description": "metadata container"
+    },
+    "GenericTransactionResource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of generic transaction",
+          "format": "uuid"
+        },
+        "type": {
+          "type": "string",
+          "description": "type"
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "id of client",
+          "format": "uuid"
+        },
+        "accountId": {
+          "type": "string",
+          "description": "id of account",
+          "format": "uuid"
+        },
+        "transactionNumber": {
+          "type": "string",
+          "description": "transaction number"
+        },
+        "amount": {
+          "type": "number",
+          "description": "transaction amount"
+        },
+        "currency": {
+          "type": "string",
+          "description": "transaction currency"
+        },
+        "status": {
+          "$ref": "#/$defs/GenericTransactionStatus"
+        },
+        "attributes": {
+          "$ref": "#/$defs/AttributeMap"
+        },
+        "narrative": {
+          "type": "string",
+          "description": "Generic Transaction Narrative"
+        },
+        "creationDateTime": {
+          "type": "string",
+          "description": "Generic Transaction Creation Date Time",
+          "format": "date-time"
+        }
+      },
+      "description": "generic transaction model",
+      "readOnly": true
+    },
+    "GenericTransactionStatus": {
+      "type": "string",
+      "description": "Generic Transaction Status",
+      "enum": [
+        "completed"
+      ]
+    },
+    "InformationSourcingMethod": {
+      "type": "string",
+      "description": "configures where the information for narrative will be sourced",
+      "enum": [
+        "explicit",
+        "implicit"
+      ]
+    },
+    "NarrativeWorkflowConfiguration": {
+      "type": "object",
+      "properties": {
+        "sourcingMethod": {
+          "$ref": "#/$defs/InformationSourcingMethod"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "determines whether narrative will be applied or not"
+        }
+      },
+      "description": "narrative workflow context"
+    },
+    "NarrativeWorkflowDataInput": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "type": "string",
+          "description": "template of narrative"
+        }
+      },
+      "description": "narrative workflow data input"
+    },
+    "OutgoingTransferCreateWorkflowContainer": {
+      "required": [
+        "code",
+        "narrative"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "direct",
+            "client.direct",
+            "organization.direct"
+          ]
+        },
+        "narrative": {
+          "$ref": "#/$defs/NarrativeWorkflowConfiguration"
+        }
+      },
+      "description": "workflow container"
+    },
+    "Owner": {
+      "type": "string",
+      "description": "owner of generic transaction",
+      "enum": [
+        "organization",
+        "client"
+      ]
+    }
+  }
+}

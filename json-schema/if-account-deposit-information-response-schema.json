@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-account-deposit-information-response-schema.json",
+  "title": "AccountDepositInformationResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-account-api-openapi.yml#/components/schemas/AccountDepositInformationResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/AccountDepositInformationGetWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/AccountDepositInformationGetDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/AccountDepositInformationGetConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/AccountDepositInformationGetMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AccountDepositInformationGetConnectContainer": {
+      "type": "object"
+    },
+    "AccountDepositInformationGetDataContainer": {
+      "type": "object",
+      "properties": {
+        "depositInformation": {
+          "$ref": "#/$defs/AccountDepositInformationResourceMap"
+        }
+      }
+    },
+    "AccountDepositInformationGetMetadataContainer": {
+      "type": "object"
+    },
+    "AccountDepositInformationGetWorkflowContainer": {
+      "type": "object"
+    },
+    "AccountDepositInformationResourceMap": {
+      "type": "object"
+    }
+  }
+}

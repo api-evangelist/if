@@ -1,0 +1,3333 @@
+[
+ {
+  "page": "https://developer.integrated.finance/reference/cardslinkedaccountlist.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards/{cardId}/linked-accounts": {
+     "get": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": "List Linked Accounts",
+      "operationId": "cards.linkedAccount.list",
+      "parameters": [
+       {
+        "name": "metadata.page.number",
+        "in": "query",
+        "description": "0-indexed page number",
+        "schema": {
+         "minimum": 0,
+         "type": "integer",
+         "format": "int32",
+         "default": 0
+        }
+       },
+       {
+        "name": "metadata.page.size",
+        "in": "query",
+        "description": "page size",
+        "schema": {
+         "maximum": 100,
+         "minimum": 1,
+         "type": "integer",
+         "format": "int32",
+         "default": 20
+        }
+       },
+       {
+        "name": "data.linkedAccount.status",
+        "in": "query",
+        "schema": {
+         "type": "string",
+         "enum": [
+          "pending",
+          "declined",
+          "active",
+          "inactive",
+          "suspended",
+          "closed"
+         ]
+        }
+       },
+       {
+        "name": "cardId",
+        "in": "path",
+        "description": "ID of card in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Linked account list returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardAccountListResponse"
+          },
+          "examples": {
+           "linked account list": {
+            "description": "linked account list",
+            "value": {
+             "workflow": "{}",
+             "data": {
+              "linkedAccounts": [
+               {
+                "accountId": "045f4568-3a75-4bcf-97f3-54cfeeb45137",
+                "accountStatus": "active"
+               },
+               {
+                "accountId": "3491d372-afb5-47d8-a4fc-5457cbe54f87",
+                "accountStatus": "inactive"
+               }
+              ]
+             },
+             "connect": "{}",
+             "metadata": {
+              "page": {
+               "size": 20,
+               "number": 0,
+               "totalElements": 1,
+               "totalPages": 1
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AccountStatus": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "inactive",
+       "suspended",
+       "closed",
+       "declined"
+      ]
+     },
+     "LinkedAccount": {
+      "required": [
+       "accountId"
+      ],
+      "type": "object",
+      "properties": {
+       "accountId": {
+        "type": "string",
+        "description": "ID of the account linked to the card",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      },
+      "description": "Linked Account Resource Object"
+     },
+     "PageMetadata": {
+      "required": [
+       "number",
+       "size",
+       "totalElements",
+       "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+       "size": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of elements in this page",
+        "format": "int32"
+       },
+       "number": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "index of page starting from 0",
+        "format": "int32"
+       },
+       "totalElements": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "total number of elements in all of the pages",
+        "format": "int64",
+        "readOnly": true
+       },
+       "totalPages": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of total pages",
+        "format": "int32",
+        "readOnly": true
+       }
+      }
+     },
+     "CardAccountListConnectContainer": {
+      "type": "object"
+     },
+     "CardAccountListDataContainer": {
+      "type": "object",
+      "properties": {
+       "linkedAccount": {
+        "$ref": "#/components/schemas/CardAccountResourceQueryInput"
+       },
+       "linkedAccounts": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/LinkedAccount"
+        }
+       }
+      }
+     },
+     "CardAccountListMetadataContainer": {
+      "required": [
+       "page"
+      ],
+      "type": "object",
+      "properties": {
+       "page": {
+        "$ref": "#/components/schemas/PageMetadata"
+       }
+      }
+     },
+     "CardAccountListResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardAccountListWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardAccountListDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardAccountListConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardAccountListMetadataContainer"
+       }
+      }
+     },
+     "CardAccountListWorkflowContainer": {
+      "type": "object"
+     },
+     "CardAccountResourceQueryInput": {
+      "type": "object",
+      "properties": {
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/cardslinkedaccountadd.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards/{cardId}/linked-accounts": {
+     "post": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": "Add linked account to card",
+      "operationId": "cards.linkedAccount.add",
+      "parameters": [
+       {
+        "name": "cardId",
+        "in": "path",
+        "description": "ID of card in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "*/*": {
+         "schema": {
+          "$ref": "#/components/schemas/CardAccountCreateRequest"
+         }
+        }
+       },
+       "required": true
+      },
+      "responses": {
+       "201": {
+        "description": "Account linked to card successfully",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardAccountCreateResponse"
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Missing required field",
+        "content": {
+         "application/json": {
+          "examples": {
+           "error-required-validation": {
+            "description": "error-required-validation",
+            "value": {
+             "timestamp": "2023-02-12T13:06:35.0286835",
+             "message": "Parameter data.linkedAccount.accountId cannot be null or empty.",
+             "code": "common.coding.functional.invalid_input",
+             "messageParameters": [
+              "data.linkedAccount.accountId"
+             ]
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AccountStatus": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "inactive",
+       "suspended",
+       "closed",
+       "declined"
+      ]
+     },
+     "CardAccountCreateConnectContainer": {
+      "type": "object"
+     },
+     "CardAccountCreateDataContainer": {
+      "required": [
+       "linkedAccount"
+      ],
+      "type": "object",
+      "properties": {
+       "linkedAccount": {
+        "$ref": "#/components/schemas/LinkedAccount"
+       }
+      }
+     },
+     "CardAccountCreateMetadataContainer": {
+      "type": "object"
+     },
+     "CardAccountCreateResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardAccountCreateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardAccountCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardAccountCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardAccountCreateMetadataContainer"
+       }
+      }
+     },
+     "CardAccountCreateWorkflowContainer": {
+      "required": [
+       "code"
+      ],
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "description": "workflow code",
+        "enum": [
+         "direct"
+        ]
+       }
+      }
+     },
+     "LinkedAccount": {
+      "required": [
+       "accountId"
+      ],
+      "type": "object",
+      "properties": {
+       "accountId": {
+        "type": "string",
+        "description": "ID of the account linked to the card",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      },
+      "description": "Linked Account Resource Object"
+     },
+     "CardAccountCreateRequest": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardAccountCreateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardAccountCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardAccountCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardAccountCreateMetadataContainer"
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/cardslist.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards": {
+     "get": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": "List Cards",
+      "operationId": "cards.list",
+      "parameters": [
+       {
+        "name": "metadata.page.number",
+        "in": "query",
+        "description": "0-indexed page number",
+        "schema": {
+         "minimum": 0,
+         "type": "integer",
+         "format": "int32",
+         "default": 0
+        }
+       },
+       {
+        "name": "metadata.page.size",
+        "in": "query",
+        "description": "page size",
+        "schema": {
+         "maximum": 100,
+         "minimum": 1,
+         "type": "integer",
+         "format": "int32",
+         "default": 20
+        }
+       },
+       {
+        "name": "metadata.sort",
+        "in": "query",
+        "description": "default direction is ascending",
+        "schema": {
+         "type": "string"
+        },
+        "example": "data.alias,desc"
+       },
+       {
+        "name": "data.account.clientId",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "data.account.userId",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "data.account.type",
+        "in": "query",
+        "schema": {
+         "type": "string",
+         "enum": [
+          "virtual",
+          "physical"
+         ]
+        }
+       },
+       {
+        "name": "data.account.status",
+        "in": "query",
+        "schema": {
+         "type": "string",
+         "enum": [
+          "pending",
+          "declined",
+          "active",
+          "inactive",
+          "suspended",
+          "frozen",
+          "terminated"
+         ]
+        }
+       },
+       {
+        "name": "data.account.alias",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "data.account.serviceProvider",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "data.account.attributes[key]",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "data.card.attributes[threddCardProduct]=10023"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Card list returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardListResponse"
+          },
+          "examples": {
+           "card-list": {
+            "description": "card-list",
+            "value": {
+             "workflow": {},
+             "data": {
+              "cards": [
+               {
+                "id": "00000000-0000-0000-0000-000000000000",
+                "clientId": "00000000-0000-0000-0000-000000000000",
+                "userId": "00000000-0000-0000-0000-000000000000",
+                "type": "physical",
+                "status": "active",
+                "suspensionReason": null,
+                "terminationReason": null,
+                "serviceProvider": "thredd",
+                "alias": "Physical Gold",
+                "bin": "999999",
+                "pan": "999999******6526",
+                "expirationDate": "12/26",
+                "attributes": {
+                 "threddCardProduct": "00000"
+                },
+                "deliveryAddress": {
+                 "country": "GB",
+                 "region": "England",
+                 "city": "London",
+                 "street": "Baker Street",
+                 "houseNumber": "221B",
+                 "postalCode": "XYZ ABC",
+                 "refinement": ""
+                },
+                "connection": {
+                 "id": "000000000",
+                 "serviceProvider": "thredd",
+                 "reference": "REF-01234",
+                 "state": "completed-up-to-date",
+                 "status": "active",
+                 "method": "built-in",
+                 "error": null
+                }
+               },
+               {
+                "id": "00000000-0000-0000-0000-000000000000",
+                "clientId": "00000000-0000-0000-0000-000000000000",
+                "userId": "00000000-0000-0000-0000-000000000000",
+                "type": "virtual",
+                "status": "pending",
+                "suspensionReason": null,
+                "terminationReason": null,
+                "serviceProvider": "thredd",
+                "alias": "Gold Card",
+                "bin": "999999",
+                "pan": "999999******6526",
+                "expirationDate": "12/26",
+                "attributes": {
+                 "threddCardProduct": "00000"
+                },
+                "connection": {
+                 "serviceProvider": "thredd",
+                 "state": "creation-failed",
+                 "method": "built-in",
+                 "error": {
+                  "category": "technical",
+                  "origin": "platform",
+                  "code": "invalid_value_detected",
+                  "message": "An error occured",
+                  "attributes": {}
+                 }
+                }
+               },
+               {
+                "id": "00000000-0000-0000-0000-000000000000",
+                "clientId": "00000000-0000-0000-0000-000000000000",
+                "userId": "00000000-0000-0000-0000-000000000000",
+                "type": "virtual",
+                "status": "active",
+                "suspensionReason": null,
+                "terminationReason": null,
+                "serviceProvider": "thredd",
+                "alias": "Gold Card",
+                "bin": "999999",
+                "pan": "999999******6526",
+                "expirationDate": "12/26",
+                "attributes": {
+                 "threddCardProduct": "00000"
+                },
+                "connection": {
+                 "id": "000000000",
+                 "serviceProvider": "thredd",
+                 "reference": "000000000",
+                 "state": "completed-up-to-date",
+                 "status": "active",
+                 "method": "built-in",
+                 "error": null
+                }
+               }
+              ]
+             },
+             "connect": {},
+             "metadata": {}
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AccountStatus": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "inactive",
+       "suspended",
+       "closed",
+       "declined"
+      ]
+     },
+     "Address": {
+      "required": [
+       "city",
+       "country",
+       "street"
+      ],
+      "type": "object",
+      "properties": {
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "pattern": "^[A-Z]{2}$",
+        "type": "string"
+       },
+       "region": {
+        "type": "string"
+       },
+       "postalCode": {
+        "type": "string"
+       },
+       "city": {
+        "type": "string"
+       },
+       "street": {
+        "type": "string"
+       },
+       "houseNumber": {
+        "type": "string"
+       },
+       "refinement": {
+        "type": "string"
+       }
+      },
+      "description": "delivery address of card"
+     },
+     "AttributeMap": {
+      "type": "object",
+      "description": "attributes of card"
+     },
+     "Card": {
+      "required": [
+       "clientId",
+       "id",
+       "status",
+       "type",
+       "userId"
+      ],
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "ID of card",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "clientId": {
+        "type": "string",
+        "description": "ID of client",
+        "format": "uuid"
+       },
+       "userId": {
+        "type": "string",
+        "description": "ID of user",
+        "format": "uuid"
+       },
+       "type": {
+        "$ref": "#/components/schemas/CardType"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CardStatus"
+       },
+       "suspensionReason": {
+        "$ref": "#/components/schemas/CardSuspensionReason"
+       },
+       "terminationReason": {
+        "$ref": "#/components/schemas/CardTerminationReason"
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider of card"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of card"
+       },
+       "bin": {
+        "maxLength": 6,
+        "minLength": 6,
+        "type": "string",
+        "description": "bin value of card",
+        "readOnly": true
+       },
+       "pan": {
+        "maxLength": 16,
+        "minLength": 16,
+        "type": "string",
+        "description": "masked pan value of card",
+        "readOnly": true
+       },
+       "expirationDate": {
+        "maxLength": 5,
+        "type": "string",
+        "description": "expiration date of card",
+        "readOnly": true
+       },
+       "deliveryAddress": {
+        "$ref": "#/components/schemas/Address"
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/AttributeMap"
+       },
+       "linkedAccounts": {
+        "type": "array",
+        "description": "accounts linked to card",
+        "readOnly": true,
+        "items": {
+         "$ref": "#/components/schemas/CardAccountListQueryOutput"
+        }
+       },
+       "connection": {
+        "$ref": "#/components/schemas/CardConnection"
+       }
+      },
+      "description": "Card Resource Object"
+     },
+     "CardAccountListQueryOutput": {
+      "type": "object",
+      "properties": {
+       "accountId": {
+        "type": "string",
+        "format": "uuid"
+       },
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      },
+      "description": "accounts linked to card",
+      "readOnly": true
+     },
+     "CardConnection": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "serviceProvider": {
+        "type": "string"
+       },
+       "reference": {
+        "type": "string"
+       },
+       "state": {
+        "$ref": "#/components/schemas/ServiceProviderConnectionState"
+       },
+       "status": {
+        "$ref": "#/components/schemas/ThirdPartyCardStatus"
+       },
+       "method": {
+        "$ref": "#/components/schemas/ConnectMethod"
+       },
+       "error": {
+        "$ref": "#/components/schemas/ConnectionErrorResource"
+       }
+      },
+      "description": "Card Connection Resource Object",
+      "readOnly": true
+     },
+     "CardStatus": {
+      "type": "string",
+      "description": "status of card",
+      "readOnly": true,
+      "enum": [
+       "pending",
+       "declined",
+       "active",
+       "inactive",
+       "suspended",
+       "terminated"
+      ]
+     },
+     "CardSuspensionReason": {
+      "type": "string",
+      "description": "suspension reason of card",
+      "enum": [
+       "user-requested",
+       "suspected-fraud",
+       "suspended-by-third-party"
+      ]
+     },
+     "CardTerminationReason": {
+      "type": "string",
+      "description": "termination reason of card",
+      "enum": [
+       "lost-card",
+       "stolen-card",
+       "expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardType": {
+      "type": "string",
+      "description": "type of card",
+      "enum": [
+       "virtual",
+       "physical"
+      ]
+     },
+     "ConnectMethod": {
+      "type": "string",
+      "enum": [
+       "built-in",
+       "plug-in"
+      ]
+     },
+     "ConnectionErrorResource": {
+      "type": "object",
+      "properties": {
+       "category": {
+        "$ref": "#/components/schemas/ErrorCategory"
+       },
+       "origin": {
+        "$ref": "#/components/schemas/ErrorOrigin"
+       },
+       "code": {
+        "type": "string"
+       },
+       "message": {
+        "type": "string"
+       },
+       "attributes": {
+        "type": "object",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "ErrorCategory": {
+      "type": "string",
+      "enum": [
+       "functional",
+       "technical"
+      ]
+     },
+     "ErrorOrigin": {
+      "type": "string",
+      "enum": [
+       "customer",
+       "platform",
+       "provider"
+      ]
+     },
+     "ServiceProviderConnectionState": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "creation-in-progress",
+       "update-in-progress",
+       "dependency-completed",
+       "completed-up-to-date",
+       "completed-outdated",
+       "dependency-failed",
+       "creation-failed"
+      ]
+     },
+     "ThirdPartyCardStatus": {
+      "type": "string",
+      "enum": [
+       "active",
+       "inactive",
+       "suspended-user-requested",
+       "suspended-suspected-fraud",
+       "suspended-by-third-party",
+       "terminated-lost-card",
+       "terminated-stolen-card",
+       "terminated-expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardListConnectContainer": {
+      "type": "object"
+     },
+     "CardListDataContainer": {
+      "type": "object",
+      "properties": {
+       "card": {
+        "$ref": "#/components/schemas/CardResourceQueryInput"
+       },
+       "cards": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Card"
+        }
+       }
+      }
+     },
+     "CardListMetadataContainer": {
+      "required": [
+       "page"
+      ],
+      "type": "object",
+      "properties": {
+       "page": {
+        "$ref": "#/components/schemas/PageMetadata"
+       }
+      }
+     },
+     "CardListResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardListWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardListDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardListConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardListMetadataContainer"
+       }
+      }
+     },
+     "CardListWorkflowContainer": {
+      "type": "object"
+     },
+     "CardResourceQueryInput": {
+      "type": "object",
+      "properties": {
+       "clientId": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "format": "uuid"
+        }
+       },
+       "userId": {
+        "type": "string",
+        "format": "uuid"
+       },
+       "type": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/CardType"
+        }
+       },
+       "alias": {
+        "type": "string"
+       },
+       "status": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/CardStatus"
+        }
+       },
+       "serviceProvider": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "pan": {
+        "type": "string"
+       },
+       "attributes": {
+        "type": "object",
+        "additionalProperties": {
+         "type": "string"
+        }
+       },
+       "clientTitle": {
+        "type": "string"
+       },
+       "clientNumber": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "username": {
+        "type": "string"
+       }
+      }
+     },
+     "PageMetadata": {
+      "required": [
+       "number",
+       "size",
+       "totalElements",
+       "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+       "size": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of elements in this page",
+        "format": "int32"
+       },
+       "number": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "index of page starting from 0",
+        "format": "int32"
+       },
+       "totalElements": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "total number of elements in all of the pages",
+        "format": "int64",
+        "readOnly": true
+       },
+       "totalPages": {
+        "minimum": 0,
+        "type": "integer",
+        "description": "number of total pages",
+        "format": "int32",
+        "readOnly": true
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/cardscreate.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards": {
+     "post": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": "Create a card",
+      "operationId": "cards.create",
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/CardCreateRequest"
+         },
+         "examples": {
+          "client-debit-issuing": {
+           "description": "client-debit-issuing",
+           "value": {
+            "workflow": {
+             "code": "client.debit.issuing"
+            },
+            "data": {
+             "card": {
+              "clientId": "00000000-0000-0000-0000-000000000000",
+              "userId": "00000000-0000-0000-0000-000000000000",
+              "type": "physical",
+              "alias": "Platinium Plus Card",
+              "deliveryAddress": {
+               "country": "GB",
+               "region": "England",
+               "city": "London",
+               "street": "Baker Street",
+               "houseNumber": "221B",
+               "postalCode": "XYZ ABC",
+               "refinement": ""
+              },
+              "attributes": {
+               "threddCardProduct": "00000",
+               "threddCardManufacturer": "AB Note",
+               "threddDeliveryMethod": "0",
+               "threddCarrierType": "Type 1",
+               "threddImageId": "An image id"
+              },
+              "linkedAccounts": [
+               "00000000-0000-0000-0000-000000000000"
+              ]
+             }
+            },
+            "connect": {
+             "type": "explicit",
+             "serviceProvider": "thredd"
+            },
+            "metadata": {}
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "201": {
+        "description": "Card created successfully",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardCreateResponse"
+          },
+          "examples": {
+           "virtual card create response": {
+            "description": "virtual card create response",
+            "value": {
+             "workflow": {
+              "code": "client.debit.issuing"
+             },
+             "data": {
+              "card": {
+               "id": "00000000-0000-0000-0000-000000000000",
+               "clientId": "00000000-0000-0000-0000-000000000000",
+               "userId": "00000000-0000-0000-0000-000000000000",
+               "type": "virtual",
+               "status": "pending",
+               "suspensionReason": null,
+               "terminationReason": null,
+               "serviceProvider": "thredd",
+               "alias": "Platinium Plus Card",
+               "bin": null,
+               "pan": null,
+               "expirationDate": null,
+               "attributes": {
+                "threddCardProduct": "00000",
+                "threddImageId": "An image id"
+               },
+               "linkedAccounts": [
+                {
+                 "accountId": "00000000-0000-0000-0000-000000000000",
+                 "accountStatus": "active"
+                }
+               ],
+               "connection": {
+                "id": null,
+                "serviceProvider": "thredd",
+                "reference": null,
+                "state": "creation-in-progress",
+                "status": null,
+                "method": "built-in",
+                "error": null
+               }
+              }
+             },
+             "connect": {
+              "type": "explicit",
+              "serviceProvider": "thredd"
+             },
+             "metadata": {}
+            }
+           },
+           "physical card create response": {
+            "description": "physical card create response",
+            "value": {
+             "workflow": {
+              "code": "client.debit.issuing"
+             },
+             "data": {
+              "card": {
+               "id": "00000000-0000-0000-0000-000000000000",
+               "clientId": "00000000-0000-0000-0000-000000000000",
+               "userId": "00000000-0000-0000-0000-000000000000",
+               "type": "physical",
+               "status": "pending",
+               "suspensionReason": null,
+               "terminationReason": null,
+               "serviceProvider": "thredd",
+               "alias": "Platinium Plus Card",
+               "bin": null,
+               "pan": null,
+               "expirationDate": null,
+               "deliveryAddress": {
+                "country": "GB",
+                "region": "England",
+                "city": "London",
+                "street": "Baker Street",
+                "houseNumber": "221B",
+                "postalCode": "XYZ ABC",
+                "refinement": ""
+               },
+               "attributes": {
+                "threddCardProduct": "00000",
+                "threddCardManufacturer": "AB Note",
+                "threddDeliveryMethod": "0",
+                "threddCarrierType": "Type 1",
+                "threddImageId": "An image id"
+               },
+               "linkedAccounts": [
+                {
+                 "accountId": "00000000-0000-0000-0000-000000000000",
+                 "accountStatus": "active"
+                }
+               ],
+               "connection": {
+                "id": null,
+                "serviceProvider": "thredd",
+                "reference": null,
+                "state": "creation-in-progress",
+                "status": null,
+                "method": "built-in",
+                "error": null
+               }
+              }
+             },
+             "connect": {
+              "type": "explicit",
+              "serviceProvider": "thredd"
+             },
+             "metadata": {}
+            }
+           }
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Missing required field",
+        "content": {
+         "application/json": {
+          "examples": {
+           "error-required-validation": {
+            "description": "error-required-validation",
+            "value": {
+             "timestamp": "2023-10-12T13:06:35.0286835",
+             "message": "Parameter data.card.type cannot be null or empty.",
+             "code": "common.coding.functional.invalid_input",
+             "messageParameters": [
+              "data.card.type"
+             ]
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AccountStatus": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "inactive",
+       "suspended",
+       "closed",
+       "declined"
+      ]
+     },
+     "Address": {
+      "required": [
+       "city",
+       "country",
+       "street"
+      ],
+      "type": "object",
+      "properties": {
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "pattern": "^[A-Z]{2}$",
+        "type": "string"
+       },
+       "region": {
+        "type": "string"
+       },
+       "postalCode": {
+        "type": "string"
+       },
+       "city": {
+        "type": "string"
+       },
+       "street": {
+        "type": "string"
+       },
+       "houseNumber": {
+        "type": "string"
+       },
+       "refinement": {
+        "type": "string"
+       }
+      },
+      "description": "delivery address of card"
+     },
+     "AttributeMap": {
+      "type": "object",
+      "description": "attributes of card"
+     },
+     "Card": {
+      "required": [
+       "clientId",
+       "id",
+       "status",
+       "type",
+       "userId"
+      ],
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "ID of card",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "clientId": {
+        "type": "string",
+        "description": "ID of client",
+        "format": "uuid"
+       },
+       "userId": {
+        "type": "string",
+        "description": "ID of user",
+        "format": "uuid"
+       },
+       "type": {
+        "$ref": "#/components/schemas/CardType"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CardStatus"
+       },
+       "suspensionReason": {
+        "$ref": "#/components/schemas/CardSuspensionReason"
+       },
+       "terminationReason": {
+        "$ref": "#/components/schemas/CardTerminationReason"
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider of card"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of card"
+       },
+       "bin": {
+        "maxLength": 6,
+        "minLength": 6,
+        "type": "string",
+        "description": "bin value of card",
+        "readOnly": true
+       },
+       "pan": {
+        "maxLength": 16,
+        "minLength": 16,
+        "type": "string",
+        "description": "masked pan value of card",
+        "readOnly": true
+       },
+       "expirationDate": {
+        "maxLength": 5,
+        "type": "string",
+        "description": "expiration date of card",
+        "readOnly": true
+       },
+       "deliveryAddress": {
+        "$ref": "#/components/schemas/Address"
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/AttributeMap"
+       },
+       "linkedAccounts": {
+        "type": "array",
+        "description": "accounts linked to card",
+        "readOnly": true,
+        "items": {
+         "$ref": "#/components/schemas/CardAccountListQueryOutput"
+        }
+       },
+       "connection": {
+        "$ref": "#/components/schemas/CardConnection"
+       }
+      },
+      "description": "Card Resource Object"
+     },
+     "CardAccountListQueryOutput": {
+      "type": "object",
+      "properties": {
+       "accountId": {
+        "type": "string",
+        "format": "uuid"
+       },
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      },
+      "description": "accounts linked to card",
+      "readOnly": true
+     },
+     "CardConnection": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "serviceProvider": {
+        "type": "string"
+       },
+       "reference": {
+        "type": "string"
+       },
+       "state": {
+        "$ref": "#/components/schemas/ServiceProviderConnectionState"
+       },
+       "status": {
+        "$ref": "#/components/schemas/ThirdPartyCardStatus"
+       },
+       "method": {
+        "$ref": "#/components/schemas/ConnectMethod"
+       },
+       "error": {
+        "$ref": "#/components/schemas/ConnectionErrorResource"
+       }
+      },
+      "description": "Card Connection Resource Object",
+      "readOnly": true
+     },
+     "CardCreateConnectContainer": {
+      "required": [
+       "type"
+      ],
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "description": "service provider selection type",
+        "enum": [
+         "explicit"
+        ]
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "card is connected to this service provider"
+       }
+      }
+     },
+     "CardCreateDataContainer": {
+      "required": [
+       "card"
+      ],
+      "type": "object",
+      "properties": {
+       "card": {
+        "$ref": "#/components/schemas/Card"
+       }
+      }
+     },
+     "CardCreateMetadataContainer": {
+      "type": "object"
+     },
+     "CardCreateResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardCreateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardCreateMetadataContainer"
+       }
+      }
+     },
+     "CardCreateWorkflowContainer": {
+      "required": [
+       "code"
+      ],
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "description": "workflow code",
+        "enum": [
+         "client.debit.issuing",
+         "client.credit.issuing"
+        ]
+       }
+      }
+     },
+     "CardStatus": {
+      "type": "string",
+      "description": "status of card",
+      "readOnly": true,
+      "enum": [
+       "pending",
+       "declined",
+       "active",
+       "inactive",
+       "suspended",
+       "terminated"
+      ]
+     },
+     "CardSuspensionReason": {
+      "type": "string",
+      "description": "suspension reason of card",
+      "enum": [
+       "user-requested",
+       "suspected-fraud",
+       "suspended-by-third-party"
+      ]
+     },
+     "CardTerminationReason": {
+      "type": "string",
+      "description": "termination reason of card",
+      "enum": [
+       "lost-card",
+       "stolen-card",
+       "expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardType": {
+      "type": "string",
+      "description": "type of card",
+      "enum": [
+       "virtual",
+       "physical"
+      ]
+     },
+     "ConnectMethod": {
+      "type": "string",
+      "enum": [
+       "built-in",
+       "plug-in"
+      ]
+     },
+     "ConnectionErrorResource": {
+      "type": "object",
+      "properties": {
+       "category": {
+        "$ref": "#/components/schemas/ErrorCategory"
+       },
+       "origin": {
+        "$ref": "#/components/schemas/ErrorOrigin"
+       },
+       "code": {
+        "type": "string"
+       },
+       "message": {
+        "type": "string"
+       },
+       "attributes": {
+        "type": "object",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "ErrorCategory": {
+      "type": "string",
+      "enum": [
+       "functional",
+       "technical"
+      ]
+     },
+     "ErrorOrigin": {
+      "type": "string",
+      "enum": [
+       "customer",
+       "platform",
+       "provider"
+      ]
+     },
+     "ServiceProviderConnectionState": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "creation-in-progress",
+       "update-in-progress",
+       "dependency-completed",
+       "completed-up-to-date",
+       "completed-outdated",
+       "dependency-failed",
+       "creation-failed"
+      ]
+     },
+     "ThirdPartyCardStatus": {
+      "type": "string",
+      "enum": [
+       "active",
+       "inactive",
+       "suspended-user-requested",
+       "suspended-suspected-fraud",
+       "suspended-by-third-party",
+       "terminated-lost-card",
+       "terminated-stolen-card",
+       "terminated-expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardCreateRequest": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardCreateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardCreateMetadataContainer"
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/cardsotpcreate.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards/{cardId}/one-time-passwords": {
+     "post": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": "Create a Card OTP",
+      "operationId": "cards.otp.create",
+      "parameters": [
+       {
+        "name": "cardId",
+        "in": "path",
+        "description": "ID of card in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "*/*": {
+         "schema": {
+          "$ref": "#/components/schemas/CardOTPCreateRequest"
+         }
+        }
+       }
+      },
+      "responses": {
+       "201": {
+        "description": "Card OTP created successfully",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardOTPCreateResponse"
+          },
+          "examples": {
+           "otp-created": {
+            "description": "otp-created",
+            "value": {
+             "workflow": {
+              "code": "client.third-party"
+             },
+             "data": {
+              "one-time-password": {
+               "value": "01234567"
+              }
+             },
+             "connect": {
+              "type": "explicit",
+              "serviceProvider": "meawallet"
+             },
+             "metadata": {}
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "CardOTP": {
+      "required": [
+       "cardServiceProviderEntityId",
+       "value"
+      ],
+      "type": "object",
+      "properties": {
+       "value": {
+        "type": "string",
+        "description": "One time password",
+        "readOnly": true
+       },
+       "cardServiceProviderEntityId": {
+        "type": "string",
+        "description": "Card service provider entity id",
+        "readOnly": true
+       }
+      },
+      "description": "Card OTP Resource Object"
+     },
+     "CardOTPCreateConnectContainer": {
+      "required": [
+       "type"
+      ],
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "description": "service provider selection type",
+        "enum": [
+         "explicit"
+        ]
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "card otp is connected to this service provider"
+       }
+      }
+     },
+     "CardOTPCreateDataContainer": {
+      "required": [
+       "card otp"
+      ],
+      "type": "object",
+      "properties": {
+       "card otp": {
+        "$ref": "#/components/schemas/CardOTP"
+       }
+      }
+     },
+     "CardOTPCreateMetadataContainer": {
+      "type": "object"
+     },
+     "CardOTPCreateResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardOTPCreateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardOTPCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardOTPCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardOTPCreateMetadataContainer"
+       }
+      }
+     },
+     "CardOTPCreateWorkflowContainer": {
+      "required": [
+       "code"
+      ],
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "description": "workflow code",
+        "enum": [
+         "client.third-party"
+        ]
+       }
+      }
+     },
+     "CardOTPCreateRequest": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardOTPCreateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardOTPCreateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardOTPCreateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardOTPCreateMetadataContainer"
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/cardsget.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards/{id}": {
+     "get": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": "Get a Card",
+      "operationId": "cards.get",
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "description": "ID of card in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Card resource returned",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardGetResponse"
+          },
+          "examples": {
+           "card-get": {
+            "description": "card-get",
+            "value": {
+             "workflow": {},
+             "data": {
+              "card": {
+               "id": "00000000-0000-0000-0000-000000000000",
+               "clientId": "00000000-0000-0000-0000-000000000000",
+               "userId": "00000000-0000-0000-0000-000000000000",
+               "type": "virtual",
+               "status": "active",
+               "suspensionReason": null,
+               "terminationReason": null,
+               "serviceProvider": "thredd",
+               "alias": "Gold Card",
+               "bin": "999999",
+               "pan": "999999******6526",
+               "expirationDate": "12/26",
+               "attributes": {
+                "threddCardProduct": "00000"
+               },
+               "connection": {
+                "id": "000000000",
+                "serviceProvider": "thredd",
+                "reference": "000000000",
+                "state": "completed-up-to-date",
+                "status": "active",
+                "method": "built-in",
+                "error": null
+               }
+              }
+             },
+             "connect": {},
+             "metadata": {}
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AccountStatus": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "inactive",
+       "suspended",
+       "closed",
+       "declined"
+      ]
+     },
+     "Address": {
+      "required": [
+       "city",
+       "country",
+       "street"
+      ],
+      "type": "object",
+      "properties": {
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "pattern": "^[A-Z]{2}$",
+        "type": "string"
+       },
+       "region": {
+        "type": "string"
+       },
+       "postalCode": {
+        "type": "string"
+       },
+       "city": {
+        "type": "string"
+       },
+       "street": {
+        "type": "string"
+       },
+       "houseNumber": {
+        "type": "string"
+       },
+       "refinement": {
+        "type": "string"
+       }
+      },
+      "description": "delivery address of card"
+     },
+     "AttributeMap": {
+      "type": "object",
+      "description": "attributes of card"
+     },
+     "Card": {
+      "required": [
+       "clientId",
+       "id",
+       "status",
+       "type",
+       "userId"
+      ],
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "ID of card",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "clientId": {
+        "type": "string",
+        "description": "ID of client",
+        "format": "uuid"
+       },
+       "userId": {
+        "type": "string",
+        "description": "ID of user",
+        "format": "uuid"
+       },
+       "type": {
+        "$ref": "#/components/schemas/CardType"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CardStatus"
+       },
+       "suspensionReason": {
+        "$ref": "#/components/schemas/CardSuspensionReason"
+       },
+       "terminationReason": {
+        "$ref": "#/components/schemas/CardTerminationReason"
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider of card"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of card"
+       },
+       "bin": {
+        "maxLength": 6,
+        "minLength": 6,
+        "type": "string",
+        "description": "bin value of card",
+        "readOnly": true
+       },
+       "pan": {
+        "maxLength": 16,
+        "minLength": 16,
+        "type": "string",
+        "description": "masked pan value of card",
+        "readOnly": true
+       },
+       "expirationDate": {
+        "maxLength": 5,
+        "type": "string",
+        "description": "expiration date of card",
+        "readOnly": true
+       },
+       "deliveryAddress": {
+        "$ref": "#/components/schemas/Address"
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/AttributeMap"
+       },
+       "linkedAccounts": {
+        "type": "array",
+        "description": "accounts linked to card",
+        "readOnly": true,
+        "items": {
+         "$ref": "#/components/schemas/CardAccountListQueryOutput"
+        }
+       },
+       "connection": {
+        "$ref": "#/components/schemas/CardConnection"
+       }
+      },
+      "description": "Card Resource Object"
+     },
+     "CardAccountListQueryOutput": {
+      "type": "object",
+      "properties": {
+       "accountId": {
+        "type": "string",
+        "format": "uuid"
+       },
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      },
+      "description": "accounts linked to card",
+      "readOnly": true
+     },
+     "CardConnection": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "serviceProvider": {
+        "type": "string"
+       },
+       "reference": {
+        "type": "string"
+       },
+       "state": {
+        "$ref": "#/components/schemas/ServiceProviderConnectionState"
+       },
+       "status": {
+        "$ref": "#/components/schemas/ThirdPartyCardStatus"
+       },
+       "method": {
+        "$ref": "#/components/schemas/ConnectMethod"
+       },
+       "error": {
+        "$ref": "#/components/schemas/ConnectionErrorResource"
+       }
+      },
+      "description": "Card Connection Resource Object",
+      "readOnly": true
+     },
+     "CardStatus": {
+      "type": "string",
+      "description": "status of card",
+      "readOnly": true,
+      "enum": [
+       "pending",
+       "declined",
+       "active",
+       "inactive",
+       "suspended",
+       "terminated"
+      ]
+     },
+     "CardSuspensionReason": {
+      "type": "string",
+      "description": "suspension reason of card",
+      "enum": [
+       "user-requested",
+       "suspected-fraud",
+       "suspended-by-third-party"
+      ]
+     },
+     "CardTerminationReason": {
+      "type": "string",
+      "description": "termination reason of card",
+      "enum": [
+       "lost-card",
+       "stolen-card",
+       "expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardType": {
+      "type": "string",
+      "description": "type of card",
+      "enum": [
+       "virtual",
+       "physical"
+      ]
+     },
+     "ConnectMethod": {
+      "type": "string",
+      "enum": [
+       "built-in",
+       "plug-in"
+      ]
+     },
+     "ConnectionErrorResource": {
+      "type": "object",
+      "properties": {
+       "category": {
+        "$ref": "#/components/schemas/ErrorCategory"
+       },
+       "origin": {
+        "$ref": "#/components/schemas/ErrorOrigin"
+       },
+       "code": {
+        "type": "string"
+       },
+       "message": {
+        "type": "string"
+       },
+       "attributes": {
+        "type": "object",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "ErrorCategory": {
+      "type": "string",
+      "enum": [
+       "functional",
+       "technical"
+      ]
+     },
+     "ErrorOrigin": {
+      "type": "string",
+      "enum": [
+       "customer",
+       "platform",
+       "provider"
+      ]
+     },
+     "ServiceProviderConnectionState": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "creation-in-progress",
+       "update-in-progress",
+       "dependency-completed",
+       "completed-up-to-date",
+       "completed-outdated",
+       "dependency-failed",
+       "creation-failed"
+      ]
+     },
+     "ThirdPartyCardStatus": {
+      "type": "string",
+      "enum": [
+       "active",
+       "inactive",
+       "suspended-user-requested",
+       "suspended-suspected-fraud",
+       "suspended-by-third-party",
+       "terminated-lost-card",
+       "terminated-stolen-card",
+       "terminated-expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardGetConnectContainer": {
+      "type": "object",
+      "properties": {
+       "connection": {
+        "$ref": "#/components/schemas/CardConnection"
+       }
+      }
+     },
+     "CardGetDataContainer": {
+      "type": "object",
+      "properties": {
+       "card": {
+        "$ref": "#/components/schemas/Card"
+       }
+      }
+     },
+     "CardGetMetadataContainer": {
+      "type": "object"
+     },
+     "CardGetResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardGetWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardGetDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardGetConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardGetMetadataContainer"
+       }
+      }
+     },
+     "CardGetWorkflowContainer": {
+      "type": "object"
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/cardsupdate.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards/{id}": {
+     "patch": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": "Update a card",
+      "operationId": "cards.update",
+      "parameters": [
+       {
+        "name": "id",
+        "in": "path",
+        "description": "ID of card in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/CardUpdateRequest"
+         },
+         "examples": {
+          "status-inactivation": {
+           "description": "status-inactivation",
+           "value": {
+            "workflow": {
+             "code": "client.direct"
+            },
+            "data": {
+             "card": {
+              "id": "00000000-0000-0000-0000-000000000000",
+              "clientId": "00000000-0000-0000-0000-000000000000",
+              "userId": "00000000-0000-0000-0000-000000000000",
+              "type": "virtual",
+              "status": "inactive",
+              "suspensionReason": null,
+              "terminationReason": null,
+              "serviceProvider": "thredd",
+              "alias": "Gold Card",
+              "bin": "999999",
+              "pan": "999999******6526",
+              "expirationDate": "12/26",
+              "attributes": {
+               "threddCardProduct": "00000"
+              },
+              "connection": {
+               "id": "000000000",
+               "serviceProvider": "thredd",
+               "reference": "000000000",
+               "state": "completed-up-to-date",
+               "status": "inactive",
+               "method": "built-in",
+               "error": null
+              }
+             }
+            },
+            "connect": {},
+            "metadata": {}
+           }
+          },
+          "status-suspension": {
+           "description": "status-suspension",
+           "value": {
+            "workflow": {
+             "code": "client.direct"
+            },
+            "data": {
+             "card": {
+              "id": "00000000-0000-0000-0000-000000000000",
+              "clientId": "00000000-0000-0000-0000-000000000000",
+              "userId": "00000000-0000-0000-0000-000000000000",
+              "type": "virtual",
+              "status": "suspended",
+              "suspensionReason": "user-requested",
+              "terminationReason": null,
+              "serviceProvider": "thredd",
+              "alias": "Platinium Plus Debit Card",
+              "bin": "999999",
+              "pan": "999999******6526",
+              "expirationDate": "12/26",
+              "attributes": {
+               "threddCardProduct": "00000"
+              },
+              "connection": {
+               "id": "000000000",
+               "serviceProvider": "thredd",
+               "reference": "000000000",
+               "state": "completed-up-to-date",
+               "status": "user-requested",
+               "method": "built-in",
+               "error": null
+              }
+             }
+            },
+            "connect": {},
+            "metadata": {}
+           }
+          },
+          "status-termination": {
+           "description": "status-termination",
+           "value": {
+            "workflow": {
+             "code": "client.direct"
+            },
+            "data": {
+             "card": {
+              "id": "00000000-0000-0000-0000-000000000000",
+              "clientId": "00000000-0000-0000-0000-000000000000",
+              "userId": "00000000-0000-0000-0000-000000000000",
+              "type": "virtual",
+              "status": "terminated",
+              "suspensionReason": null,
+              "terminationReason": "terminated-by-third-party",
+              "serviceProvider": "thredd",
+              "alias": "Gold Card",
+              "bin": "999999",
+              "pan": "999999******6526",
+              "expirationDate": "12/26",
+              "attributes": {
+               "threddCardProduct": "00000"
+              },
+              "connection": {
+               "id": "000000000",
+               "serviceProvider": "thredd",
+               "reference": "000000000",
+               "state": "completed-up-to-date",
+               "status": "terminated-by-third-party",
+               "method": "built-in",
+               "error": null
+              }
+             }
+            },
+            "connect": {},
+            "metadata": {}
+           }
+          },
+          "alias-update": {
+           "description": "alias-update",
+           "value": {
+            "workflow": {
+             "code": "client.direct"
+            },
+            "data": {
+             "card": {
+              "alias": "Platinium Card"
+             }
+            },
+            "connect": {},
+            "metadata": {}
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "202": {
+        "description": "Card updated successfully",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardUpdateResponse"
+          },
+          "examples": {
+           "status-inactivation": {
+            "description": "status-inactivation",
+            "value": {
+             "workflow": {
+              "code": "client.direct"
+             },
+             "data": {
+              "card": {
+               "id": "00000000-0000-0000-0000-000000000000",
+               "clientId": "00000000-0000-0000-0000-000000000000",
+               "userId": "00000000-0000-0000-0000-000000000000",
+               "type": "virtual",
+               "status": "inactive",
+               "suspensionReason": null,
+               "terminationReason": null,
+               "serviceProvider": "thredd",
+               "alias": "Gold Card",
+               "bin": "999999",
+               "pan": "999999******6526",
+               "expirationDate": "12/26",
+               "attributes": {
+                "threddCardProduct": "00000"
+               },
+               "connection": {
+                "id": "000000000",
+                "serviceProvider": "thredd",
+                "reference": "000000000",
+                "state": "completed-up-to-date",
+                "status": "inactive",
+                "method": "built-in",
+                "error": null
+               }
+              }
+             },
+             "connect": {},
+             "metadata": {}
+            }
+           },
+           "status-suspension": {
+            "description": "status-suspension",
+            "value": {
+             "workflow": {
+              "code": "client.direct"
+             },
+             "data": {
+              "card": {
+               "id": "00000000-0000-0000-0000-000000000000",
+               "clientId": "00000000-0000-0000-0000-000000000000",
+               "userId": "00000000-0000-0000-0000-000000000000",
+               "type": "virtual",
+               "status": "suspended",
+               "suspensionReason": "user-requested",
+               "terminationReason": null,
+               "serviceProvider": "thredd",
+               "alias": "Platinium Plus Debit Card",
+               "bin": "999999",
+               "pan": "999999******6526",
+               "expirationDate": "12/26",
+               "attributes": {
+                "threddCardProduct": "00000"
+               },
+               "connection": {
+                "id": "000000000",
+                "serviceProvider": "thredd",
+                "reference": "000000000",
+                "state": "completed-up-to-date",
+                "status": "user-requested",
+                "method": "built-in",
+                "error": null
+               }
+              }
+             },
+             "connect": {},
+             "metadata": {}
+            }
+           },
+           "status-termination": {
+            "description": "status-termination",
+            "value": {
+             "workflow": {
+              "code": "client.direct"
+             },
+             "data": {
+              "card": {
+               "id": "00000000-0000-0000-0000-000000000000",
+               "clientId": "00000000-0000-0000-0000-000000000000",
+               "userId": "00000000-0000-0000-0000-000000000000",
+               "type": "virtual",
+               "status": "terminated",
+               "suspensionReason": null,
+               "terminationReason": "lost-card",
+               "serviceProvider": "thredd",
+               "alias": "Platinium Plus Debit Card",
+               "bin": "999999",
+               "pan": "999999******6526",
+               "expirationDate": "12/26",
+               "attributes": {
+                "threddCardProduct": "00000"
+               },
+               "connection": {
+                "id": "000000000",
+                "serviceProvider": "thredd",
+                "reference": "000000000",
+                "state": "completed-up-to-date",
+                "status": "terminated-by-third-party",
+                "method": "built-in",
+                "error": null
+               }
+              }
+             },
+             "connect": {},
+             "metadata": {}
+            }
+           },
+           "alias-update": {
+            "description": "alias-update",
+            "value": {
+             "workflow": {
+              "code": "client.direct"
+             },
+             "data": {
+              "card": {
+               "id": "00000000-0000-0000-0000-000000000000",
+               "clientId": "00000000-0000-0000-0000-000000000000",
+               "userId": "00000000-0000-0000-0000-000000000000",
+               "type": "virtual",
+               "status": "terminated",
+               "suspensionReason": null,
+               "terminationReason": "terminated-by-third-party",
+               "serviceProvider": "thredd",
+               "alias": "Gold Card",
+               "bin": "999999",
+               "pan": "999999******6526",
+               "expirationDate": "12/26",
+               "attributes": {
+                "threddCardProduct": "00000"
+               },
+               "connection": {
+                "id": "000000000",
+                "serviceProvider": "thredd",
+                "reference": "000000000",
+                "state": "completed-up-to-date",
+                "status": "terminated-by-third-party",
+                "method": "built-in",
+                "error": null
+               }
+              }
+             },
+             "connect": {},
+             "metadata": {}
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AccountStatus": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "inactive",
+       "suspended",
+       "closed",
+       "declined"
+      ]
+     },
+     "Address": {
+      "required": [
+       "city",
+       "country",
+       "street"
+      ],
+      "type": "object",
+      "properties": {
+       "country": {
+        "maxLength": 2,
+        "minLength": 2,
+        "pattern": "^[A-Z]{2}$",
+        "type": "string"
+       },
+       "region": {
+        "type": "string"
+       },
+       "postalCode": {
+        "type": "string"
+       },
+       "city": {
+        "type": "string"
+       },
+       "street": {
+        "type": "string"
+       },
+       "houseNumber": {
+        "type": "string"
+       },
+       "refinement": {
+        "type": "string"
+       }
+      },
+      "description": "delivery address of card"
+     },
+     "AttributeMap": {
+      "type": "object",
+      "description": "attributes of card"
+     },
+     "Card": {
+      "required": [
+       "clientId",
+       "id",
+       "status",
+       "type",
+       "userId"
+      ],
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string",
+        "description": "ID of card",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "clientId": {
+        "type": "string",
+        "description": "ID of client",
+        "format": "uuid"
+       },
+       "userId": {
+        "type": "string",
+        "description": "ID of user",
+        "format": "uuid"
+       },
+       "type": {
+        "$ref": "#/components/schemas/CardType"
+       },
+       "status": {
+        "$ref": "#/components/schemas/CardStatus"
+       },
+       "suspensionReason": {
+        "$ref": "#/components/schemas/CardSuspensionReason"
+       },
+       "terminationReason": {
+        "$ref": "#/components/schemas/CardTerminationReason"
+       },
+       "serviceProvider": {
+        "type": "string",
+        "description": "service provider of card"
+       },
+       "alias": {
+        "maxLength": 30,
+        "type": "string",
+        "description": "alias of card"
+       },
+       "bin": {
+        "maxLength": 6,
+        "minLength": 6,
+        "type": "string",
+        "description": "bin value of card",
+        "readOnly": true
+       },
+       "pan": {
+        "maxLength": 16,
+        "minLength": 16,
+        "type": "string",
+        "description": "masked pan value of card",
+        "readOnly": true
+       },
+       "expirationDate": {
+        "maxLength": 5,
+        "type": "string",
+        "description": "expiration date of card",
+        "readOnly": true
+       },
+       "deliveryAddress": {
+        "$ref": "#/components/schemas/Address"
+       },
+       "attributes": {
+        "$ref": "#/components/schemas/AttributeMap"
+       },
+       "linkedAccounts": {
+        "type": "array",
+        "description": "accounts linked to card",
+        "readOnly": true,
+        "items": {
+         "$ref": "#/components/schemas/CardAccountListQueryOutput"
+        }
+       },
+       "connection": {
+        "$ref": "#/components/schemas/CardConnection"
+       }
+      },
+      "description": "Card Resource Object"
+     },
+     "CardAccountListQueryOutput": {
+      "type": "object",
+      "properties": {
+       "accountId": {
+        "type": "string",
+        "format": "uuid"
+       },
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      },
+      "description": "accounts linked to card",
+      "readOnly": true
+     },
+     "CardConnection": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "serviceProvider": {
+        "type": "string"
+       },
+       "reference": {
+        "type": "string"
+       },
+       "state": {
+        "$ref": "#/components/schemas/ServiceProviderConnectionState"
+       },
+       "status": {
+        "$ref": "#/components/schemas/ThirdPartyCardStatus"
+       },
+       "method": {
+        "$ref": "#/components/schemas/ConnectMethod"
+       },
+       "error": {
+        "$ref": "#/components/schemas/ConnectionErrorResource"
+       }
+      },
+      "description": "Card Connection Resource Object",
+      "readOnly": true
+     },
+     "CardStatus": {
+      "type": "string",
+      "description": "status of card",
+      "readOnly": true,
+      "enum": [
+       "pending",
+       "declined",
+       "active",
+       "inactive",
+       "suspended",
+       "terminated"
+      ]
+     },
+     "CardSuspensionReason": {
+      "type": "string",
+      "description": "suspension reason of card",
+      "enum": [
+       "user-requested",
+       "suspected-fraud",
+       "suspended-by-third-party"
+      ]
+     },
+     "CardTerminationReason": {
+      "type": "string",
+      "description": "termination reason of card",
+      "enum": [
+       "lost-card",
+       "stolen-card",
+       "expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardType": {
+      "type": "string",
+      "description": "type of card",
+      "enum": [
+       "virtual",
+       "physical"
+      ]
+     },
+     "ConnectMethod": {
+      "type": "string",
+      "enum": [
+       "built-in",
+       "plug-in"
+      ]
+     },
+     "ConnectionErrorResource": {
+      "type": "object",
+      "properties": {
+       "category": {
+        "$ref": "#/components/schemas/ErrorCategory"
+       },
+       "origin": {
+        "$ref": "#/components/schemas/ErrorOrigin"
+       },
+       "code": {
+        "type": "string"
+       },
+       "message": {
+        "type": "string"
+       },
+       "attributes": {
+        "type": "object",
+        "additionalProperties": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "ErrorCategory": {
+      "type": "string",
+      "enum": [
+       "functional",
+       "technical"
+      ]
+     },
+     "ErrorOrigin": {
+      "type": "string",
+      "enum": [
+       "customer",
+       "platform",
+       "provider"
+      ]
+     },
+     "ServiceProviderConnectionState": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "creation-in-progress",
+       "update-in-progress",
+       "dependency-completed",
+       "completed-up-to-date",
+       "completed-outdated",
+       "dependency-failed",
+       "creation-failed"
+      ]
+     },
+     "ThirdPartyCardStatus": {
+      "type": "string",
+      "enum": [
+       "active",
+       "inactive",
+       "suspended-user-requested",
+       "suspended-suspected-fraud",
+       "suspended-by-third-party",
+       "terminated-lost-card",
+       "terminated-stolen-card",
+       "terminated-expired-card",
+       "termination-requested",
+       "terminated-by-third-party"
+      ]
+     },
+     "CardUpdateConnectContainer": {
+      "type": "object"
+     },
+     "CardUpdateDataContainer": {
+      "required": [
+       "card"
+      ],
+      "type": "object",
+      "properties": {
+       "card": {
+        "$ref": "#/components/schemas/Card"
+       }
+      }
+     },
+     "CardUpdateMetadataContainer": {
+      "type": "object"
+     },
+     "CardUpdateResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardUpdateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardUpdateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardUpdateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardUpdateMetadataContainer"
+       }
+      }
+     },
+     "CardUpdateWorkflowContainer": {
+      "required": [
+       "code"
+      ],
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "description": "workflow code",
+        "enum": [
+         "client.direct"
+        ]
+       }
+      }
+     },
+     "CardUpdateRequest": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardUpdateWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardUpdateDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardUpdateConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardUpdateMetadataContainer"
+       }
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ },
+ {
+  "page": "https://developer.integrated.finance/reference/cardslinkedaccountremove.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Card API",
+    "description": "Operations for Cards",
+    "version": "1"
+   },
+   "servers": [
+    {
+     "url": "https://sandbox-api.integrated.finance/v1/{instanceId}",
+     "description": "Sandbox",
+     "variables": {}
+    },
+    {
+     "url": "https://api.integrated.finance/v1/{instanceId}",
+     "description": "Production",
+     "variables": {}
+    }
+   ],
+   "paths": {
+    "/cards/{cardId}/linked-accounts/{linkedAccountId}": {
+     "delete": {
+      "tags": [
+       "Cards"
+      ],
+      "summary": " Remove linked account of a card",
+      "operationId": "cards.linkedAccount.remove",
+      "parameters": [
+       {
+        "name": "cardId",
+        "in": "path",
+        "description": "ID of card in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       },
+       {
+        "name": "linkedAccountId",
+        "in": "path",
+        "description": "ID of account linked to the card in UUID format",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "uuid"
+        }
+       }
+      ],
+      "responses": {
+       "201": {
+        "description": "The account has been successfully unlinked from the card",
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/CardAccountDeleteResponse"
+          }
+         }
+        }
+       },
+       "400": {
+        "description": "Missing required field",
+        "content": {
+         "application/json": {
+          "examples": {
+           "error-required-validation": {
+            "description": "error-required-validation",
+            "value": {
+             "timestamp": "2023-02-12T13:06:35.0286835",
+             "message": "Parameter data.linkedAccount.accountId cannot be null or empty.",
+             "code": "common.coding.functional.invalid_input",
+             "messageParameters": [
+              "data.linkedAccount.accountId"
+             ]
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "components": {
+    "schemas": {
+     "AccountStatus": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "inactive",
+       "suspended",
+       "closed",
+       "declined"
+      ]
+     },
+     "LinkedAccount": {
+      "required": [
+       "accountId"
+      ],
+      "type": "object",
+      "properties": {
+       "accountId": {
+        "type": "string",
+        "description": "ID of the account linked to the card",
+        "format": "uuid",
+        "readOnly": true
+       },
+       "accountStatus": {
+        "$ref": "#/components/schemas/AccountStatus"
+       }
+      },
+      "description": "Linked Account Resource Object"
+     },
+     "CardAccountDeleteConnectContainer": {
+      "type": "object"
+     },
+     "CardAccountDeleteDataContainer": {
+      "type": "object",
+      "properties": {
+       "cardAccount": {
+        "$ref": "#/components/schemas/LinkedAccount"
+       }
+      }
+     },
+     "CardAccountDeleteMetadataContainer": {
+      "type": "object"
+     },
+     "CardAccountDeleteResponse": {
+      "required": [
+       "connect",
+       "data",
+       "metadata",
+       "workflow"
+      ],
+      "type": "object",
+      "properties": {
+       "workflow": {
+        "$ref": "#/components/schemas/CardAccountDeleteWorkflowContainer"
+       },
+       "data": {
+        "$ref": "#/components/schemas/CardAccountDeleteDataContainer"
+       },
+       "connect": {
+        "$ref": "#/components/schemas/CardAccountDeleteConnectContainer"
+       },
+       "metadata": {
+        "$ref": "#/components/schemas/CardAccountDeleteMetadataContainer"
+       }
+      }
+     },
+     "CardAccountDeleteWorkflowContainer": {
+      "type": "object"
+     }
+    }
+   },
+   "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   }
+  }
+ }
+]

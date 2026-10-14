@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-account-open-banking-consent-update-request-schema.json",
+  "title": "AccountOpenBankingConsentUpdateRequest",
+  "description": "request model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-open-banking-api-openapi.yml#/components/schemas/AccountOpenBankingConsentUpdateRequest",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/AccountOpenBankingConsentUpdateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/AccountOpenBankingConsentUpdateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/AccountOpenBankingConsentUpdateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/AccountOpenBankingConsentUpdateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "AccountOpenBankingConsentOutput": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string"
+        },
+        "consent": {
+          "$ref": "#/$defs/OpenBankingConsent"
+        }
+      },
+      "description": "account open banking consent data model",
+      "readOnly": true
+    },
+    "AccountOpenBankingConsentUpdateConnectContainer": {
+      "type": "object",
+      "description": "connect container"
+    },
+    "AccountOpenBankingConsentUpdateDataContainer": {
+      "type": "object",
+      "properties": {
+        "consent": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "description": "custom map including fields to update"
+          },
+          "description": "custom map including fields to update"
+        },
+        "account open banking consent": {
+          "$ref": "#/$defs/AccountOpenBankingConsentOutput"
+        }
+      },
+      "description": "data container"
+    },
+    "AccountOpenBankingConsentUpdateMetadataContainer": {
+      "type": "object",
+      "description": "metadata container"
+    },
+    "AccountOpenBankingConsentUpdateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "direct"
+          ]
+        }
+      },
+      "description": "workflow container"
+    },
+    "OpenBankingConsent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id of open banking consent"
+        },
+        "thirdPartyProvider": {
+          "$ref": "#/$defs/ThirdPartyOpenBankingProvider"
+        },
+        "status": {
+          "$ref": "#/$defs/OpenBankingConsentStatus"
+        },
+        "content": {
+          "$ref": "#/$defs/OpenBankingConsentContentResource"
+        },
+        "requestCreatedDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent request was created",
+          "format": "date-time"
+        },
+        "requestDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent request was created",
+          "format": "date-time"
+        },
+        "requestExpiryDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent request expires (or expired)",
+          "format": "date-time"
+        },
+        "grantedDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent was granted",
+          "format": "date-time"
+        },
+        "grantDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent was granted",
+          "format": "date-time"
+        },
+        "expiryDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent expires / expired",
+          "format": "date-time"
+        },
+        "grantExpiryDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent expires / expired",
+          "format": "date-time"
+        },
+        "revokedDateTime": {
+          "type": "string",
+          "description": "Date & time that the consent was revoked by the account holder",
+          "format": "date-time"
+        }
+      },
+      "description": "Open Banking Consent Resource Object"
+    },
+    "OpenBankingConsentContentResource": {
+      "required": [
+        "scope"
+      ],
+      "type": "object",
+      "properties": {
+        "scope": {
+          "type": "string"
+        }
+      },
+      "description": "content of open banking consent"
+    },
+    "OpenBankingConsentStatus": {
+      "type": "string",
+      "description": "status of open banking consent",
+      "enum": [
+        "awaiting-authorisation",
+        "awaiting-exchange",
+        "authorisation-declined",
+        "authorised",
+        "revoked",
+        "expired",
+        "rejected",
+        "consumed"
+      ]
+    },
+    "ThirdPartyOpenBankingProvider": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "applicationName": {
+          "type": "string"
+        },
+        "applicationDescription": {
+          "type": "string"
+        },
+        "applicationWebsite": {
+          "type": "string"
+        }
+      },
+      "description": "parameters of open banking provider"
+    }
+  }
+}

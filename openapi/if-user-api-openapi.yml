@@ -1,0 +1,1540 @@
+openapi: 3.0.1
+info:
+  title: User API
+  description: Operations for Users
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+paths:
+  /users:
+    get:
+      tags:
+      - Users
+      summary: List Users
+      operationId: users.list
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.user.email,desc
+      - name: data.user.email
+        in: query
+        schema:
+          type: string
+      - name: data.user.category
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - external
+      responses:
+        '200':
+          description: User list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListPlatformResponse'
+              example:
+                workflow: {}
+                data:
+                  users:
+                  - id: a0d58541-6c73-4aed-90ea-1eddc7b7413c
+                    email: test.user@integrated.finance
+                    givenName: Test
+                    familyName: User
+                    category: external
+                    type: human
+                    status: active
+                connect: {}
+                metadata:
+                  page:
+                    size: 10
+                    number: 0
+                    totalElements: 1
+                    totalPages: 1
+    post:
+      tags:
+      - Users
+      summary: Create a User
+      operationId: users.create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+            examples:
+              human-external-invitation:
+                description: human-external-invitation
+                value:
+                  workflow:
+                    code: human.external.invitation
+                  data:
+                    user:
+                      email: sherlock.holmes@integrated.finance
+                      identity:
+                        type: individual
+                        givenName: Sherlock
+                        familyName: Holmes
+                    invitations:
+                    - clientId: 00000000-0000-0000-0000-000000000000
+                      userClientRelation: director
+                  connect: {}
+                  metadata: {}
+              human-external-direct:
+                description: human-external-direct
+                value: '{  "workflow": {    "code": "human.external.direct"  },  "data": {    "user": {      "email": "sherlock.holmes@integrated.finance",      "identity": {        "type": "individual",        "givenName": "sherlock",        "familyName": "holmes",        "birthDate": "1991-01-14"      },      "profile": {        "phone": "+901234567890",        "residentialAddress": {          "country": "GB",          "region": "England",          "city": "London",          "street": "Baker Street",          "houseNumber": "221B",          "postalCode": "XYZ ABC",          "refinement": ""        }      }    }    "userClientRelations": [      {        "clientId": "00000000-0000-0000-0000-000000000000"      }    ]  },  "connect": {},  "metadata": {}}'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+              examples:
+                human-external-invitation:
+                  description: human-external-invitation
+                  value:
+                    workflow:
+                      code: human.external.invitation
+                    data:
+                      user:
+                        email: sherlock.holmes@integrated.finance
+                        identity:
+                          type: individual
+                          givenName: Sherlock
+                          familyName: Holmes
+                      invitations:
+                      - id: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: pending
+                        userClientRelation: director
+                    connect: {}
+                    metadata: {}
+                human-external-direct:
+                  description: human-external-direct
+                  value:
+                    workflow:
+                      code: human.external.direct
+                    data:
+                      user:
+                        email: sherlock.holmes@integrated.finance
+                        identity:
+                          type: individual
+                          givenName: sherlock
+                          familyName: holmes
+                          birthDate: '1991-01-14'
+                        profile:
+                          phone: '+901234567890'
+                          residentialAddress:
+                            country: GB
+                            region: England
+                            city: London
+                            street: Baker Street
+                            houseNumber: 221B
+                            postalCode: XYZ ABC
+                            refinement: ''
+                        category: external
+                        type: human
+                        status: active
+                      userClientRelations:
+                      - id: 00000000-0000-0000-0000-000000000000
+                        userId: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: allowed
+                    connect: {}
+                    metadata: {}
+  /users/{email}/invitations:
+    get:
+      tags:
+      - User Invitations
+      summary: List User Invitations
+      operationId: users.list_1
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.userInvitation.clientId,desc
+      - name: data.userInvitation.clientId
+        in: query
+        schema:
+          type: string
+      - name: data.userInvitation.userClientRelation
+        in: query
+        schema:
+          $ref: '#/components/schemas/UserClientRelationType'
+      - name: data.userInvitation.status
+        in: query
+        schema:
+          $ref: '#/components/schemas/UserInvitationStatus'
+      - name: email
+        in: path
+        description: email of user
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User invitation list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInvitationListResponse'
+              example:
+                workflow: {}
+                data:
+                  userInvitations:
+                  - id: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    userClientRelation: director
+                    status: pending
+                connect: {}
+                metadata:
+                  page:
+                    size: 10
+                    number: 0
+                    totalElements: 1
+                    totalPages: 1
+  /users/{email}/invitations/{id}:
+    get:
+      tags:
+      - User Invitations
+      summary: Get a User Invitation
+      operationId: user-invitations.get
+      parameters:
+      - name: email
+        in: path
+        description: email of user invitation
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of user invitation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: User invitation resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInvitationGetResponse'
+              example:
+                workflow: {}
+                data:
+                  userInvitation:
+                    id: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    userClientRelation: director
+                    status: pending
+                connect: {}
+                metadata: {}
+    patch:
+      tags:
+      - User Invitations
+      summary: Update a User Invitation
+      operationId: user-invitations.update
+      parameters:
+      - name: email
+        in: path
+        description: email of user invitation
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of user invitation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInvitationUpdatePlatformRequest'
+            examples:
+              invitation-cancellation:
+                description: invitation-cancellation
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    userInvitation:
+                      status: cancelled
+                  connect: {}
+                  metadata: {}
+      responses:
+        '202':
+          description: User invitation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInvitationUpdatePlatformResponse'
+              examples:
+                invitation-cancellation:
+                  description: invitation-cancellation
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      userInvitation:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        userClientRelation: director
+                        status: cancelled
+                    connect: {}
+                    metadata: {}
+  /users/{id}:
+    get:
+      tags:
+      - Users
+      summary: Get a User
+      operationId: users.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: User resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetResponse'
+              example:
+                workflow: {}
+                data:
+                  user:
+                    id: 00000000-0000-0000-0000-000000000000
+                    email: test.user@integrated.finance
+                    identity:
+                      type: individual
+                      givenName: sherlock
+                      familyName: holmes
+                    category: external
+                    type: human
+                    status: active
+                connect: {}
+                metadata: {}
+    patch:
+      tags:
+      - Users
+      summary: Update a User
+      operationId: users.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+            examples:
+              direct-status-update:
+                description: direct-status-update
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    user:
+                      status: inactive
+                  connect: {}
+                  metadata: {}
+              direct-identity-update:
+                description: direct-identity-update
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    user:
+                      identity:
+                        givenName: sherlock
+                        familyName: holmes
+                        birthDate: '1991-01-14'
+                  connect: {}
+                  metadata: {}
+      responses:
+        '202':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateResponse'
+              examples:
+                direct-status-update:
+                  description: direct-status-update
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      user:
+                        id: 00000000-0000-0000-0000-000000000000
+                        email: test.user@integrated.finance
+                        identity:
+                          type: individual
+                          givenName: sherlock
+                          familyName: holmes
+                          birthDate: '1991-01-15'
+                        category: external
+                        type: human
+                        status: inactive
+                    connect: {}
+                    metadata: {}
+                direct-identity-update:
+                  description: direct-identity-update
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      user:
+                        id: 00000000-0000-0000-0000-000000000000
+                        email: test.user@integrated.finance
+                        identity:
+                          type: individual
+                          givenName: sherlock
+                          familyName: holmes
+                          birthDate: '1991-01-15'
+                        category: external
+                        type: human
+                        status: active
+                    connect: {}
+                    metadata: {}
+  /users/{userId}/client-relations:
+    get:
+      tags:
+      - User & Client Relations
+      summary: List User Client Relations
+      operationId: user-client-relations.list
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.userClientRelation.clientId,desc
+      - name: data.userClientRelation.clientId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: id of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: User client relation list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationListResponse'
+              example:
+                workflow: {}
+                data:
+                  userClientRelations:
+                  - id: 00000000-0000-0000-0000-000000000000
+                    userId: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    status: allowed
+                connect: {}
+                metadata:
+                  page:
+                    size: 20
+                    number: 0
+                    totalElements: 1
+                    totalPages: 1
+    post:
+      tags:
+      - User & Client Relations
+      summary: Create a User Client Relation
+      operationId: user-client-relations.create
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserClientRelationCreatePlatformRequest'
+            examples:
+              direct:
+                description: direct
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    userClientRelations:
+                    - clientId: 00000000-0000-0000-0000-000000000000
+                    - clientId: 00000000-0000-0000-0000-000000000000
+                  connect: '{}'
+                  metadata: '{}'
+      responses:
+        '201':
+          description: User client relation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationCreatePlatformResponse'
+              examples:
+                direct:
+                  description: direct
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      userClientRelations:
+                      - id: 00000000-0000-0000-0000-000000000000
+                        userId: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: allowed
+                      - id: 00000000-0000-0000-0000-000000000000
+                        userId: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: allowed
+                    connect: '{}'
+                    metadata: '{}'
+  /users/{userId}/client-relations/{id}:
+    get:
+      tags:
+      - User & Client Relations
+      summary: Get a User Client Relation
+      operationId: user-client-relations.get
+      parameters:
+      - name: userId
+        in: path
+        description: id of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: id of user client relation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: User client relation returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationGetResponse'
+              example:
+                workflow: {}
+                data:
+                  userClientRelation:
+                    id: 00000000-0000-0000-0000-000000000000
+                    userId: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    status: allowed
+                connect: {}
+                metadata: {}
+    patch:
+      tags:
+      - User & Client Relations
+      summary: Update a User Client Relation
+      operationId: user-client-relations.update
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: ID of user client relation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserClientRelationUpdatePlatformRequest'
+            examples:
+              revoking-user-access:
+                description: revoking-user-access
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    userClientRelation:
+                      status: revoked
+                  connect: '{}'
+                  metadata: '{}'
+      responses:
+        '202':
+          description: User client relation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationUpdatePlatformResponse'
+              examples:
+                revoking-user-access:
+                  description: revoking-user-access
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      userClientRelation:
+                        id: 00000000-0000-0000-0000-000000000000
+                        userId: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: revoked
+                    connect: {}
+                    metadata: {}
+components:
+  schemas:
+    UserClientRelation:
+      required:
+      - clientId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/UserClientStatus'
+    UserClientStatus:
+      type: string
+      readOnly: true
+      enum:
+      - allowed
+      - revoked
+    Direction:
+      type: string
+      enum:
+      - ASC
+      - DESC
+    EmbeddedWrappers:
+      type: object
+      properties:
+        preferCollections:
+          type: boolean
+    HateoasPageableHandlerMethodArgumentResolver:
+      type: object
+      properties:
+        fallbackPageable:
+          $ref: '#/components/schemas/Pageable'
+        pageParameterName:
+          type: string
+        sizeParameterName:
+          type: string
+        prefix:
+          type: string
+        qualifierDelimiter:
+          type: string
+        maxPageSize:
+          type: integer
+          format: int32
+        oneIndexedParameters:
+          type: boolean
+        sortResolver:
+          $ref: '#/components/schemas/HateoasSortHandlerMethodArgumentResolver'
+    HateoasSortHandlerMethodArgumentResolver:
+      type: object
+      properties:
+        fallbackSort:
+          $ref: '#/components/schemas/Sort'
+        sortParameter:
+          type: string
+        propertyDelimiter:
+          type: string
+        qualifierDelimiter:
+          type: string
+    NullHandling:
+      type: string
+      enum:
+      - NATIVE
+      - NULLS_FIRST
+      - NULLS_LAST
+    Order:
+      type: object
+      properties:
+        direction:
+          $ref: '#/components/schemas/Direction'
+        property:
+          type: string
+        ignoreCase:
+          type: boolean
+        nullHandling:
+          $ref: '#/components/schemas/NullHandling'
+        ascending:
+          type: boolean
+        descending:
+          type: boolean
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    Pageable:
+      type: object
+      properties:
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
+    PagedResourcesAssemblerUserClient:
+      type: object
+      properties:
+        pageableResolver:
+          $ref: '#/components/schemas/HateoasPageableHandlerMethodArgumentResolver'
+        baseUri:
+          $ref: '#/components/schemas/UriComponents'
+        wrappers:
+          $ref: '#/components/schemas/EmbeddedWrappers'
+        forceFirstAndLastRels:
+          type: boolean
+    Sort:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        empty:
+          type: boolean
+        unsorted:
+          type: boolean
+        sorted:
+          type: boolean
+    UriComponents:
+      type: object
+      properties:
+        scheme:
+          type: string
+        fragment:
+          type: string
+    UserClientRelationListConnectContainer:
+      type: object
+    UserClientRelationListDataContainer:
+      type: object
+      properties:
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelationResourceQueryInput'
+        userClientRelations:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/UserClientRelation'
+    UserClientRelationListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    UserClientRelationListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationListDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationListMetadataContainer'
+    UserClientRelationListWorkflowContainer:
+      type: object
+    UserClientRelationResourceQueryInput:
+      type: object
+      properties:
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        pagingAssembler:
+          $ref: '#/components/schemas/PagedResourcesAssemblerUserClient'
+        userId:
+          type: string
+          format: uuid
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserClientStatus'
+        clientId:
+          type: string
+          format: uuid
+      writeOnly: true
+    UserClientRelationCreatePlatformConnectContainer:
+      type: object
+    UserClientRelationCreatePlatformDataContainer:
+      type: object
+      properties:
+        userClientRelations:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserClientRelation'
+    UserClientRelationCreatePlatformMetadataContainer:
+      type: object
+    UserClientRelationCreatePlatformResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformMetadataContainer'
+    UserClientRelationCreatePlatformWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/UserClientRelationCreateWorkflow'
+    UserClientRelationCreateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+      - direct
+    UserClientRelationCreatePlatformRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformMetadataContainer'
+    UserClientRelationGetConnectContainer:
+      type: object
+    UserClientRelationGetDataContainer:
+      type: object
+      properties:
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelation'
+    UserClientRelationGetMetadataContainer:
+      type: object
+    UserClientRelationGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationGetMetadataContainer'
+    UserClientRelationGetWorkflowContainer:
+      type: object
+    UserClientRelationUpdatePlatformConnectContainer:
+      type: object
+    UserClientRelationUpdatePlatformDataContainer:
+      type: object
+      properties:
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelation'
+    UserClientRelationUpdatePlatformMetadataContainer:
+      type: object
+    UserClientRelationUpdatePlatformResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformMetadataContainer'
+    UserClientRelationUpdatePlatformWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/UserClientRelationUpdateWorkflow'
+    UserClientRelationUpdateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+      - direct
+    UserClientRelationUpdatePlatformRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformMetadataContainer'
+    Address:
+      required:
+      - city
+      - country
+      - street
+      type: object
+      properties:
+        country:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        houseNumber:
+          type: string
+        refinement:
+          type: string
+    BankingUserProfile:
+      type: object
+      properties:
+        phone:
+          type: string
+        residentialAddress:
+          $ref: '#/components/schemas/Address'
+    BankingUserStatus:
+      type: string
+      readOnly: true
+      enum:
+      - active
+      - inactive
+    LegalEntityIdentification:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/LegalEntityIdentificationType'
+        identificationNumber:
+          type: string
+        issuingCountry:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        issueDate:
+          type: string
+          format: date
+        expirationDate:
+          type: string
+          format: date
+    LegalEntityIdentificationType:
+      type: string
+      enum:
+      - registration-number
+      - passport
+      - identity-card
+      - driving-licence
+      - foreign-identity-card
+      - tax-number
+    LegalEntityIdentityIndividual:
+      required:
+      - familyName
+      - givenName
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/LegalEntityType'
+        country:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        identifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/LegalEntityIdentification'
+        givenName:
+          type: string
+        familyName:
+          type: string
+        birthDate:
+          type: string
+          format: date
+    LegalEntityType:
+      type: string
+      enum:
+      - corporate
+      - individual
+    User:
+      required:
+      - category
+      - email
+      - identity
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+        givenName:
+          type: string
+        familyName:
+          type: string
+        identity:
+          $ref: '#/components/schemas/LegalEntityIdentityIndividual'
+        category:
+          type: string
+          readOnly: true
+          enum:
+          - external
+        type:
+          type: string
+          readOnly: true
+          enum:
+          - human
+        profile:
+          $ref: '#/components/schemas/BankingUserProfile'
+        status:
+          $ref: '#/components/schemas/BankingUserStatus'
+      readOnly: true
+    UserCategory:
+      type: string
+      enum:
+      - internal
+      - external
+    UserListConnectContainer:
+      type: object
+    UserListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    UserListPlatformDataContainer:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserListPlatformQueryInput'
+        users:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/User'
+    UserListPlatformQueryInput:
+      type: object
+      properties:
+        title:
+          type: string
+        email:
+          type: array
+          items:
+            type: string
+        userCategory:
+          $ref: '#/components/schemas/UserCategory'
+        category:
+          $ref: '#/components/schemas/UserCategory'
+      writeOnly: true
+    UserListPlatformResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserListPlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserListPlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserListMetadataContainer'
+    UserListPlatformWorkflowContainer:
+      type: object
+    UserClientRelationType:
+      type: string
+      description: user's relation with client
+      enum:
+      - director
+      - shareholder
+      - director-and-shareholder
+      - authorized-person
+    UserCreateConnectContainer:
+      type: object
+    UserCreateDataContainer:
+      required:
+      - user
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        invitations:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserInvitation'
+        userClientRelations:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserClientRelation'
+    UserCreateMetadataContainer:
+      type: object
+    UserCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserCreateMetadataContainer'
+    UserCreateWorkflow:
+      type: string
+      description: unique workflow code
+      enum:
+      - human.external.invitation
+      - human.external.direct
+    UserCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/UserCreateWorkflow'
+    UserInvitation:
+      required:
+      - clientId
+      - id
+      - status
+      - userClientRelation
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          format: uuid
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelationType'
+        status:
+          $ref: '#/components/schemas/UserInvitationStatus'
+    UserInvitationStatus:
+      type: string
+      description: status of invitation
+      readOnly: true
+      enum:
+      - accepted
+      - pending
+      - rejected
+      - cancelled
+    UserCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserCreateMetadataContainer'
+    UserGetConnectContainer:
+      type: object
+    UserGetDataContainer:
+      required:
+      - user
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+    UserGetMetadataContainerModel:
+      type: object
+    UserGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserGetMetadataContainerModel'
+    UserGetWorkflowContainer:
+      type: object
+    UserUpdateConnectContainer:
+      type: object
+    UserUpdateDataContainer:
+      required:
+      - user
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+    UserUpdateMetadataContainer:
+      type: object
+    UserUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserUpdateMetadataContainer'
+    UserUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+    UserUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserUpdateMetadataContainer'
+    UserInvitationListConnectContainer:
+      type: object
+    UserInvitationListDataContainer:
+      required:
+      - userInvitations
+      type: object
+      properties:
+        userInvitation:
+          $ref: '#/components/schemas/UserInvitationListQueryInput'
+        userInvitations:
+          type: array
+          description: collection of user invitations
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/UserInvitation'
+    UserInvitationListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    UserInvitationListQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelationType'
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserInvitationStatus'
+      writeOnly: true
+    UserInvitationListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationListDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationListMetadataContainer'
+    UserInvitationListWorkflowContainer:
+      type: object
+    UserInvitationGetConnectContainer:
+      type: object
+    UserInvitationGetDataContainer:
+      required:
+      - userInvitation
+      type: object
+      properties:
+        userInvitation:
+          $ref: '#/components/schemas/UserInvitation'
+    UserInvitationGetMetadataContainer:
+      type: object
+    UserInvitationGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationGetMetadataContainer'
+    UserInvitationGetWorkflowContainer:
+      type: object
+    UserInvitationUpdatePlatformConnectContainer:
+      type: object
+    UserInvitationUpdatePlatformDataContainer:
+      type: object
+      properties:
+        userInvitation:
+          $ref: '#/components/schemas/UserInvitation'
+    UserInvitationUpdatePlatformMetadataContainer:
+      type: object
+    UserInvitationUpdatePlatformResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformMetadataContainer'
+    UserInvitationUpdatePlatformWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/UserInvitationUpdateWorkflow'
+    UserInvitationUpdateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+      - direct
+    UserInvitationUpdatePlatformRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformMetadataContainer'
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/user-client-relationscreate.md
+  - https://developer.integrated.finance/reference/user-client-relationsget.md
+  - https://developer.integrated.finance/reference/user-client-relationslist.md
+  - https://developer.integrated.finance/reference/user-client-relationsupdate.md
+  - https://developer.integrated.finance/reference/user-invitationsget.md
+  - https://developer.integrated.finance/reference/user-invitationsupdate.md
+  - https://developer.integrated.finance/reference/userscreate.md
+  - https://developer.integrated.finance/reference/usersget.md
+  - https://developer.integrated.finance/reference/userslist.md
+  - https://developer.integrated.finance/reference/userslist_1.md
+  - https://developer.integrated.finance/reference/usersupdate.md
+  merge:
+    pages: 11
+    deduped: 43
+    conflicts_kept_first: 0

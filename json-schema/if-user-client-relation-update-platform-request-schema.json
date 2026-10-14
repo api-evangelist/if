@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-user-client-relation-update-platform-request-schema.json",
+  "title": "UserClientRelationUpdatePlatformRequest",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-user-api-openapi.yml#/components/schemas/UserClientRelationUpdatePlatformRequest",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/UserClientRelationUpdatePlatformWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/UserClientRelationUpdatePlatformDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/UserClientRelationUpdatePlatformConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/UserClientRelationUpdatePlatformMetadataContainer"
+    }
+  },
+  "$defs": {
+    "UserClientRelation": {
+      "required": [
+        "clientId"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "userId": {
+          "type": "string",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "clientId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "$ref": "#/$defs/UserClientStatus"
+        }
+      }
+    },
+    "UserClientRelationUpdatePlatformConnectContainer": {
+      "type": "object"
+    },
+    "UserClientRelationUpdatePlatformDataContainer": {
+      "type": "object",
+      "properties": {
+        "userClientRelation": {
+          "$ref": "#/$defs/UserClientRelation"
+        }
+      }
+    },
+    "UserClientRelationUpdatePlatformMetadataContainer": {
+      "type": "object"
+    },
+    "UserClientRelationUpdatePlatformWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/UserClientRelationUpdateWorkflow"
+        }
+      }
+    },
+    "UserClientRelationUpdateWorkflow": {
+      "type": "string",
+      "description": "workflow code",
+      "enum": [
+        "direct"
+      ]
+    },
+    "UserClientStatus": {
+      "type": "string",
+      "readOnly": true,
+      "enum": [
+        "allowed",
+        "revoked"
+      ]
+    }
+  }
+}

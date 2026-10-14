@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-transaction-account-statement-response-schema.json",
+  "title": "TransactionAccountStatementResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-transaction-account-api-openapi.yml#/components/schemas/TransactionAccountStatementResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/TransactionAccountStatementWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/TransactionAccountStatementDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/TransactionAccountStatementConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/TransactionAccountStatementMetadataContainer"
+    }
+  },
+  "$defs": {
+    "TransactionAccountStatement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Statement ID",
+          "format": "uuid"
+        },
+        "transactionAccountId": {
+          "type": "string",
+          "description": "Transaction account ID",
+          "format": "uuid"
+        },
+        "period": {
+          "$ref": "#/$defs/TransactionAccountStatementPeriod"
+        },
+        "entryDateFrom": {
+          "type": "string",
+          "format": "date"
+        },
+        "entryDateTimeFrom": {
+          "type": "string",
+          "description": "Inclusive UTC ledger entry boundary",
+          "format": "date-time"
+        },
+        "entryDateTimeTo": {
+          "type": "string",
+          "description": "Exclusive UTC ledger entry boundary",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/$defs/TransactionAccountStatementStatus"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "fileCreationDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "failureReason": {
+          "type": "string"
+        }
+      },
+      "description": "Asynchronous account statement"
+    },
+    "TransactionAccountStatementConnectContainer": {
+      "type": "object"
+    },
+    "TransactionAccountStatementCreateCommandInput": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "$ref": "#/$defs/TransactionAccountStatementPeriod"
+        },
+        "entryDateFrom": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "TransactionAccountStatementDataContainer": {
+      "required": [
+        "accountStatement"
+      ],
+      "type": "object",
+      "properties": {
+        "transactionAccountStatement": {
+          "$ref": "#/$defs/TransactionAccountStatementCreateCommandInput"
+        },
+        "accountStatement": {
+          "$ref": "#/$defs/TransactionAccountStatement"
+        }
+      }
+    },
+    "TransactionAccountStatementMetadataContainer": {
+      "type": "object"
+    },
+    "TransactionAccountStatementPeriod": {
+      "type": "string",
+      "enum": [
+        "daily",
+        "weekly",
+        "monthly"
+      ]
+    },
+    "TransactionAccountStatementStatus": {
+      "type": "string",
+      "enum": [
+        "processing",
+        "completed",
+        "failed"
+      ]
+    },
+    "TransactionAccountStatementWorkflowContainer": {
+      "type": "object"
+    }
+  }
+}

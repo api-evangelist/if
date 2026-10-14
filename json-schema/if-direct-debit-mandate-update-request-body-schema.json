@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-direct-debit-mandate-update-request-body-schema.json",
+  "title": "DirectDebitMandateUpdateRequestBody",
+  "description": "request model",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-outgoing-transfer-api-openapi.yml#/components/schemas/DirectDebitMandateUpdateRequestBody",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/DirectDebitMandateUpdateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/DirectDebitMandateUpdateRequestBodyDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/DirectDebitMandateUpdateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/DirectDebitMandateUpdateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "DirectDebitMandateCancellationReason": {
+      "type": "string",
+      "description": "reason the mandate is cancelled: user-requested, account-closed, organization-action",
+      "enum": [
+        "account-closed",
+        "organization-action",
+        "user-requested"
+      ]
+    },
+    "DirectDebitMandateRejectionReason": {
+      "type": "string",
+      "description": "reason the mandate is rejected: user-requested, account-closed, other",
+      "enum": [
+        "account-closed",
+        "user-requested",
+        "other"
+      ]
+    },
+    "DirectDebitMandateUpdateCommandInput": {
+      "required": [
+        "status"
+      ],
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "new status of an active mandate: cancelled or rejected",
+          "enum": [
+            "cancelled",
+            "rejected"
+          ]
+        },
+        "cancellationReason": {
+          "$ref": "#/$defs/DirectDebitMandateCancellationReason"
+        },
+        "rejectionReason": {
+          "$ref": "#/$defs/DirectDebitMandateRejectionReason"
+        }
+      }
+    },
+    "DirectDebitMandateUpdateConnectContainer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "serviceProvider": {
+          "type": "string"
+        }
+      }
+    },
+    "DirectDebitMandateUpdateMetadataContainer": {
+      "type": "object",
+      "description": "metadata container"
+    },
+    "DirectDebitMandateUpdateRequestBodyDataContainer": {
+      "required": [
+        "directDebitMandate"
+      ],
+      "type": "object",
+      "properties": {
+        "directDebitMandate": {
+          "$ref": "#/$defs/DirectDebitMandateUpdateCommandInput"
+        }
+      },
+      "description": "data container of the update request"
+    },
+    "DirectDebitMandateUpdateWorkflow": {
+      "type": "string",
+      "enum": [
+        "client.direct",
+        "organization.direct"
+      ]
+    },
+    "DirectDebitMandateUpdateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/DirectDebitMandateUpdateWorkflow"
+        }
+      },
+      "description": "workflow container"
+    }
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-quote-refresh-request-schema.json",
+  "title": "QuoteRefreshRequest",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-exchange-api-openapi.yml#/components/schemas/QuoteRefreshRequest",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/QuoteRefreshWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/QuoteRefreshDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/QuoteRefreshConnect"
+    },
+    "metadata": {
+      "$ref": "#/$defs/QuoteRefreshMetadataContainer"
+    }
+  },
+  "$defs": {
+    "InformationSourcingMethod": {
+      "type": "string",
+      "description": "configures where the information for pricing will be sourced",
+      "enum": [
+        "explicit",
+        "implicit"
+      ]
+    },
+    "PricingCalculationWorkflowConfiguration": {
+      "type": "object",
+      "properties": {
+        "dryRun": {
+          "type": "boolean"
+        },
+        "sourcingMethod": {
+          "$ref": "#/$defs/InformationSourcingMethod"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "determines whether pricing will be applied or not"
+        },
+        "chargingType": {
+          "$ref": "#/$defs/PricingChargingType"
+        },
+        "chargingMethod": {
+          "$ref": "#/$defs/PricingChargingMethod"
+        }
+      },
+      "description": "pricing workflow context"
+    },
+    "PricingCalculationWorkflowDataInput": {
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "description": "pricing data input"
+    },
+    "PricingChargingMethod": {
+      "type": "string",
+      "description": "configures where this action will be charged from",
+      "enum": [
+        "on-source"
+      ]
+    },
+    "PricingChargingType": {
+      "type": "string",
+      "description": "configures how this action will be charged",
+      "enum": [
+        "fee",
+        "markup",
+        "fee-and-markup"
+      ]
+    },
+    "QuoteRefreshConnect": {
+      "required": [
+        "serviceProvider",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "service provider selection type",
+          "enum": [
+            "explicit"
+          ]
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "account is connected to this service provider ",
+          "enum": [
+            "railsbank"
+          ]
+        }
+      }
+    },
+    "QuoteRefreshDataContainer": {
+      "required": [
+        "quote"
+      ],
+      "type": "object",
+      "properties": {
+        "quote": {
+          "$ref": "#/$defs/QuoteResource"
+        },
+        "pricing": {
+          "$ref": "#/$defs/PricingCalculationWorkflowDataInput"
+        }
+      }
+    },
+    "QuoteRefreshMetadataContainer": {
+      "type": "object"
+    },
+    "QuoteRefreshWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "workflow code",
+          "enum": [
+            "client.direct.spot"
+          ]
+        },
+        "pricing": {
+          "$ref": "#/$defs/PricingCalculationWorkflowConfiguration"
+        }
+      }
+    },
+    "QuoteResource": {
+      "required": [
+        "buyAmount",
+        "buyCurrency",
+        "creditAmount",
+        "cutOffDateTime",
+        "debitAmount",
+        "exchangeDate",
+        "expiryDateTime",
+        "id",
+        "rate",
+        "sellAmount",
+        "sellCurrency",
+        "settlementDate"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of quote",
+          "format": "uuid"
+        },
+        "rate": {
+          "type": "number",
+          "description": "Rate"
+        },
+        "buyCurrency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code"
+        },
+        "buyAmount": {
+          "type": "number",
+          "description": "Buy amount of exchange"
+        },
+        "sellCurrency": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string",
+          "description": "ISO 4217 currency code"
+        },
+        "sellAmount": {
+          "type": "number",
+          "description": "Sell amount of exchange"
+        },
+        "feeAmount": {
+          "type": "number",
+          "description": "Fee amount"
+        },
+        "feeCurrency": {
+          "type": "string",
+          "description": "Fee currency"
+        },
+        "exchangeDate": {
+          "type": "string",
+          "description": "Calculated exchange date",
+          "format": "date"
+        },
+        "expiryDateTime": {
+          "type": "string",
+          "description": "Calculated exchange expiry date time",
+          "format": "date-time"
+        },
+        "cutOffDateTime": {
+          "type": "string",
+          "description": "Exchange cut-off date time",
+          "format": "date-time"
+        },
+        "settlementDate": {
+          "type": "string",
+          "description": "Calculated exchange settlement date",
+          "format": "date"
+        },
+        "offline": {
+          "type": "boolean",
+          "description": "Indicates if rate is provided by secondary source where primary source is offline"
+        },
+        "debitAmount": {
+          "type": "number",
+          "description": "amount to be debited from the account, equals to sell amount if fee amount is 0"
+        },
+        "creditAmount": {
+          "type": "number",
+          "description": "amount to be credited to the account, equals to buy amount if fee amount is 0"
+        }
+      },
+      "description": "quote data model",
+      "readOnly": true
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-user-client-relation-create-platform-response-schema.json",
+  "title": "UserClientRelationCreatePlatformResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-user-api-openapi.yml#/components/schemas/UserClientRelationCreatePlatformResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/UserClientRelationCreatePlatformWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/UserClientRelationCreatePlatformDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/UserClientRelationCreatePlatformConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/UserClientRelationCreatePlatformMetadataContainer"
+    }
+  },
+  "$defs": {
+    "UserClientRelation": {
+      "required": [
+        "clientId"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "userId": {
+          "type": "string",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "clientId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "$ref": "#/$defs/UserClientStatus"
+        }
+      }
+    },
+    "UserClientRelationCreatePlatformConnectContainer": {
+      "type": "object"
+    },
+    "UserClientRelationCreatePlatformDataContainer": {
+      "type": "object",
+      "properties": {
+        "userClientRelations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UserClientRelation"
+          }
+        }
+      }
+    },
+    "UserClientRelationCreatePlatformMetadataContainer": {
+      "type": "object"
+    },
+    "UserClientRelationCreatePlatformWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/UserClientRelationCreateWorkflow"
+        }
+      }
+    },
+    "UserClientRelationCreateWorkflow": {
+      "type": "string",
+      "description": "workflow code",
+      "enum": [
+        "direct"
+      ]
+    },
+    "UserClientStatus": {
+      "type": "string",
+      "readOnly": true,
+      "enum": [
+        "allowed",
+        "revoked"
+      ]
+    }
+  }
+}

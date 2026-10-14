@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-transaction-account-statement-list-response-schema.json",
+  "title": "TransactionAccountStatementListResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-transaction-account-api-openapi.yml#/components/schemas/TransactionAccountStatementListResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/TransactionAccountStatementListWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/TransactionAccountStatementListDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/TransactionAccountStatementListConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/TransactionAccountStatementListMetadataContainer"
+    }
+  },
+  "$defs": {
+    "PageMetadata": {
+      "required": [
+        "number",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+        "size": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of elements in this page",
+          "format": "int32"
+        },
+        "number": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "index of page starting from 0",
+          "format": "int32"
+        },
+        "totalElements": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "total number of elements in all of the pages",
+          "format": "int64",
+          "readOnly": true
+        },
+        "totalPages": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of total pages",
+          "format": "int32",
+          "readOnly": true
+        }
+      }
+    },
+    "TransactionAccountStatementListConnectContainer": {
+      "type": "object"
+    },
+    "TransactionAccountStatementListDataContainer": {
+      "type": "object",
+      "properties": {
+        "transactionAccountStatement": {
+          "$ref": "#/$defs/TransactionAccountStatementListResourceQueryInput"
+        },
+        "transactionAccountStatements": {
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/$defs/TransactionAccountStatements"
+          }
+        }
+      }
+    },
+    "TransactionAccountStatementListMetadataContainer": {
+      "required": [
+        "page"
+      ],
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/$defs/PageMetadata"
+        }
+      }
+    },
+    "TransactionAccountStatementListResourceQueryInput": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "transactionNumber": {
+          "type": "string"
+        },
+        "entryDateTimeFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "entryDateTimeTo": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "writeOnly": true
+    },
+    "TransactionAccountStatementListWorkflowContainer": {
+      "type": "object"
+    },
+    "TransactionAccountStatements": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "description": "id of Account",
+          "format": "uuid"
+        },
+        "transactionNumber": {
+          "type": "string",
+          "description": "transaction number of statement"
+        },
+        "transactionType": {
+          "type": "string",
+          "description": "transaction type of statement"
+        },
+        "entryType": {
+          "type": "string",
+          "description": "entry type of statement"
+        },
+        "entryDateTime": {
+          "type": "string",
+          "description": "date time of statement",
+          "format": "date-time"
+        },
+        "direction": {
+          "type": "string",
+          "description": "direction (debit/credit) of statement"
+        },
+        "amount": {
+          "type": "number",
+          "description": "amount of statement"
+        },
+        "balance": {
+          "type": "number",
+          "description": "balance of account after transaction"
+        },
+        "currency": {
+          "type": "string",
+          "description": "currency of transaction"
+        },
+        "narrative": {
+          "type": "string",
+          "description": "narrative of transaction"
+        }
+      },
+      "readOnly": true
+    }
+  }
+}

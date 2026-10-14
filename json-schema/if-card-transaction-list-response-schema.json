@@ -1,0 +1,670 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-card-transaction-list-response-schema.json",
+  "title": "CardTransactionListResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-card-transaction-api-openapi.yml#/components/schemas/CardTransactionListResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/CardTransactionListWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/CardTransactionListDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/CardTransactionListConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CardTransactionListMetadataContainer"
+    }
+  },
+  "$defs": {
+    "Address": {
+      "required": [
+        "city",
+        "country",
+        "street"
+      ],
+      "type": "object",
+      "properties": {
+        "country": {
+          "maxLength": 2,
+          "minLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "houseNumber": {
+          "type": "string"
+        },
+        "refinement": {
+          "type": "string"
+        }
+      }
+    },
+    "CardAuthentication3DSecureMethod": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "unrecognized",
+        "no-authentication",
+        "password",
+        "secret-key",
+        "pki",
+        "otp-sms",
+        "otp-card-reader",
+        "otp-app",
+        "otp-other",
+        "other",
+        "kba",
+        "oob-biometric",
+        "oob-app",
+        "oob-other",
+        "push-confirmation",
+        "frictionless-rba",
+        "frictionless",
+        "server-responding",
+        "delegated",
+        "challenge-unknown",
+        "idcx",
+        "aav-refresh"
+      ]
+    },
+    "CardDataInputMethod": {
+      "type": "string",
+      "enum": [
+        "not-provided",
+        "manual",
+        "magnetic-stripe",
+        "barcode",
+        "optical-character-recognition",
+        "emv-contact",
+        "key-entered",
+        "emv-contactless",
+        "e-commerce",
+        "e-commerce-emv-cryptogram",
+        "magnetic-stripe-contactless",
+        "account-data-on-file",
+        "key-entered-by-acquirer",
+        "micr-reader",
+        "qr-code"
+      ]
+    },
+    "CardPresentType": {
+      "type": "string",
+      "enum": [
+        "present",
+        "not-present",
+        "unknown"
+      ]
+    },
+    "CardTransaction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the card transaction",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "cardId": {
+          "type": "string",
+          "description": "ID of the card",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "clientId": {
+          "type": "string",
+          "description": "ID of the client",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "matchingTransactionId": {
+          "type": "string",
+          "description": "ID of matching card transaction",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "accountId": {
+          "type": "string",
+          "description": "ID of the account",
+          "format": "uuid",
+          "readOnly": true
+        },
+        "accountCurrency": {
+          "type": "string",
+          "description": "account currency",
+          "readOnly": true
+        },
+        "transactionNumber": {
+          "type": "string",
+          "description": "transaction number",
+          "readOnly": true
+        },
+        "type": {
+          "$ref": "#/$defs/CardTransactionType"
+        },
+        "status": {
+          "$ref": "#/$defs/CardTransactionStatus"
+        },
+        "transactionAmount": {
+          "type": "number",
+          "description": "transaction amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "transactionCurrency": {
+          "type": "string",
+          "description": "transaction currency",
+          "readOnly": true
+        },
+        "feeAmount": {
+          "type": "number",
+          "description": "fee amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "feeCurrency": {
+          "type": "string",
+          "description": "fee currency",
+          "readOnly": true
+        },
+        "billingAmount": {
+          "type": "number",
+          "description": "billing amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "billingCurrency": {
+          "type": "string",
+          "description": "billing currency",
+          "readOnly": true
+        },
+        "settlementAmount": {
+          "type": "number",
+          "description": "settlement amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "settlementCurrency": {
+          "type": "string",
+          "description": "settlement currency",
+          "readOnly": true
+        },
+        "effectiveTransactionAmount": {
+          "type": "number",
+          "description": "effective transaction amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "effectiveFeeAmount": {
+          "type": "number",
+          "description": "effective fee amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "transactionExchangeRate": {
+          "type": "number",
+          "description": "transaction exchange rate",
+          "format": "double",
+          "readOnly": true
+        },
+        "feeExchangeRate": {
+          "type": "number",
+          "description": "fee exchange rate",
+          "format": "double",
+          "readOnly": true
+        },
+        "merchant": {
+          "$ref": "#/$defs/Merchant"
+        },
+        "pos": {
+          "$ref": "#/$defs/Pos"
+        },
+        "serviceProvider": {
+          "type": "string",
+          "description": "service provider of the card transaction",
+          "readOnly": true
+        },
+        "serviceProviderEntityId": {
+          "type": "string",
+          "description": "service provider ID of the card transaction",
+          "readOnly": true
+        },
+        "serviceProviderEntityReference": {
+          "type": "string",
+          "description": "service provider reference of the card transaction",
+          "readOnly": true
+        },
+        "description": {
+          "type": "string",
+          "description": "card transaction description",
+          "readOnly": true
+        },
+        "reason": {
+          "type": "string",
+          "description": "reason",
+          "readOnly": true
+        },
+        "direction": {
+          "$ref": "#/$defs/TransactionDirection"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "total amount",
+          "format": "double",
+          "readOnly": true
+        },
+        "creationDateTime": {
+          "type": "string",
+          "description": "creation time of the card transaction",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "enrichment": {
+          "$ref": "#/$defs/CardTransactionEnrichmentMap"
+        }
+      },
+      "description": "Card Transaction Resource Object"
+    },
+    "CardTransactionEnrichmentMap": {
+      "type": "object",
+      "description": "Card transaction enrichment data",
+      "readOnly": true
+    },
+    "CardTransactionListConnectContainer": {
+      "type": "object"
+    },
+    "CardTransactionListDataContainer": {
+      "type": "object",
+      "properties": {
+        "cardTransaction": {
+          "$ref": "#/$defs/CardTransactionResourceQueryInput"
+        },
+        "cardTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CardTransaction"
+          }
+        }
+      }
+    },
+    "CardTransactionListMetadataContainer": {
+      "required": [
+        "page"
+      ],
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/$defs/PageMetadata"
+        }
+      }
+    },
+    "CardTransactionListWorkflowContainer": {
+      "type": "object"
+    },
+    "CardTransactionResourceQueryInput": {
+      "type": "object",
+      "properties": {
+        "geCardId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "clientId": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "accountId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "transactionCurrency": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "transactionNumber": {
+          "type": "string"
+        },
+        "type": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CardTransactionType"
+          }
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CardTransactionStatus"
+          }
+        },
+        "clientTitle": {
+          "type": "string"
+        },
+        "clientNumber": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "username": {
+          "type": "string"
+        },
+        "cardAlias": {
+          "type": "string"
+        },
+        "lastFourDigits": {
+          "type": "string"
+        },
+        "firstSixDigits": {
+          "type": "string"
+        },
+        "accountAlias": {
+          "type": "string"
+        },
+        "iban": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "accountNumber": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "maxAmount": {
+          "type": "number"
+        },
+        "minAmount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "serviceProvider": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "serviceProviderId": {
+          "type": "string"
+        },
+        "serviceProviderReference": {
+          "type": "string"
+        },
+        "creationDateFrom": {
+          "type": "string",
+          "format": "date"
+        },
+        "creationDateTo": {
+          "type": "string",
+          "format": "date"
+        },
+        "merchantName": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "CardTransactionStatus": {
+      "type": "string",
+      "description": "status of the card transaction",
+      "readOnly": true,
+      "enum": [
+        "authorised",
+        "declined",
+        "settled",
+        "reversed"
+      ]
+    },
+    "CardTransactionType": {
+      "type": "string",
+      "description": "type of the card transaction",
+      "readOnly": true,
+      "enum": [
+        "payment",
+        "refund",
+        "chargeback",
+        "atm-withdrawal",
+        "incoming-transfer"
+      ]
+    },
+    "CardholderAuthentication": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "$ref": "#/$defs/CardholderAuthenticationMethod"
+        },
+        "entity": {
+          "$ref": "#/$defs/CardholderAuthenticationEntityType"
+        }
+      }
+    },
+    "CardholderAuthenticationEntityType": {
+      "type": "string",
+      "enum": [
+        "not-authenticated",
+        "card-chip",
+        "electronic-signature-analysis",
+        "authorising-agent",
+        "merchant",
+        "other",
+        "unknown",
+        "cardholder-device",
+        "token-requestor"
+      ]
+    },
+    "CardholderAuthenticationMethod": {
+      "type": "string",
+      "enum": [
+        "not-authenticated",
+        "pin",
+        "electronic-signature-analysis",
+        "biometric",
+        "biographic",
+        "manual-signature-verification",
+        "other-manual-verification",
+        "other",
+        "unknown",
+        "smartphone-passcode",
+        "smartphone-pattern",
+        "hardware-device",
+        "hardware-device-user-verification",
+        "software-application",
+        "software-application-user-verification",
+        "3d-secure"
+      ]
+    },
+    "CardholderPresentType": {
+      "type": "string",
+      "enum": [
+        "present",
+        "not-present-unknown",
+        "not-present-mail-order",
+        "not-present-telephone-order",
+        "not-present-standing-auth",
+        "not-present-e-commerce",
+        "not-present-installment",
+        "unknown"
+      ]
+    },
+    "ChipFallbackIndicator": {
+      "type": "string",
+      "enum": [
+        "not-available",
+        "previous-not-fallback",
+        "previous-fallback"
+      ]
+    },
+    "Merchant": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "networkId": {
+          "type": "string"
+        },
+        "taxId": {
+          "type": "string"
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/MerchantCategory"
+        }
+      },
+      "description": "merchant",
+      "readOnly": true
+    },
+    "MerchantCategory": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "PageMetadata": {
+      "required": [
+        "number",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
+      "type": "object",
+      "properties": {
+        "size": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of elements in this page",
+          "format": "int32"
+        },
+        "number": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "index of page starting from 0",
+          "format": "int32"
+        },
+        "totalElements": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "total number of elements in all of the pages",
+          "format": "int64",
+          "readOnly": true
+        },
+        "totalPages": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "number of total pages",
+          "format": "int32",
+          "readOnly": true
+        }
+      }
+    },
+    "Pos": {
+      "type": "object",
+      "properties": {
+        "cardholderPresent": {
+          "$ref": "#/$defs/CardholderPresentType"
+        },
+        "cardPresent": {
+          "$ref": "#/$defs/CardPresentType"
+        },
+        "cardDataInputMethod": {
+          "$ref": "#/$defs/CardDataInputMethod"
+        },
+        "authentication": {
+          "$ref": "#/$defs/CardholderAuthentication"
+        },
+        "chipFallback": {
+          "$ref": "#/$defs/ChipFallbackIndicator"
+        },
+        "fraud": {
+          "$ref": "#/$defs/PosFraudIndicator"
+        },
+        "securityProtocol": {
+          "$ref": "#/$defs/SecurityProtocolType"
+        },
+        "cardAuthentication3DSecureMethod": {
+          "$ref": "#/$defs/CardAuthentication3DSecureMethod"
+        }
+      },
+      "description": "pos data",
+      "readOnly": true
+    },
+    "PosFraudIndicator": {
+      "type": "string",
+      "enum": [
+        "no-problem",
+        "merchant-suspicious",
+        "merchant-verified-cardholder-id"
+      ]
+    },
+    "SecurityProtocolType": {
+      "type": "string",
+      "enum": [
+        "none",
+        "channel-encryption",
+        "not-applicable"
+      ]
+    },
+    "TransactionDirection": {
+      "type": "string",
+      "description": "Direction",
+      "readOnly": true,
+      "enum": [
+        "credit",
+        "debit"
+      ]
+    }
+  }
+}

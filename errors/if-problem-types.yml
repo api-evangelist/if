@@ -1,0 +1,44 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/if-account-api-openapi.yml
+- openapi/if-card-api-openapi.yml
+- openapi/if-card-transaction-api-openapi.yml
+- openapi/if-client-api-openapi.yml
+- openapi/if-exchange-api-openapi.yml
+- openapi/if-generic-transaction-api-openapi.yml
+- openapi/if-incoming-transfer-api-openapi.yml
+- openapi/if-open-banking-api-openapi.yml
+- openapi/if-outgoing-transfer-api-openapi.yml
+- openapi/if-transaction-account-api-openapi.yml
+- openapi/if-user-api-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: null
+coverage:
+  operations: 94
+  statuses_declared: 3
+problems:
+- status: 400
+  title: Bad Request
+  description: Missing required field
+  operations: 8
+  media_types:
+  - application/json
+  schema: null
+- status: 404
+  title: Not Found
+  description: Consent not found
+  operations: 1
+  media_types:
+  - application/json
+  schema: null
+- status: 500
+  title: Internal Server Error
+  description: Unknown system error
+  operations: 2
+  media_types:
+  - application/json
+  schema: null

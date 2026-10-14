@@ -1,0 +1,20 @@
+generated: '2026-10-14'
+method: searched
+source:
+- https://n8n.io/integrations/if/
+checked:
+- https://composio.dev/toolkits/if
+- https://monid.ai/tools/if
+- https://n8n.io/integrations/if/
+- https://zapier.com/apps/if/integrations
+summary: null
+marketplace_apps:
+- marketplace: n8n
+  channel: open-source-node
+  app: if
+  url: https://n8n.io/integrations/if/
+  identity: title
+  pair_pages: 0
+  pairs: []
+edges: []
+templates: []

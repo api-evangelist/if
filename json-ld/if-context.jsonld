@@ -1,0 +1,706 @@
+{
+  "@context": {
+    "@vocab": "https://integrated.finance/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "if": "https://integrated.finance/schema#",
+    "Account": "if:Account",
+    "id": {
+      "@id": "if:id",
+      "@type": "xsd:string"
+    },
+    "clientId": {
+      "@id": "if:clientId",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "if:status",
+      "@type": "@id"
+    },
+    "country": {
+      "@id": "if:country",
+      "@type": "xsd:string"
+    },
+    "currency": {
+      "@id": "if:currency",
+      "@type": "xsd:string"
+    },
+    "alias": {
+      "@id": "if:alias",
+      "@type": "xsd:string"
+    },
+    "routingCodes": {
+      "@id": "if:routingCodes",
+      "@type": "@id"
+    },
+    "iban": {
+      "@id": "if:iban",
+      "@type": "xsd:string"
+    },
+    "accountNumber": {
+      "@id": "if:accountNumber",
+      "@type": "xsd:string"
+    },
+    "accountHolderName": {
+      "@id": "if:accountHolderName",
+      "@type": "xsd:string"
+    },
+    "ledgerNumber": {
+      "@id": "if:ledgerNumber",
+      "@type": "xsd:string"
+    },
+    "availableBalance": {
+      "@id": "if:availableBalance",
+      "@type": "xsd:decimal"
+    },
+    "receivableBalance": {
+      "@id": "if:receivableBalance",
+      "@type": "xsd:decimal"
+    },
+    "payableBalance": {
+      "@id": "if:payableBalance",
+      "@type": "xsd:decimal"
+    },
+    "accountHolderIdentityType": {
+      "@id": "if:accountHolderIdentityType",
+      "@type": "@id"
+    },
+    "connection": {
+      "@id": "if:connection",
+      "@type": "@id"
+    },
+    "serviceProvider": {
+      "@id": "if:serviceProvider",
+      "@type": "xsd:string"
+    },
+    "mainAccountId": {
+      "@id": "if:mainAccountId",
+      "@type": "xsd:string"
+    },
+    "attributes": {
+      "@id": "if:attributes",
+      "@type": "@id"
+    },
+    "AccountConnectionResource": "if:AccountConnectionResource",
+    "reference": {
+      "@id": "if:reference",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "if:state",
+      "@type": "@id"
+    },
+    "method": {
+      "@id": "if:method",
+      "@type": "@id"
+    },
+    "error": {
+      "@id": "if:error",
+      "@type": "@id"
+    },
+    "AccountStatus": "if:AccountStatus",
+    "ConnectMethod": "if:ConnectMethod",
+    "ConnectionErrorResource": "if:ConnectionErrorResource",
+    "category": {
+      "@id": "if:category",
+      "@type": "@id"
+    },
+    "origin": {
+      "@id": "if:origin",
+      "@type": "@id"
+    },
+    "code": {
+      "@id": "if:code",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "if:message",
+      "@type": "xsd:string"
+    },
+    "ErrorCategory": "if:ErrorCategory",
+    "ErrorOrigin": "if:ErrorOrigin",
+    "LegalEntityType": "if:LegalEntityType",
+    "ServiceProviderConnectionState": "if:ServiceProviderConnectionState",
+    "ThirdPartyAccountStatus": "if:ThirdPartyAccountStatus",
+    "AccountListDataContainer": "if:AccountListDataContainer",
+    "account": {
+      "@id": "if:account",
+      "@type": "@id"
+    },
+    "accounts": {
+      "@id": "if:accounts",
+      "@container": "@list"
+    },
+    "AccountListMetadataContainer": "if:AccountListMetadataContainer",
+    "page": {
+      "@id": "if:page",
+      "@type": "@id"
+    },
+    "AccountListResponse": "if:AccountListResponse",
+    "workflow": {
+      "@id": "if:workflow",
+      "@type": "@id"
+    },
+    "data": {
+      "@id": "if:data",
+      "@type": "@id"
+    },
+    "connect": {
+      "@id": "if:connect",
+      "@type": "@id"
+    },
+    "metadata": {
+      "@id": "if:metadata",
+      "@type": "@id"
+    },
+    "AccountResourceQueryInput": "if:AccountResourceQueryInput",
+    "routingCodeKey": {
+      "@id": "if:routingCodeKey",
+      "@type": "@id"
+    },
+    "routingCodeValue": {
+      "@id": "if:routingCodeValue",
+      "@type": "xsd:string"
+    },
+    "availableBalanceFrom": {
+      "@id": "if:availableBalanceFrom",
+      "@type": "xsd:decimal"
+    },
+    "availableBalanceTo": {
+      "@id": "if:availableBalanceTo",
+      "@type": "xsd:decimal"
+    },
+    "accountType": {
+      "@id": "if:accountType",
+      "@container": "@list"
+    },
+    "AccountType": "if:AccountType",
+    "PageMetadata": "if:PageMetadata",
+    "size": {
+      "@id": "if:size",
+      "@type": "xsd:integer"
+    },
+    "number": {
+      "@id": "if:number",
+      "@type": "xsd:integer"
+    },
+    "totalElements": {
+      "@id": "if:totalElements",
+      "@type": "xsd:integer"
+    },
+    "totalPages": {
+      "@id": "if:totalPages",
+      "@type": "xsd:integer"
+    },
+    "RoutingCodeType": "if:RoutingCodeType",
+    "AccountCreateConnectContainer": "if:AccountCreateConnectContainer",
+    "type": {
+      "@id": "if:type",
+      "@type": "xsd:string"
+    },
+    "AccountCreateDataContainer": "if:AccountCreateDataContainer",
+    "sourceId": {
+      "@id": "if:sourceId",
+      "@type": "xsd:string"
+    },
+    "AccountCreateResponse": "if:AccountCreateResponse",
+    "AccountCreateWorkflowContainer": "if:AccountCreateWorkflowContainer",
+    "AccountCreateRequest": "if:AccountCreateRequest",
+    "AccountDepositInformationGetDataContainer": "if:AccountDepositInformationGetDataContainer",
+    "depositInformation": {
+      "@id": "if:depositInformation",
+      "@type": "@id"
+    },
+    "AccountDepositInformationResponse": "if:AccountDepositInformationResponse",
+    "AccountGetConnectContainer": "if:AccountGetConnectContainer",
+    "AccountGetDataContainer": "if:AccountGetDataContainer",
+    "client": {
+      "@id": "if:client",
+      "@type": "@id"
+    },
+    "AccountGetResponse": "if:AccountGetResponse",
+    "Address": "if:Address",
+    "region": {
+      "@id": "if:region",
+      "@type": "xsd:string"
+    },
+    "postalCode": {
+      "@id": "if:postalCode",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "if:city",
+      "@type": "xsd:string"
+    },
+    "street": {
+      "@id": "if:street",
+      "@type": "xsd:string"
+    },
+    "houseNumber": {
+      "@id": "if:houseNumber",
+      "@type": "xsd:string"
+    },
+    "refinement": {
+      "@id": "if:refinement",
+      "@type": "xsd:string"
+    },
+    "Client": "if:Client",
+    "clientNumber": {
+      "@id": "if:clientNumber",
+      "@type": "xsd:string"
+    },
+    "identity": {
+      "@id": "if:identity"
+    },
+    "profile": {
+      "@id": "if:profile"
+    },
+    "relations": {
+      "@id": "if:relations",
+      "@container": "@list"
+    },
+    "ClientProfile": "if:ClientProfile",
+    "identityType": {
+      "@id": "if:identityType",
+      "@type": "xsd:string"
+    },
+    "ClientRelatedLegalEntityRelation": "if:ClientRelatedLegalEntityRelation",
+    "ClientRelation": "if:ClientRelation",
+    "relation": {
+      "@id": "if:relation",
+      "@type": "@id"
+    },
+    "percentageOfOwnership": {
+      "@id": "if:percentageOfOwnership",
+      "@type": "xsd:decimal"
+    },
+    "ClientStatus": "if:ClientStatus",
+    "CorporationType": "if:CorporationType",
+    "LegalEntityIdentification": "if:LegalEntityIdentification",
+    "identificationNumber": {
+      "@id": "if:identificationNumber",
+      "@type": "xsd:string"
+    },
+    "issuingCountry": {
+      "@id": "if:issuingCountry",
+      "@type": "xsd:string"
+    },
+    "issueDate": {
+      "@id": "if:issueDate",
+      "@type": "xsd:date"
+    },
+    "expirationDate": {
+      "@id": "if:expirationDate",
+      "@type": "xsd:date"
+    },
+    "LegalEntityIdentificationType": "if:LegalEntityIdentificationType",
+    "LegalEntityIdentity": "if:LegalEntityIdentity",
+    "AccountUpdateDataContainer": "if:AccountUpdateDataContainer",
+    "AccountUpdateResponse": "if:AccountUpdateResponse",
+    "AccountUpdateWorkflowContainer": "if:AccountUpdateWorkflowContainer",
+    "AccountUpdateRequest": "if:AccountUpdateRequest",
+    "AccountAdjustmentConfiguration": "if:AccountAdjustmentConfiguration",
+    "unconnectedServiceProvider": {
+      "@id": "if:unconnectedServiceProvider",
+      "@type": "xsd:string"
+    },
+    "AccountAdjustmentCreateDataContainer": "if:AccountAdjustmentCreateDataContainer",
+    "balanceAdjustment": {
+      "@id": "if:balanceAdjustment",
+      "@type": "@id"
+    },
+    "AccountAdjustmentCreateResponse": "if:AccountAdjustmentCreateResponse",
+    "AccountAdjustmentCreateWorkflowContainer": "if:AccountAdjustmentCreateWorkflowContainer",
+    "transactionType": {
+      "@id": "if:transactionType",
+      "@type": "xsd:string"
+    },
+    "AccountAdjustmentResource": "if:AccountAdjustmentResource",
+    "configuration": {
+      "@id": "if:configuration",
+      "@type": "@id"
+    },
+    "accountId": {
+      "@id": "if:accountId",
+      "@type": "xsd:string"
+    },
+    "direction": {
+      "@id": "if:direction",
+      "@type": "@id"
+    },
+    "transactionNumber": {
+      "@id": "if:transactionNumber",
+      "@type": "xsd:string"
+    },
+    "amount": {
+      "@id": "if:amount",
+      "@type": "xsd:decimal"
+    },
+    "description": {
+      "@id": "if:description",
+      "@type": "xsd:string"
+    },
+    "TransactionDirection": "if:TransactionDirection",
+    "AccountAdjustmentCreateRequest": "if:AccountAdjustmentCreateRequest",
+    "AccountStatements": "if:AccountStatements",
+    "entryType": {
+      "@id": "if:entryType",
+      "@type": "xsd:string"
+    },
+    "entryDateTime": {
+      "@id": "if:entryDateTime",
+      "@type": "xsd:dateTime"
+    },
+    "balance": {
+      "@id": "if:balance",
+      "@type": "xsd:decimal"
+    },
+    "narrative": {
+      "@id": "if:narrative",
+      "@type": "xsd:string"
+    },
+    "AccountStatementsListDataContainer": "if:AccountStatementsListDataContainer",
+    "accountStatement": {
+      "@id": "if:accountStatement",
+      "@type": "@id"
+    },
+    "accountStatements": {
+      "@id": "if:accountStatements",
+      "@container": "@list"
+    },
+    "AccountStatementsListMetadataContainer": "if:AccountStatementsListMetadataContainer",
+    "AccountStatementsListResponse": "if:AccountStatementsListResponse",
+    "AccountStatementsResourceQueryInput": "if:AccountStatementsResourceQueryInput",
+    "entryDateTimeFrom": {
+      "@id": "if:entryDateTimeFrom",
+      "@type": "xsd:dateTime"
+    },
+    "entryDateTimeTo": {
+      "@id": "if:entryDateTimeTo",
+      "@type": "xsd:dateTime"
+    },
+    "AccountStatementsListRequest": "if:AccountStatementsListRequest",
+    "LinkedAccount": "if:LinkedAccount",
+    "accountStatus": {
+      "@id": "if:accountStatus",
+      "@type": "@id"
+    },
+    "CardAccountListDataContainer": "if:CardAccountListDataContainer",
+    "linkedAccount": {
+      "@id": "if:linkedAccount",
+      "@type": "@id"
+    },
+    "linkedAccounts": {
+      "@id": "if:linkedAccounts",
+      "@container": "@list"
+    },
+    "CardAccountListMetadataContainer": "if:CardAccountListMetadataContainer",
+    "CardAccountListResponse": "if:CardAccountListResponse",
+    "CardAccountResourceQueryInput": "if:CardAccountResourceQueryInput",
+    "CardAccountCreateDataContainer": "if:CardAccountCreateDataContainer",
+    "CardAccountCreateResponse": "if:CardAccountCreateResponse",
+    "CardAccountCreateWorkflowContainer": "if:CardAccountCreateWorkflowContainer",
+    "CardAccountCreateRequest": "if:CardAccountCreateRequest",
+    "Card": "if:Card",
+    "userId": {
+      "@id": "if:userId",
+      "@type": "xsd:string"
+    },
+    "suspensionReason": {
+      "@id": "if:suspensionReason",
+      "@type": "@id"
+    },
+    "terminationReason": {
+      "@id": "if:terminationReason",
+      "@type": "@id"
+    },
+    "bin": {
+      "@id": "if:bin",
+      "@type": "xsd:string"
+    },
+    "pan": {
+      "@id": "if:pan",
+      "@type": "xsd:string"
+    },
+    "deliveryAddress": {
+      "@id": "if:deliveryAddress",
+      "@type": "@id"
+    },
+    "CardAccountListQueryOutput": "if:CardAccountListQueryOutput",
+    "CardConnection": "if:CardConnection",
+    "CardStatus": "if:CardStatus",
+    "CardSuspensionReason": "if:CardSuspensionReason",
+    "CardTerminationReason": "if:CardTerminationReason",
+    "CardType": "if:CardType",
+    "ThirdPartyCardStatus": "if:ThirdPartyCardStatus",
+    "CardListDataContainer": "if:CardListDataContainer",
+    "card": {
+      "@id": "if:card",
+      "@type": "@id"
+    },
+    "cards": {
+      "@id": "if:cards",
+      "@container": "@list"
+    },
+    "CardListMetadataContainer": "if:CardListMetadataContainer",
+    "CardListResponse": "if:CardListResponse",
+    "CardResourceQueryInput": "if:CardResourceQueryInput",
+    "clientTitle": {
+      "@id": "if:clientTitle",
+      "@type": "xsd:string"
+    },
+    "username": {
+      "@id": "if:username",
+      "@type": "xsd:string"
+    },
+    "CardCreateConnectContainer": "if:CardCreateConnectContainer",
+    "CardCreateDataContainer": "if:CardCreateDataContainer",
+    "CardCreateResponse": "if:CardCreateResponse",
+    "CardCreateWorkflowContainer": "if:CardCreateWorkflowContainer",
+    "CardCreateRequest": "if:CardCreateRequest",
+    "CardOTP": "if:CardOTP",
+    "value": {
+      "@id": "if:value",
+      "@type": "xsd:string"
+    },
+    "cardServiceProviderEntityId": {
+      "@id": "if:cardServiceProviderEntityId",
+      "@type": "xsd:string"
+    },
+    "CardOTPCreateConnectContainer": "if:CardOTPCreateConnectContainer",
+    "CardOTPCreateDataContainer": "if:CardOTPCreateDataContainer",
+    "CardOTPCreateResponse": "if:CardOTPCreateResponse",
+    "CardOTPCreateWorkflowContainer": "if:CardOTPCreateWorkflowContainer",
+    "CardOTPCreateRequest": "if:CardOTPCreateRequest",
+    "CardGetConnectContainer": "if:CardGetConnectContainer",
+    "CardGetDataContainer": "if:CardGetDataContainer",
+    "CardGetResponse": "if:CardGetResponse",
+    "CardUpdateDataContainer": "if:CardUpdateDataContainer",
+    "CardUpdateResponse": "if:CardUpdateResponse",
+    "CardUpdateWorkflowContainer": "if:CardUpdateWorkflowContainer",
+    "CardUpdateRequest": "if:CardUpdateRequest",
+    "CardAccountDeleteDataContainer": "if:CardAccountDeleteDataContainer",
+    "cardAccount": {
+      "@id": "if:cardAccount",
+      "@type": "@id"
+    },
+    "CardAccountDeleteResponse": "if:CardAccountDeleteResponse",
+    "CardTransactionAuthentication": "if:CardTransactionAuthentication",
+    "cardId": {
+      "@id": "if:cardId",
+      "@type": "xsd:string"
+    },
+    "merchant": {
+      "@id": "if:merchant",
+      "@type": "@id"
+    },
+    "transaction": {
+      "@id": "if:transaction",
+      "@type": "@id"
+    },
+    "CardTransactionAuthenticationConnection": "if:CardTransactionAuthenticationConnection",
+    "CardTransactionAuthenticationListDataContainer": "if:CardTransactionAuthenticationListDataContainer",
+    "cardTransactionAuthentication": {
+      "@id": "if:cardTransactionAuthentication",
+      "@type": "@id"
+    },
+    "cardTransactionAuthentications": {
+      "@id": "if:cardTransactionAuthentications",
+      "@container": "@list"
+    },
+    "CardTransactionAuthenticationListMetadataContainer": "if:CardTransactionAuthenticationListMetadataContainer",
+    "CardTransactionAuthenticationListResponse": "if:CardTransactionAuthenticationListResponse",
+    "CardTransactionAuthenticationResourceQueryInput": "if:CardTransactionAuthenticationResourceQueryInput",
+    "CardTransactionAuthenticationStatus": "if:CardTransactionAuthenticationStatus",
+    "ThirdPartyCardAuthenticationEnrollmentType": "if:ThirdPartyCardAuthenticationEnrollmentType",
+    "ThirdPartyCardTransactionAuthenticationMerchantInfo": "if:ThirdPartyCardTransactionAuthenticationMerchantInfo",
+    "acquirer": {
+      "@id": "if:acquirer",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "if:name",
+      "@type": "xsd:string"
+    },
+    "url": {
+      "@id": "if:url",
+      "@type": "xsd:string"
+    },
+    "categoryCode": {
+      "@id": "if:categoryCode",
+      "@type": "xsd:string"
+    },
+    "appRedirectUrl": {
+      "@id": "if:appRedirectUrl",
+      "@type": "xsd:string"
+    },
+    "ThirdPartyCardTransactionAuthenticationStatus": "if:ThirdPartyCardTransactionAuthenticationStatus",
+    "ThirdPartyCardTransactionAuthenticationTransactionInfo": "if:ThirdPartyCardTransactionAuthenticationTransactionInfo",
+    "creationDateTime": {
+      "@id": "if:creationDateTime",
+      "@type": "xsd:dateTime"
+    },
+    "CardTransactionAuthenticationGetDataContainer": "if:CardTransactionAuthenticationGetDataContainer",
+    "CardTransactionAuthenticationGetResponse": "if:CardTransactionAuthenticationGetResponse",
+    "CardTransactionAuthenticationUpdateRequestDataContainer": "if:CardTransactionAuthenticationUpdateRequestDataContainer",
+    "CardTransactionAuthenticationUpdateResponse": "if:CardTransactionAuthenticationUpdateResponse",
+    "CardTransactionAuthenticationUpdateWorkflowContainer": "if:CardTransactionAuthenticationUpdateWorkflowContainer",
+    "CardTransactionAuthenticationUpdateRequest": "if:CardTransactionAuthenticationUpdateRequest",
+    "CardAuthentication3DSecureMethod": "if:CardAuthentication3DSecureMethod",
+    "CardDataInputMethod": "if:CardDataInputMethod",
+    "CardPresentType": "if:CardPresentType",
+    "CardTransaction": "if:CardTransaction",
+    "matchingTransactionId": {
+      "@id": "if:matchingTransactionId",
+      "@type": "xsd:string"
+    },
+    "accountCurrency": {
+      "@id": "if:accountCurrency",
+      "@type": "xsd:string"
+    },
+    "transactionAmount": {
+      "@id": "if:transactionAmount",
+      "@type": "xsd:decimal"
+    },
+    "transactionCurrency": {
+      "@id": "if:transactionCurrency",
+      "@type": "xsd:string"
+    },
+    "feeAmount": {
+      "@id": "if:feeAmount",
+      "@type": "xsd:decimal"
+    },
+    "feeCurrency": {
+      "@id": "if:feeCurrency",
+      "@type": "xsd:string"
+    },
+    "billingAmount": {
+      "@id": "if:billingAmount",
+      "@type": "xsd:decimal"
+    },
+    "billingCurrency": {
+      "@id": "if:billingCurrency",
+      "@type": "xsd:string"
+    },
+    "settlementAmount": {
+      "@id": "if:settlementAmount",
+      "@type": "xsd:decimal"
+    },
+    "settlementCurrency": {
+      "@id": "if:settlementCurrency",
+      "@type": "xsd:string"
+    },
+    "effectiveTransactionAmount": {
+      "@id": "if:effectiveTransactionAmount",
+      "@type": "xsd:decimal"
+    },
+    "effectiveFeeAmount": {
+      "@id": "if:effectiveFeeAmount",
+      "@type": "xsd:decimal"
+    },
+    "transactionExchangeRate": {
+      "@id": "if:transactionExchangeRate",
+      "@type": "xsd:decimal"
+    },
+    "feeExchangeRate": {
+      "@id": "if:feeExchangeRate",
+      "@type": "xsd:decimal"
+    },
+    "pos": {
+      "@id": "if:pos",
+      "@type": "@id"
+    },
+    "serviceProviderEntityId": {
+      "@id": "if:serviceProviderEntityId",
+      "@type": "xsd:string"
+    },
+    "serviceProviderEntityReference": {
+      "@id": "if:serviceProviderEntityReference",
+      "@type": "xsd:string"
+    },
+    "reason": {
+      "@id": "if:reason",
+      "@type": "xsd:string"
+    },
+    "totalAmount": {
+      "@id": "if:totalAmount",
+      "@type": "xsd:decimal"
+    },
+    "enrichment": {
+      "@id": "if:enrichment",
+      "@type": "@id"
+    },
+    "CardTransactionListDataContainer": "if:CardTransactionListDataContainer",
+    "cardTransaction": {
+      "@id": "if:cardTransaction",
+      "@type": "@id"
+    },
+    "cardTransactions": {
+      "@id": "if:cardTransactions",
+      "@container": "@list"
+    },
+    "CardTransactionListMetadataContainer": "if:CardTransactionListMetadataContainer",
+    "CardTransactionListResponse": "if:CardTransactionListResponse",
+    "CardTransactionResourceQueryInput": "if:CardTransactionResourceQueryInput",
+    "geCardId": {
+      "@id": "if:geCardId",
+      "@type": "xsd:string"
+    },
+    "cardAlias": {
+      "@id": "if:cardAlias",
+      "@type": "xsd:string"
+    },
+    "lastFourDigits": {
+      "@id": "if:lastFourDigits",
+      "@type": "xsd:string"
+    },
+    "firstSixDigits": {
+      "@id": "if:firstSixDigits",
+      "@type": "xsd:string"
+    },
+    "accountAlias": {
+      "@id": "if:accountAlias",
+      "@type": "xsd:string"
+    },
+    "maxAmount": {
+      "@id": "if:maxAmount",
+      "@type": "xsd:decimal"
+    },
+    "minAmount": {
+      "@id": "if:minAmount",
+      "@type": "xsd:decimal"
+    },
+    "serviceProviderId": {
+      "@id": "if:serviceProviderId",
+      "@type": "xsd:string"
+    },
+    "serviceProviderReference": {
+      "@id": "if:serviceProviderReference",
+      "@type": "xsd:string"
+    },
+    "creationDateFrom": {
+      "@id": "if:creationDateFrom",
+      "@type": "xsd:date"
+    },
+    "creationDateTo": {
+      "@id": "if:creationDateTo",
+      "@type": "xsd:date"
+    },
+    "merchantName": {
+      "@id": "if:merchantName",
+      "@type": "xsd:string"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "IF API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects IF's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-14) from openapi/if-account-api-openapi.yml, openapi/if-card-api-openapi.yml, openapi/if-card-transaction-api-openapi.yml.",
+  "dcterms:created": "2026-10-14",
+  "dcterms:source": [
+    "openapi/if-account-api-openapi.yml",
+    "openapi/if-card-api-openapi.yml",
+    "openapi/if-card-transaction-api-openapi.yml",
+    "openapi/if-client-api-openapi.yml",
+    "openapi/if-exchange-api-openapi.yml"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/if/main/json-schema/if-client-relation-update-response-schema.json",
+  "title": "ClientRelationUpdateResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/if-client-api-openapi.yml#/components/schemas/ClientRelationUpdateResponse",
+  "required": [
+    "connect",
+    "data",
+    "metadata",
+    "workflow"
+  ],
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "$ref": "#/$defs/ClientRelationUpdateWorkflowContainer"
+    },
+    "data": {
+      "$ref": "#/$defs/ClientRelationUpdateDataContainer"
+    },
+    "connect": {
+      "$ref": "#/$defs/ClientRelationUpdateConnectContainer"
+    },
+    "metadata": {
+      "$ref": "#/$defs/ClientRelationUpdateMetadataContainer"
+    }
+  },
+  "$defs": {
+    "ClientRelationUpdateConnectContainer": {
+      "type": "object"
+    },
+    "ClientRelationUpdateDataContainer": {
+      "required": [
+        "clientRelation"
+      ],
+      "type": "object",
+      "properties": {
+        "clientRelation": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "description": "client relation data model"
+          },
+          "description": "client relation data model"
+        }
+      }
+    },
+    "ClientRelationUpdateMetadataContainer": {
+      "type": "object"
+    },
+    "ClientRelationUpdateWorkflow": {
+      "type": "string",
+      "description": "unique workflow code",
+      "enum": [
+        "direct"
+      ]
+    },
+    "ClientRelationUpdateWorkflowContainer": {
+      "required": [
+        "code"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ClientRelationUpdateWorkflow"
+        }
+      }
+    }
+  }
+}

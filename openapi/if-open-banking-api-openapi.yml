@@ -1,0 +1,657 @@
+openapi: 3.0.1
+info:
+  title: Open Banking API
+  description: Operations for Open Banking
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+paths:
+  /open-banking/{openBankingCode}/consents:
+    get:
+      tags:
+      - Open Banking Consents
+      summary: List Open Banking Consents
+      operationId: open-banking-consent.list
+      parameters:
+      - name: openBankingCode
+        in: path
+        description: code of the open banking standard
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Open banking consent list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenBankingConsentListResponse'
+              example:
+                workflow: '{}'
+                data:
+                  consents:
+                  - id: 00000000-0000-0000-0000-000000000000
+                    thirdPartyProvider:
+                      name: Example Company
+                      website: https://example.company
+                      applicationName: Example Company Integration
+                      applicationDescription: Example Company Integration
+                      applicationWebsite: https://example.company
+                    status: authorised
+                    content:
+                      scope: accounts
+                    requestCreatedDateTime: '2023-05-22T12:54:58'
+                    requestExpiryDateTime: '2023-05-22T13:04:58'
+                    grantedDateTime: '2023-05-22T12:57:57'
+                    expiryDateTime: '2023-08-20T12:57:57'
+                connect: '{}'
+                metadata:
+                  page:
+                    size: 20
+                    number: 0
+                    totalElements: 1
+                    totalPages: 1
+  /open-banking/{openBankingCode}/consents/{id}:
+    get:
+      tags:
+      - Open Banking Consents
+      summary: Get an Open Banking Consent
+      operationId: open-banking-consent.get
+      parameters:
+      - name: openBankingCode
+        in: path
+        description: code of the open banking standard
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the open banking consent
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Open banking consent resource returned
+          content:
+            application/json:
+              examples:
+                accounts:
+                  description: accounts
+                  value:
+                    workflow: {}
+                    data:
+                      consent:
+                        id: 00000000-0000-0000-0000-000000000000
+                        thirdPartyProvider:
+                          name: Example Company
+                          website: https://example.company
+                          applicationName: Example Company Integration
+                          applicationDescription: Example Company Integration
+                          applicationWebsite: https://example.company
+                        status: authorised
+                        content:
+                          scope: accounts
+                        requestCreatedDateTime: '2023-05-25T09:14:37'
+                        requestExpiryDateTime: '2023-05-25T09:24:37'
+                        grantedDateTime: '2023-05-25T09:16:58'
+                        expiryDateTime: '2023-08-23T09:16:58'
+                    connect: {}
+                    metadata: {}
+                domestic-payment:
+                  description: domestic-payment
+                  value:
+                    workflow: {}
+                    data:
+                      consent:
+                        id: 00000000-0000-0000-0000-000000000000
+                        thirdPartyProvider:
+                          name: Example Company
+                          website: https://example.company
+                          applicationName: Example Company Integration
+                          applicationDescription: Example Company Integration
+                          applicationWebsite: https://example.company
+                        status: authorised
+                        content:
+                          scope: payments
+                          paymentScope: domestic
+                          paymentType: standard
+                          instructedAmount: 100
+                          instructedCurrency: EUR
+                          creditorAccount:
+                            schemeName: UK.OBIE.SortCodeAccountNumber
+                            identification: '12345612345678'
+                            name: John Doe
+                          currencyOfTransfer: null
+                          requestedExecutionDateTime: null
+                        requestCreatedDateTime: '2023-05-31T10:11:12'
+                        grantedDateTime: '2023-05-31T10:11:53'
+                        expiryDateTime: '2023-08-29T10:11:53'
+                    connect: {}
+                    metadata: {}
+                domestic-scheduled:
+                  description: domestic-scheduled
+                  value:
+                    workflow: {}
+                    data:
+                      consent:
+                        id: 00000000-0000-0000-0000-000000000000
+                        thirdPartyProvider:
+                          name: Example Company
+                          website: https://example.company
+                          applicationName: Example Company Integration
+                          applicationDescription: Example Company Integration
+                          applicationWebsite: https://example.company
+                        status: revoked
+                        content:
+                          scope: payments
+                          paymentScope: domestic
+                          paymentType: scheduled
+                          instructedAmount: 1.23
+                          instructedCurrency: GBP
+                          creditorAccount:
+                            schemeName: UK.OBIE.SortCodeAccountNumber
+                            identification: '12345612345678'
+                            name: John Doe
+                          currencyOfTransfer: null
+                          requestedExecutionDateTime: '2023-06-24T16:03:19'
+                        requestCreatedDateTime: '2023-05-24T14:03:55'
+                        grantedDateTime: '2023-05-24T14:05:06'
+                        expiryDateTime: '2023-08-22T14:05:06'
+                        revokedDateTime: '2023-05-24T14:05:47'
+                    connect: {}
+                    metadata: {}
+                international-standard:
+                  description: international-standard
+                  value:
+                    workflow: {}
+                    data:
+                      consent:
+                        id: 00000000-0000-0000-0000-000000000000
+                        thirdPartyProvider:
+                          name: Example Company
+                          website: https://example.company
+                          applicationName: Example Company Integration
+                          applicationDescription: Example Company Integration
+                          applicationWebsite: https://example.company
+                        status: revoked
+                        content:
+                          scope: payments
+                          paymentScope: international
+                          paymentType: standard
+                          instructedAmount: 1.23
+                          instructedCurrency: GBP
+                          creditorAccount:
+                            schemeName: UK.OBIE.IBAN
+                            identification: GB99AAAA01234567890123
+                            name: John Doe
+                          currencyOfTransfer: GBP
+                          requestedExecutionDateTime: null
+                        requestCreatedDateTime: '2023-05-24T14:09:45'
+                        grantedDateTime: '2023-05-24T14:10:39'
+                        expiryDateTime: '2023-08-22T14:10:39'
+                        revokedDateTime: '2023-05-24T14:12:12'
+                    connect: {}
+                    metadata: {}
+                international-scheduled:
+                  description: international-scheduled
+                  value:
+                    workflow: {}
+                    data:
+                      consent:
+                        id: 00000000-0000-0000-0000-000000000000
+                        thirdPartyProvider:
+                          name: Example Company
+                          website: https://example.company
+                          applicationName: Example Company Integration
+                          applicationDescription: Example Company Integration
+                          applicationWebsite: https://example.company
+                        status: revoked
+                        content:
+                          scope: payments
+                          paymentScope: international
+                          paymentType: scheduled
+                          instructedAmount: 1.23
+                          instructedCurrency: GBP
+                          creditorAccount:
+                            schemeName: UK.OBIE.IBAN
+                            identification: GB99AAAA01234567890123
+                            name: John Doe
+                          currencyOfTransfer: GBP
+                          requestedExecutionDateTime: '2023-06-24T16:14:47'
+                        requestCreatedDateTime: '2023-05-24T14:14:59'
+                        grantedDateTime: '2023-05-24T14:15:36'
+                        expiryDateTime: '2023-08-22T14:15:36'
+                        revokedDateTime: '2023-05-24T14:16:20'
+                    connect: {}
+                    metadata: {}
+        '404':
+          description: Consent not found
+          content:
+            application/json:
+              examples:
+                error-consent-not-found:
+                  description: error-consent-not-found
+                  value:
+                    timestamp: '2023-06-07T08:29:02.251509'
+                    message: 'Error received from Example Company: Status: 404, Body: {"Error":"consent not found!"}'
+                    code: if.banking.spm.technical.third_party
+                    messageParameters:
+                    - Example Company
+                    - '404'
+                    - '{"Error":"consent not found!"}'
+    patch:
+      tags:
+      - Open Banking Consents
+      summary: Update an Open Banking Consent
+      operationId: open-banking-consent.update
+      parameters:
+      - name: openBankingCode
+        in: path
+        description: Alpha 2 code of the open banking country
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the consent
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountOpenBankingConsentUpdateRequest'
+            example:
+              workflow:
+                code: direct
+              data:
+                consent:
+                  action: approve
+                  userId: 00000000-0000-0000-0000-000000000000
+                  accounts:
+                  - 00000000-0000-0000-0000-000000000000
+                  - 00000000-0000-0000-0000-000000000000
+              connect: {}
+              metadata: {}
+      responses:
+        '201':
+          description: Open banking consent updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountOpenBankingConsentUpdateResponse'
+              example:
+                workflow:
+                  code: direct
+                data:
+                  resource:
+                    location: https://example.company_return#code={code}&state={state}&id_token={token}
+                connect: {}
+                metadata: {}
+components:
+  schemas:
+    OpenBakingConsentAccount:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        iban:
+          type: string
+    OpenBankingConsent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of open banking consent
+        thirdPartyProvider:
+          $ref: '#/components/schemas/ThirdPartyOpenBankingProvider'
+        status:
+          $ref: '#/components/schemas/OpenBankingConsentStatus'
+        content:
+          $ref: '#/components/schemas/OpenBankingConsentContentResource'
+        requestCreatedDateTime:
+          type: string
+          description: Date & time that the consent request was created
+          format: date-time
+        requestDateTime:
+          type: string
+          description: Date & time that the consent request was created
+          format: date-time
+        requestExpiryDateTime:
+          type: string
+          description: Date & time that the consent request expires (or expired)
+          format: date-time
+        grantedDateTime:
+          type: string
+          description: Date & time that the consent was granted
+          format: date-time
+        grantDateTime:
+          type: string
+          description: Date & time that the consent was granted
+          format: date-time
+        expiryDateTime:
+          type: string
+          description: Date & time that the consent expires / expired
+          format: date-time
+        grantExpiryDateTime:
+          type: string
+          description: Date & time that the consent expires / expired
+          format: date-time
+        revokedDateTime:
+          type: string
+          description: Date & time that the consent was revoked by the account holder
+          format: date-time
+      description: Open Banking Consent Resource Object
+    OpenBankingConsentContentAccountResource:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/OpenBankingConsentContentResource'
+      - type: object
+        properties:
+          scope:
+            $ref: '#/components/schemas/OpenBankingConsentScope'
+          permissions:
+            $ref: '#/components/schemas/OpenBankingPermissionContentResource'
+    OpenBankingConsentContentPaymentResource:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/OpenBankingConsentContentResource'
+      - type: object
+        properties:
+          scope:
+            $ref: '#/components/schemas/OpenBankingConsentScope'
+          paymentScope:
+            $ref: '#/components/schemas/OpenBankingPaymentScope'
+          paymentType:
+            $ref: '#/components/schemas/OpenBankingPaymentType'
+          instructedAmount:
+            type: number
+          instructedCurrency:
+            type: string
+          creditorAccount:
+            $ref: '#/components/schemas/OpenBankingCreditorAccount'
+          debtorAccount:
+            $ref: '#/components/schemas/OpenBankingDebtorAccount'
+          permissions:
+            $ref: '#/components/schemas/OpenBankingPermissionContentResource'
+          currencyOfTransfer:
+            type: string
+          requestedExecutionDateTime:
+            type: string
+            format: date-time
+    OpenBankingConsentContentResource:
+      required:
+      - scope
+      type: object
+      properties:
+        scope:
+          type: string
+      description: content of open banking consent
+      discriminator:
+        propertyName: scope
+    OpenBankingConsentListConnectContainer:
+      type: object
+    OpenBankingConsentListDataContainer:
+      type: object
+      properties:
+        consent:
+          $ref: '#/components/schemas/OpenBankingConsentListPlatformQueryInput'
+        consents:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/OpenBankingConsent'
+    OpenBankingConsentListMetadataContainer:
+      type: object
+    OpenBankingConsentListPlatformQueryInput:
+      type: object
+      properties:
+        userId:
+          type: string
+    OpenBankingConsentListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OpenBankingConsentListWorkflow'
+        data:
+          $ref: '#/components/schemas/OpenBankingConsentListDataContainer'
+        connect:
+          $ref: '#/components/schemas/OpenBankingConsentListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OpenBankingConsentListMetadataContainer'
+    OpenBankingConsentListWorkflow:
+      type: object
+      description: Descriptor that navigates IF platform from which workflow does that operation runs
+    OpenBankingConsentScope:
+      type: string
+      enum:
+      - accounts
+      - payments
+      - funds-confirmations
+    OpenBankingConsentStatus:
+      type: string
+      description: status of open banking consent
+      enum:
+      - awaiting-authorisation
+      - awaiting-exchange
+      - authorisation-declined
+      - authorised
+      - revoked
+      - expired
+      - rejected
+      - consumed
+    OpenBankingCreditorAccount:
+      type: object
+      properties:
+        schemeName:
+          type: string
+        identification:
+          type: string
+        name:
+          type: string
+        iban:
+          type: string
+        currency:
+          type: string
+    OpenBankingDebtorAccount:
+      type: object
+      properties:
+        iban:
+          type: string
+        currency:
+          type: string
+    OpenBankingEUPermissionContentResource:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/OpenBankingPermissionContentResource'
+      - type: object
+        properties:
+          type:
+            type: string
+          accounts:
+            type: array
+            items:
+              $ref: '#/components/schemas/OpenBakingConsentAccount'
+          transactions:
+            type: array
+            items:
+              $ref: '#/components/schemas/OpenBakingConsentAccount'
+          balances:
+            type: array
+            items:
+              $ref: '#/components/schemas/OpenBakingConsentAccount'
+          payments:
+            type: array
+            items:
+              $ref: '#/components/schemas/OpenBakingConsentAccount'
+    OpenBankingGBPermissionContentResource:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/OpenBankingPermissionContentResource'
+      - type: object
+        properties:
+          type:
+            type: string
+          grantedPermissions:
+            type: array
+            items:
+              $ref: '#/components/schemas/OpenBankingPermissionGB'
+    OpenBankingPaymentScope:
+      type: string
+      enum:
+      - domestic
+      - international
+    OpenBankingPaymentType:
+      type: string
+      enum:
+      - standard
+      - scheduled
+      - standing-order
+    OpenBankingPermissionContentResource:
+      required:
+      - openBankingCode
+      type: object
+      properties:
+        openBankingCode:
+          type: string
+      discriminator:
+        propertyName: openBankingCode
+    OpenBankingPermissionGB:
+      type: string
+      enum:
+      - read-accounts-basic
+      - read-accounts-detail
+      - read-balances
+      - read-beneficiaries-basic
+      - read-beneficiaries-detail
+      - read-direct-debits
+      - read-offers
+      - read-pan
+      - read-party
+      - read-party-psu
+      - read-products
+      - read-scheduled-payments-basic
+      - read-scheduled-payments-detail
+      - read-standing-orders-basic
+      - read-standing-orders-detail
+      - read-statements-basic
+      - read-statements-detail
+      - read-transactions-basic
+      - read-transactions-credits
+      - read-transactions-debits
+      - read-transactions-detail
+    ThirdPartyOpenBankingProvider:
+      type: object
+      properties:
+        name:
+          type: string
+        website:
+          type: string
+        applicationName:
+          type: string
+        applicationDescription:
+          type: string
+        applicationWebsite:
+          type: string
+      description: parameters of open banking provider
+    AccountOpenBankingConsentOutput:
+      type: object
+      properties:
+        location:
+          type: string
+        consent:
+          $ref: '#/components/schemas/OpenBankingConsent'
+      description: account open banking consent data model
+      readOnly: true
+    AccountOpenBankingConsentUpdateConnectContainer:
+      type: object
+      description: connect container
+    AccountOpenBankingConsentUpdateDataContainer:
+      type: object
+      properties:
+        consent:
+          type: object
+          additionalProperties:
+            type: object
+            description: custom map including fields to update
+          description: custom map including fields to update
+        account open banking consent:
+          $ref: '#/components/schemas/AccountOpenBankingConsentOutput'
+      description: data container
+    AccountOpenBankingConsentUpdateMetadataContainer:
+      type: object
+      description: metadata container
+    AccountOpenBankingConsentUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateMetadataContainer'
+      description: response model
+    AccountOpenBankingConsentUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+      description: workflow container
+    AccountOpenBankingConsentUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateMetadataContainer'
+      description: request model
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/open-banking-consentget.md
+  - https://developer.integrated.finance/reference/open-banking-consentlist.md
+  - https://developer.integrated.finance/reference/open-banking-consentupdate.md
+  merge:
+    pages: 3
+    deduped: 16
+    conflicts_kept_first: 0

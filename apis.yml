@@ -1,4 +1,5 @@
 aid: if
+
 deliveryModel:
   model: saas
   open_source: false
@@ -10,6 +11,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -22,31 +24,44 @@ accessModel:
   - authentication
   generated: '2026-07-22'
   method: derived
+
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/if.png
+
 name: IF
-description: Integrated Finance (IF) is a modular fintech infrastructure platform — a "financial
-  operating system" — that lets companies build banking, card, and payment experiences for their
-  users without becoming a bank. Its orchestration layers (IF API interface, IF CORE workflow, IF
-  CONNECT integration) sit on top of multiple banking, card-issuing, FX, and compliance providers
-  and expose a single REST API covering clients and users, real / virtual / shared-pool accounts,
-  incoming and outgoing bank transfers, currency exchanges, card issuing and processing (including
-  3DS and PIN management), beneficiary verification, generic transactions, and open-banking
-  consents. Authentication is OAuth 2.0 on Keycloak (JWT client assertion, client_credentials); the
-  API supports idempotency on all POST endpoints, Ed25519-signed webhooks with automatic retry, and
-  a full sandbox environment for testing.
+
+description: Integrated Finance (IF) is a modular fintech infrastructure platform — a "financial operating system" — that lets companies build
+  banking, card, and payment experiences for their users without becoming a bank. Its orchestration layers (IF API interface, IF CORE workflow,
+  IF CONNECT integration) sit on top of multiple banking, card-issuing, FX, and compliance providers and expose a single REST API covering clients
+  and users, real / virtual / shared-pool accounts, incoming and outgoing bank transfers, currency exchanges, card issuing and processing (including
+  3DS and PIN management), beneficiary verification, generic transactions, and open-banking consents. Authentication is OAuth 2.0 on Keycloak
+  (JWT client assertion, client_credentials); the API supports idempotency on all POST endpoints, Ed25519-signed webhooks with automatic retry,
+  and a full sandbox environment for testing.
+
 url: https://raw.githubusercontent.com/api-evangelist/if/refs/heads/main/apis.yml
+
 x-type: company
+
 x-source: vc-portfolio
+
 x-backed-by:
 - 500-global
+
 x-tier: stub
+
 x-tier-reason: portfolio-lead
+
 specificationVersion: '0.23'
+
 created: '2026-07-17'
+
 modified: '2026-07-19'
+
 x-docs-platform: readme
+
 x-docs-platform-confidence: high
+
 x-docs-platform-checked: 2026-10-03
+
 tags:
 - Company
 - Financial Services
@@ -57,6 +72,7 @@ tags:
 - Foreign Exchange
 - Compliance
 - Open Banking
+
 tags_raw:
 - Company
 - Financial Services
@@ -69,31 +85,32 @@ tags_raw:
 - Open Banking
 - API
 - Financial-Services
-apis:
-- name: Integrated Finance API
-  description: Single REST API for the Integrated Finance platform — clients, users, real / virtual /
-    shared-pool accounts, bank transfers, currency exchanges, card issuing and processing,
-    beneficiary verification, generic transactions, and open-banking consents. OAuth 2.0 (Keycloak,
-    JWT assertion), idempotent POSTs, Ed25519-signed webhooks.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Banking as a Service
-  - Payments
-  - Cards
-  - Foreign Exchange
-  - Open Banking
-  properties:
-  - type: Documentation
-    url: https://developer.integrated.finance/docs
-  - type: APIReference
-    url: https://developer.integrated.finance/reference
+
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+
 common:
+- type: AgenticAccess
+  url: agentic-access/if-agentic-access.yml
+- type: Spectral
+  url: rules/if-rules.yml
+- type: JSONLD
+  url: json-ld/if-context.jsonld
+- type: Vocabulary
+  url: vocabulary/if-vocabulary.yml
+- type: DataModel
+  url: data-model/if-data-model.yml
+- type: ErrorCatalog
+  url: errors/if-problem-types.yml
+- type: Hosts
+  url: hosts/if-hosts.yml
+- type: Vendors
+  url: vendors/if-vendors.yml
+- type: Newsroom
+  url: https://integrated.finance/press
 - type: Website
   url: https://integrated.finance
 - type: DeveloperPortal
@@ -144,11 +161,270 @@ common:
   url: asyncapi/if-webhooks.yml
 - type: X-MCPServerCandidate
   url: mcp/if-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published
+    API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting
+    the artifact-type surfaces with a server that does not exist.'
 - type: DomainSecurity
   url: security/if-domain-security.yml
+
+apis:
+- name: Integrated Finance API
+  description: Single REST API for the Integrated Finance platform — clients, users, real / virtual / shared-pool accounts, bank transfers, currency
+    exchanges, card issuing and processing, beneficiary verification, generic transactions, and open-banking consents. OAuth 2.0 (Keycloak, JWT
+    assertion), idempotent POSTs, Ed25519-signed webhooks.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Banking as a Service
+  - Payments
+  - Cards
+  - Foreign Exchange
+  - Open Banking
+  properties:
+  - type: Documentation
+    url: https://developer.integrated.finance/docs
+  - type: APIReference
+    url: https://developer.integrated.finance/reference
+  aid: if:integrated-finance-api
+- aid: if:if-account-api
+  name: IF Account API
+  description: The Account API from IF — 5 operation(s) for account.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/if-account-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+- aid: if:if-card-api
+  name: IF Card API
+  description: The Card API from IF — 5 operation(s) for card.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Card
+  properties:
+  - type: OpenAPI
+    url: openapi/if-card-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+- aid: if:if-card-transaction-api
+  name: IF Card Transaction API
+  description: The Card Transaction API from IF — 4 operation(s) for card transaction.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Card Transaction
+  properties:
+  - type: OpenAPI
+    url: openapi/if-card-transaction-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+- aid: if:if-client-api
+  name: IF Client API
+  description: The Client API from IF — 4 operation(s) for client.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Client
+  properties:
+  - type: OpenAPI
+    url: openapi/if-client-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+- aid: if:if-exchange-api
+  name: IF Exchange API
+  description: The Exchange API from IF — 4 operation(s) for exchange.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Exchange
+  properties:
+  - type: OpenAPI
+    url: openapi/if-exchange-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+- aid: if:if-generic-transaction-api
+  name: IF Generic Transaction API
+  description: The Generic Transaction API from IF — 2 operation(s) for generic transaction.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Generic Transaction
+  properties:
+  - type: OpenAPI
+    url: openapi/if-generic-transaction-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+- aid: if:if-incoming-transfer-api
+  name: IF Incoming Transfer API
+  description: The Incoming Transfer API from IF — 5 operation(s) for incoming transfer.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Incoming Transfer
+  properties:
+  - type: OpenAPI
+    url: openapi/if-incoming-transfer-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+- aid: if:if-open-banking-api
+  name: IF Open Banking API
+  description: The Open Banking API from IF — 2 operation(s) for open banking.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Open Banking
+  properties:
+  - type: OpenAPI
+    url: openapi/if-open-banking-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+- aid: if:if-outgoing-transfer-api
+  name: IF Outgoing Transfer API
+  description: The Outgoing Transfer API from IF — 15 operation(s) for outgoing transfer.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Outgoing Transfer
+  properties:
+  - type: OpenAPI
+    url: openapi/if-outgoing-transfer-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+- aid: if:if-transaction-account-api
+  name: IF Transaction Account API
+  description: The Transaction Account API from IF — 5 operation(s) for transaction account.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Transaction Account
+  properties:
+  - type: OpenAPI
+    url: openapi/if-transaction-account-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+- aid: if:if-user-api
+  name: IF User API
+  description: The User API from IF — 6 operation(s) for user.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/if-user-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+
 x-enrichment:
   date: '2026-07-19'
   status: backfilled
   pass: local-v1
   note: backfilled from .gitignore signal + verified work evidence
+
+x-readme-harvest:
+  date: '2026-10-14'
+  ops: 94
+  tool: harvest-readme-openapi.py
+  portal: https://developer.integrated.finance
