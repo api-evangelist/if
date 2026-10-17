@@ -169,9 +169,11 @@ common:
 
 apis:
 - name: Integrated Finance API
-  description: Single REST API for the Integrated Finance platform — clients, users, real / virtual / shared-pool accounts, bank transfers, currency
-    exchanges, card issuing and processing, beneficiary verification, generic transactions, and open-banking consents. OAuth 2.0 (Keycloak, JWT
-    assertion), idempotent POSTs, Ed25519-signed webhooks.
+  description: >-
+    Single REST API for the Integrated Finance platform — clients, users, real / virtual / shared-pool
+    accounts, bank transfers, currency exchanges, card issuing and processing, beneficiary verification,
+    generic transactions, and open-banking consents. OAuth 2.0 (Keycloak, JWT assertion), idempotent POSTs,
+    Ed25519-signed webhooks.
   humanURL: https://developer.integrated.finance/docs
   baseURL: https://api.integrated.finance
   tags:
@@ -186,16 +188,16 @@ apis:
   - type: APIReference
     url: https://developer.integrated.finance/reference
   aid: if:integrated-finance-api
-- aid: if:if-account-api
-  name: IF Account API
-  description: The Account API from IF — 5 operation(s) for account.
+- aid: if:if-account-statements-api
+  name: IF Account Statements API
+  description: The Account Statements API from IF — 4 operation(s) for account statements.
   humanURL: https://developer.integrated.finance/docs
   baseURL: https://api.integrated.finance
   tags:
-  - Account
+  - Account Statements
   properties:
   - type: OpenAPI
-    url: openapi/if-account-api-openapi.yml
+    url: openapi/if-account-statements-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-account-deposit-information-response-schema.json
   - type: JSONSchema
@@ -208,16 +210,6 @@ apis:
     url: json-schema/if-account-statements-list-response-schema.json
   - type: JSONSchema
     url: json-schema/if-account-create-request-schema.json
-- aid: if:if-card-api
-  name: IF Card API
-  description: The Card API from IF — 5 operation(s) for card.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Card
-  properties:
-  - type: OpenAPI
-    url: openapi/if-card-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-card-account-create-request-schema.json
   - type: JSONSchema
@@ -230,16 +222,6 @@ apis:
     url: json-schema/if-card-otpcreate-request-schema.json
   - type: JSONSchema
     url: json-schema/if-card-otpcreate-response-schema.json
-- aid: if:if-card-transaction-api
-  name: IF Card Transaction API
-  description: The Card Transaction API from IF — 4 operation(s) for card transaction.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Card Transaction
-  properties:
-  - type: OpenAPI
-    url: openapi/if-card-transaction-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-card-transaction-authentication-update-request-schema.json
   - type: JSONSchema
@@ -252,16 +234,6 @@ apis:
     url: json-schema/if-card-transaction-list-response-schema.json
   - type: JSONSchema
     url: json-schema/if-card-transaction-get-response-schema.json
-- aid: if:if-client-api
-  name: IF Client API
-  description: The Client API from IF — 4 operation(s) for client.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Client
-  properties:
-  - type: OpenAPI
-    url: openapi/if-client-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-client-relation-create-request-schema.json
   - type: JSONSchema
@@ -274,16 +246,6 @@ apis:
     url: json-schema/if-client-relation-update-response-schema.json
   - type: JSONSchema
     url: json-schema/if-client-relation-list-response-schema.json
-- aid: if:if-exchange-api
-  name: IF Exchange API
-  description: The Exchange API from IF — 4 operation(s) for exchange.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Exchange
-  properties:
-  - type: OpenAPI
-    url: openapi/if-exchange-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-exchange-update-request-schema.json
   - type: JSONSchema
@@ -296,16 +258,6 @@ apis:
     url: json-schema/if-exchange-create-response-schema.json
   - type: JSONSchema
     url: json-schema/if-quote-refresh-request-schema.json
-- aid: if:if-generic-transaction-api
-  name: IF Generic Transaction API
-  description: The Generic Transaction API from IF — 2 operation(s) for generic transaction.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Generic Transaction
-  properties:
-  - type: OpenAPI
-    url: openapi/if-generic-transaction-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-generic-transaction-update-response-schema.json
   - type: JSONSchema
@@ -318,16 +270,6 @@ apis:
     url: json-schema/if-generic-transaction-list-response-schema.json
   - type: JSONSchema
     url: json-schema/if-generic-transaction-get-response-schema.json
-- aid: if:if-incoming-transfer-api
-  name: IF Incoming Transfer API
-  description: The Incoming Transfer API from IF — 5 operation(s) for incoming transfer.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Incoming Transfer
-  properties:
-  - type: OpenAPI
-    url: openapi/if-incoming-transfer-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-provisioned-account-credit-create-request-schema.json
   - type: JSONSchema
@@ -340,32 +282,12 @@ apis:
     url: json-schema/if-incoming-transfer-update-response-schema.json
   - type: JSONSchema
     url: json-schema/if-compliance-check-update-response-schema.json
-- aid: if:if-open-banking-api
-  name: IF Open Banking API
-  description: The Open Banking API from IF — 2 operation(s) for open banking.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Open Banking
-  properties:
-  - type: OpenAPI
-    url: openapi/if-open-banking-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-account-open-banking-consent-update-response-schema.json
   - type: JSONSchema
     url: json-schema/if-account-open-banking-consent-update-request-schema.json
   - type: JSONSchema
     url: json-schema/if-open-banking-consent-list-response-schema.json
-- aid: if:if-outgoing-transfer-api
-  name: IF Outgoing Transfer API
-  description: The Outgoing Transfer API from IF — 15 operation(s) for outgoing transfer.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Outgoing Transfer
-  properties:
-  - type: OpenAPI
-    url: openapi/if-outgoing-transfer-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-beneficiary-bank-account-update-response-schema.json
   - type: JSONSchema
@@ -378,16 +300,6 @@ apis:
     url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
   - type: JSONSchema
     url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
-- aid: if:if-transaction-account-api
-  name: IF Transaction Account API
-  description: The Transaction Account API from IF — 5 operation(s) for transaction account.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - Transaction Account
-  properties:
-  - type: OpenAPI
-    url: openapi/if-transaction-account-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-transaction-account-statement-list-response-schema.json
   - type: JSONSchema
@@ -400,23 +312,3531 @@ apis:
     url: json-schema/if-transaction-account-create-response-schema.json
   - type: JSONSchema
     url: json-schema/if-transaction-account-update-request-schema.json
-- aid: if:if-user-api
-  name: IF User API
-  description: The User API from IF — 6 operation(s) for user.
-  humanURL: https://developer.integrated.finance/docs
-  baseURL: https://api.integrated.finance
-  tags:
-  - User
-  properties:
-  - type: OpenAPI
-    url: openapi/if-user-api-openapi.yml
   - type: JSONSchema
     url: json-schema/if-user-client-relation-create-platform-request-schema.json
   - type: JSONSchema
     url: json-schema/if-user-client-relation-create-platform-response-schema.json
   - type: JSONSchema
     url: json-schema/if-user-client-relation-update-platform-request-schema.json
-
+- aid: if:if-accounts-api
+  name: IF Accounts API
+  description: The Accounts API from IF — 3 operation(s) for accounts.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/if-accounts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-balance-adjustments-api
+  name: IF Balance Adjustments API
+  description: The Balance Adjustments API from IF — 1 operation(s) for balance adjustments.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Balance Adjustments
+  properties:
+  - type: OpenAPI
+    url: openapi/if-balance-adjustments-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-beneficiaries-api
+  name: IF Beneficiaries API
+  description: The Beneficiaries API from IF — 2 operation(s) for beneficiaries.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Beneficiaries
+  properties:
+  - type: OpenAPI
+    url: openapi/if-beneficiaries-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-beneficiary-bank-accounts-api
+  name: IF Beneficiary Bank Accounts API
+  description: >-
+    The Beneficiary Bank Accounts API from IF — 2 operation(s) for beneficiary bank accounts.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Beneficiary Bank Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/if-beneficiary-bank-accounts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-beneficiary-bank-accounts-metadata-api
+  name: IF Beneficiary Bank Accounts Metadata API
+  description: >-
+    The Beneficiary Bank Accounts Metadata API from IF — 1 operation(s) for beneficiary bank accounts
+    metadata.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Beneficiary Bank Accounts Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/if-beneficiary-bank-accounts-metadata-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-beneficiary-verifications-api
+  name: IF Beneficiary Verifications API
+  description: >-
+    The Beneficiary Verifications API from IF — 1 operation(s) for beneficiary verifications.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Beneficiary Verifications
+  properties:
+  - type: OpenAPI
+    url: openapi/if-beneficiary-verifications-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-card-transaction-authentications-api
+  name: IF Card Transaction Authentications API
+  description: >-
+    The Card Transaction Authentications API from IF — 2 operation(s) for card transaction authentications.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Card Transaction Authentications
+  properties:
+  - type: OpenAPI
+    url: openapi/if-card-transaction-authentications-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-card-transactions-api
+  name: IF Card Transactions API
+  description: The Card Transactions API from IF — 2 operation(s) for card transactions.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Card Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/if-card-transactions-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-cards-api
+  name: IF Cards API
+  description: The Cards API from IF — 5 operation(s) for cards.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Cards
+  properties:
+  - type: OpenAPI
+    url: openapi/if-cards-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-client-relations-api
+  name: IF Client Relations API
+  description: The Client Relations API from IF — 2 operation(s) for client relations.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Client Relations
+  properties:
+  - type: OpenAPI
+    url: openapi/if-client-relations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-clients-api
+  name: IF Clients API
+  description: The Clients API from IF — 2 operation(s) for clients.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Clients
+  properties:
+  - type: OpenAPI
+    url: openapi/if-clients-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-direct-debit-mandates-api
+  name: IF Direct Debit Mandates API
+  description: The Direct Debit Mandates API from IF — 2 operation(s) for direct debit mandates.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Direct Debit Mandates
+  properties:
+  - type: OpenAPI
+    url: openapi/if-direct-debit-mandates-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-direct-debit-payments-api
+  name: IF Direct Debit Payments API
+  description: The Direct Debit Payments API from IF — 2 operation(s) for direct debit payments.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Direct Debit Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/if-direct-debit-payments-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-exchange-quotes-api
+  name: IF Exchange Quotes API
+  description: The Exchange Quotes API from IF — 2 operation(s) for exchange quotes.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Exchange Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/if-exchange-quotes-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-exchange-transactions-api
+  name: IF Exchange Transactions API
+  description: The Exchange Transactions API from IF — 2 operation(s) for exchange transactions.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Exchange Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/if-exchange-transactions-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-generic-transactions-api
+  name: IF Generic Transactions API
+  description: The Generic Transactions API from IF — 2 operation(s) for generic transactions.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Generic Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/if-generic-transactions-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-incoming-transfers-api
+  name: IF Incoming Transfers API
+  description: The Incoming Transfers API from IF — 2 operation(s) for incoming transfers.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Incoming Transfers
+  properties:
+  - type: OpenAPI
+    url: openapi/if-incoming-transfers-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-incoming-transfers-compliance-api
+  name: IF Incoming Transfers - Compliance API
+  description: >-
+    The Incoming Transfers - Compliance API from IF — 1 operation(s) for incoming transfers - compliance.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Incoming Transfers - Compliance
+  properties:
+  - type: OpenAPI
+    url: openapi/if-incoming-transfers-compliance-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-open-banking-consents-api
+  name: IF Open Banking Consents API
+  description: The Open Banking Consents API from IF — 2 operation(s) for open banking consents.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Open Banking Consents
+  properties:
+  - type: OpenAPI
+    url: openapi/if-open-banking-consents-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-outgoing-transfers-api
+  name: IF Outgoing Transfers API
+  description: The Outgoing Transfers API from IF — 2 operation(s) for outgoing transfers.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Outgoing Transfers
+  properties:
+  - type: OpenAPI
+    url: openapi/if-outgoing-transfers-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-outgoing-transfers-compliance-api
+  name: IF Outgoing Transfers - Compliance API
+  description: >-
+    The Outgoing Transfers - Compliance API from IF — 1 operation(s) for outgoing transfers - compliance.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Outgoing Transfers - Compliance
+  properties:
+  - type: OpenAPI
+    url: openapi/if-outgoing-transfers-compliance-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-outgoing-transfers-metadata-api
+  name: IF Outgoing Transfers Metadata API
+  description: >-
+    The Outgoing Transfers Metadata API from IF — 2 operation(s) for outgoing transfers metadata.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Outgoing Transfers Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/if-outgoing-transfers-metadata-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-provisioned-account-credits-api
+  name: IF Provisioned Account Credits API
+  description: >-
+    The Provisioned Account Credits API from IF — 2 operation(s) for provisioned account credits.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Provisioned Account Credits
+  properties:
+  - type: OpenAPI
+    url: openapi/if-provisioned-account-credits-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-transaction-accounts-api
+  name: IF Transaction Accounts API
+  description: The Transaction Accounts API from IF — 2 operation(s) for transaction accounts.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Transaction Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/if-transaction-accounts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-user-client-relations-api
+  name: IF User & Client Relations API
+  description: The User & Client Relations API from IF — 2 operation(s) for user & client relations.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - User & Client Relations
+  properties:
+  - type: OpenAPI
+    url: openapi/if-user-client-relations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-user-invitations-api
+  name: IF User Invitations API
+  description: The User Invitations API from IF — 2 operation(s) for user invitations.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - User Invitations
+  properties:
+  - type: OpenAPI
+    url: openapi/if-user-invitations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
+- aid: if:if-users-api
+  name: IF Users API
+  description: The Users API from IF — 2 operation(s) for users.
+  humanURL: https://developer.integrated.finance/docs
+  baseURL: https://api.integrated.finance
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/if-users-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/if-account-deposit-information-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-adjustment-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-statements-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-account-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-otpcreate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-authentication-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-card-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-delete-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-client-relation-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-exchange-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-quote-refresh-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-generic-transaction-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-provisioned-account-credit-get-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-incoming-transfer-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-compliance-check-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-account-open-banking-consent-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-open-banking-consent-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-bank-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-beneficiary-verification-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-outgoing-transfer-date-metadata-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-direct-debit-mandate-update-request-body-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-statement-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-transaction-account-update-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-request-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-create-platform-response-schema.json
+  - type: JSONSchema
+    url: json-schema/if-user-client-relation-update-platform-request-schema.json
 x-enrichment:
   date: '2026-07-19'
   status: backfilled

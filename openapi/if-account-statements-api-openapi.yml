@@ -1,0 +1,700 @@
+openapi: 3.2.0
+info:
+  title: If Account Statements API
+  version: '1'
+  description: 'Operations tagged Account Statements across 2 of this provider''s published API definitions: if-account-api-openapi.yml, if-transaction-account-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Account Statements
+paths:
+  /accounts/{accountId}/account-statements:
+    get:
+      tags:
+      - Account Statements
+      summary: List Statement of an Account
+      operationId: accounts.statement.list
+      parameters:
+      - name: accountId
+        in: path
+        description: ID of account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AccountStatementsListRequest'
+      responses:
+        '200':
+          description: Account statement list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountStatementsListResponse'
+    servers:
+    - url: https://sandbox-api.integrated.finance/v1/{instanceId}
+      description: Sandbox
+      variables: {}
+    - url: https://api.integrated.finance/v1/{instanceId}
+      description: Production
+      variables: {}
+  /transaction-accounts/{transactionAccountId}/account-statements:
+    get:
+      tags:
+      - Account Statements
+      summary: List Transaction Account Statements
+      operationId: transaction-accounts.statements.list
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.client.fullName,desc
+      - name: data.transactionAccountStatement.accountId
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccountStatement.transactionNumber
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccountStatement.entryDateTimeFrom
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccountStatement.entryDateTimeTo
+        in: query
+        schema:
+          type: string
+      - name: transactionAccountId
+        in: path
+        description: ID of transaction account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Transaction account statement list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountStatementListResponse'
+              example:
+                workflow: {}
+                data:
+                  transactionAccountStatements:
+                  - accountId: 00000000-0000-0000-0000-000000000000
+                    transactionNumber: 20240909-9JW8W7
+                    transactionType: exchange-transaction
+                    entryType: principal-sell
+                    entryDateTime: '2024-09-09T07:46:38.290176'
+                    direction: debit
+                    amount: 12
+                    balance: 7805
+                    currency: GBP
+                    narrative: Sold to buy EUR at EUR/GBP:1.182
+                  - accountId: 00000000-0000-0000-0000-000000000000
+                    transactionNumber: 20240909-9JW8W7
+                    transactionType: exchange-transaction
+                    entryType: principal-sell
+                    entryDateTime: '2024-09-09T07:46:39.792114'
+                    direction: credit
+                    amount: 12
+                    balance: 7817
+                    currency: GBP
+                    narrative: Reversal of Sold to buy EUR at EUR/GBP:1.182
+                connect: {}
+                metadata:
+                  page:
+                    size: 20
+                    number: 0
+                    totalElements: 2
+                    totalPages: 1
+    post:
+      tags:
+      - Account Statements
+      summary: Create an asynchronous Transaction Account Statement
+      operationId: transaction-accounts.statements.create
+      parameters:
+      - name: transactionAccountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionAccountStatementRequest'
+            examples:
+              daily:
+                description: daily
+                value:
+                  workflow: {}
+                  data:
+                    transactionAccountStatement:
+                      period: daily
+                      entryDateFrom: '2026-09-20'
+                  connect: {}
+                  metadata: {}
+              monthly:
+                description: monthly
+                value:
+                  workflow: {}
+                  data:
+                    transactionAccountStatement:
+                      period: monthly
+                      entryDateFrom: '2026-09-01'
+                  connect: {}
+                  metadata: {}
+      responses:
+        '200':
+          description: Existing account statement returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountStatementResponse'
+              examples:
+                completed:
+                  description: completed
+                  value:
+                    workflow: {}
+                    data:
+                      accountStatement:
+                        id: 00000000-0000-0000-0000-000000000000
+                        transactionAccountId: 00000000-0000-0000-0000-000000000000
+                        period: monthly
+                        entryDateFrom: '2026-09-01'
+                        entryDateTimeFrom: '2026-08-31T23:00:00'
+                        entryDateTimeTo: '2026-09-30T23:00:00'
+                        status: completed
+                        fileName: account-statement-00000000-0000-0000-0000-000000000000-monthly-20260901.csv
+                        fileCreationDateTime: '2026-10-05T18:30:00'
+                    connect: {}
+                    metadata: {}
+        '201':
+          description: Account statement created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountStatementResponse'
+              examples:
+                daily:
+                  description: daily
+                  value:
+                    workflow: {}
+                    data:
+                      accountStatement:
+                        id: 00000000-0000-0000-0000-000000000000
+                        transactionAccountId: 00000000-0000-0000-0000-000000000000
+                        period: daily
+                        entryDateFrom: '2026-09-20'
+                        entryDateTimeFrom: '2026-09-19T23:00:00'
+                        entryDateTimeTo: '2026-09-20T23:00:00'
+                        status: processing
+                    connect: {}
+                    metadata: {}
+                monthly:
+                  description: monthly
+                  value:
+                    workflow: {}
+                    data:
+                      accountStatement:
+                        id: 00000000-0000-0000-0000-000000000000
+                        transactionAccountId: 00000000-0000-0000-0000-000000000000
+                        period: monthly
+                        entryDateFrom: '2026-09-01'
+                        entryDateTimeFrom: '2026-08-31T23:00:00'
+                        entryDateTimeTo: '2026-09-30T23:00:00'
+                        status: processing
+                    connect: {}
+                    metadata: {}
+    servers:
+    - url: https://sandbox-api.integrated.finance/v1/{instanceId}
+      description: Sandbox
+      variables: {}
+    - url: https://api.integrated.finance/v1/{instanceId}
+      description: Production
+      variables: {}
+  /transaction-accounts/{transactionAccountId}/account-statements/{accountStatementId}:
+    get:
+      tags:
+      - Account Statements
+      summary: Get an asynchronous Transaction Account Statement
+      operationId: transaction-accounts.statements.get
+      parameters:
+      - name: transactionAccountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountStatementId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Account statement returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountStatementResponse'
+              examples:
+                completed:
+                  description: completed
+                  value:
+                    workflow: {}
+                    data:
+                      accountStatement:
+                        id: 00000000-0000-0000-0000-000000000000
+                        transactionAccountId: 00000000-0000-0000-0000-000000000000
+                        period: monthly
+                        entryDateFrom: '2026-09-01'
+                        entryDateTimeFrom: '2026-08-31T23:00:00'
+                        entryDateTimeTo: '2026-09-30T23:00:00'
+                        status: completed
+                        fileName: account-statement-00000000-0000-0000-0000-000000000000-monthly-20260901.csv
+                        fileCreationDateTime: '2026-10-05T18:30:00'
+                    connect: {}
+                    metadata: {}
+                failed:
+                  description: failed
+                  value:
+                    workflow: {}
+                    data:
+                      accountStatement:
+                        id: 00000000-0000-0000-0000-000000000000
+                        transactionAccountId: 00000000-0000-0000-0000-000000000000
+                        period: daily
+                        entryDateFrom: '2026-09-21'
+                        entryDateTimeFrom: '2026-09-20T23:00:00'
+                        entryDateTimeTo: '2026-09-21T23:00:00'
+                        status: failed
+                        failureReason: Account statement generation failed. Please retry.
+                    connect: {}
+                    metadata: {}
+    servers:
+    - url: https://sandbox-api.integrated.finance/v1/{instanceId}
+      description: Sandbox
+      variables: {}
+    - url: https://api.integrated.finance/v1/{instanceId}
+      description: Production
+      variables: {}
+  /transaction-accounts/{transactionAccountId}/account-statements/{accountStatementId}/file:
+    get:
+      tags:
+      - Account Statements
+      summary: Download a completed Transaction Account Statement CSV
+      operationId: transaction-accounts.statements.file.get
+      parameters:
+      - name: transactionAccountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountStatementId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: CSV statement attachment
+          content:
+            text/csv:
+              examples:
+                completed:
+                  description: completed
+                  value: '"accountId","transactionNumber","transactionType","entryType","entryDateTime","direction","amount","balance","currency","narrative"
+
+                    "00000000-0000-0000-0000-000000000000","20260916-2836RN","outgoing-transfer","principal","2026-09-20T23:00:30.485791Z","credit","58.88","595,626.95","GBP","Reversal of Transfer to NETFLIX"
+
+                    '
+        '400':
+          description: Statement is still processing, failed, or the completed file is missing
+    servers:
+    - url: https://sandbox-api.integrated.finance/v1/{instanceId}
+      description: Sandbox
+      variables: {}
+    - url: https://api.integrated.finance/v1/{instanceId}
+      description: Production
+      variables: {}
+components:
+  schemas:
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    AccountStatements:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: id of Account
+          format: uuid
+        transactionNumber:
+          type: string
+          description: transaction number of statement
+        transactionType:
+          type: string
+          description: transaction type of statement
+        entryType:
+          type: string
+          description: entry type of statement
+        entryDateTime:
+          type: string
+          description: date time of statement
+          format: date-time
+        direction:
+          type: string
+          description: direction (debit/credit) of statement
+        amount:
+          type: number
+          description: amount of statement
+        balance:
+          type: number
+          description: balance of account after transaction
+        currency:
+          type: string
+          description: currency of transaction
+        narrative:
+          type: string
+          description: narrative of transaction
+      readOnly: true
+    AccountStatementsListConnectContainer:
+      type: object
+    AccountStatementsListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    AccountStatementsResourceQueryInput:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        transactionNumber:
+          type: string
+        entryDateTimeFrom:
+          type: string
+          format: date-time
+        entryDateTimeTo:
+          type: string
+          format: date-time
+      writeOnly: true
+    AccountStatementsListRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountStatementsListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountStatementsListDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountStatementsListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountStatementsListMetadataContainer'
+    AccountStatementsListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountStatementsListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountStatementsListDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountStatementsListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountStatementsListMetadataContainer'
+    AccountStatementsListDataContainer:
+      type: object
+      properties:
+        accountStatement:
+          $ref: '#/components/schemas/AccountStatementsResourceQueryInput'
+        accountStatements:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/AccountStatements'
+    AccountStatementsListWorkflowContainer:
+      type: object
+    TransactionAccountStatementListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountStatementListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountStatementListDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountStatementListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountStatementListMetadataContainer'
+    TransactionAccountStatementStatus:
+      type: string
+      enum:
+      - processing
+      - completed
+      - failed
+    TransactionAccountStatementResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountStatementWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountStatementDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountStatementConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountStatementMetadataContainer'
+    TransactionAccountStatementListDataContainer:
+      type: object
+      properties:
+        transactionAccountStatement:
+          $ref: '#/components/schemas/TransactionAccountStatementListResourceQueryInput'
+        transactionAccountStatements:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/TransactionAccountStatements'
+    TransactionAccountStatementConnectContainer:
+      type: object
+    TransactionAccountStatementRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountStatementWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountStatementDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountStatementConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountStatementMetadataContainer'
+    TransactionAccountStatementPeriod:
+      type: string
+      enum:
+      - daily
+      - weekly
+      - monthly
+    TransactionAccountStatementWorkflowContainer:
+      type: object
+    TransactionAccountStatementListResourceQueryInput:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        transactionNumber:
+          type: string
+        entryDateTimeFrom:
+          type: string
+          format: date-time
+        entryDateTimeTo:
+          type: string
+          format: date-time
+      writeOnly: true
+    TransactionAccountStatementListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    TransactionAccountStatementMetadataContainer:
+      type: object
+    TransactionAccountStatementDataContainer:
+      required:
+      - accountStatement
+      type: object
+      properties:
+        transactionAccountStatement:
+          $ref: '#/components/schemas/TransactionAccountStatementCreateCommandInput'
+        accountStatement:
+          $ref: '#/components/schemas/TransactionAccountStatement'
+    TransactionAccountStatement:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Statement ID
+          format: uuid
+        transactionAccountId:
+          type: string
+          description: Transaction account ID
+          format: uuid
+        period:
+          $ref: '#/components/schemas/TransactionAccountStatementPeriod'
+        entryDateFrom:
+          type: string
+          format: date
+        entryDateTimeFrom:
+          type: string
+          description: Inclusive UTC ledger entry boundary
+          format: date-time
+        entryDateTimeTo:
+          type: string
+          description: Exclusive UTC ledger entry boundary
+          format: date-time
+        status:
+          $ref: '#/components/schemas/TransactionAccountStatementStatus'
+        fileName:
+          type: string
+        fileCreationDateTime:
+          type: string
+          format: date-time
+        failureReason:
+          type: string
+      description: Asynchronous account statement
+    TransactionAccountStatementListWorkflowContainer:
+      type: object
+    TransactionAccountStatementListConnectContainer:
+      type: object
+    TransactionAccountStatementCreateCommandInput:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/TransactionAccountStatementPeriod'
+        entryDateFrom:
+          type: string
+          format: date
+    TransactionAccountStatements:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: id of Account
+          format: uuid
+        transactionNumber:
+          type: string
+          description: transaction number of statement
+        transactionType:
+          type: string
+          description: transaction type of statement
+        entryType:
+          type: string
+          description: entry type of statement
+        entryDateTime:
+          type: string
+          description: date time of statement
+          format: date-time
+        direction:
+          type: string
+          description: direction (debit/credit) of statement
+        amount:
+          type: number
+          description: amount of statement
+        balance:
+          type: number
+          description: balance of account after transaction
+        currency:
+          type: string
+          description: currency of transaction
+        narrative:
+          type: string
+          description: narrative of transaction
+      readOnly: true
+x-refined-from:
+- if-account-api-openapi.yml
+- if-transaction-account-api-openapi.yml
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/accountsbalance-adjustmentscreate.md
+  - https://developer.integrated.finance/reference/accountscreate.md
+  - https://developer.integrated.finance/reference/accountsdeposit-informationget.md
+  - https://developer.integrated.finance/reference/accountsget.md
+  - https://developer.integrated.finance/reference/accountslist.md
+  - https://developer.integrated.finance/reference/accountsstatementlist.md
+  - https://developer.integrated.finance/reference/accountsupdate.md
+  merge:
+    pages: 7
+    deduped: 37
+    conflicts_kept_first: 0

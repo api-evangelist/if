@@ -1,0 +1,599 @@
+openapi: 3.2.0
+info:
+  title: Outgoing Transfer Direct Debit Mandates API
+  description: Operations for Outgoing Transfers
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Direct Debit Mandates
+paths:
+  /direct-debit-mandates:
+    get:
+      tags:
+      - Direct Debit Mandates
+      summary: List Direct Debit Mandates
+      operationId: direct-debit-mandates.list
+      responses:
+        '200':
+          description: Direct debit mandate list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectDebitMandateListResponse'
+    post:
+      tags:
+      - Direct Debit Mandates
+      summary: Create a Direct Debit Mandate
+      operationId: direct-debit-mandates.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/DirectDebitMandateCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Direct debit mandate created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectDebitMandateCreateResponse'
+  /direct-debit-mandates/{id}:
+    get:
+      tags:
+      - Direct Debit Mandates
+      summary: Get a Direct Debit Mandate
+      operationId: direct-debit-mandates.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of the direct debit mandate in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Direct debit mandate returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectDebitMandateGetResponse'
+    patch:
+      tags:
+      - Direct Debit Mandates
+      summary: Update a Direct Debit Mandate
+      operationId: direct-debit-mandates.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of the direct debit mandate in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectDebitMandateUpdateRequestBody'
+        required: true
+      responses:
+        '202':
+          description: Direct debit mandate updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectDebitMandateUpdateResponse'
+components:
+  schemas:
+    ConnectMethod:
+      type: string
+      enum:
+      - built-in
+      - plug-in
+    DirectDebitMandateCancellationReason:
+      type: string
+      description: 'reason the mandate is cancelled: user-requested, account-closed, organization-action'
+      enum:
+      - account-closed
+      - organization-action
+      - user-requested
+    DirectDebitMandateUpdateDataContainer:
+      required:
+      - directDebitMandate
+      type: object
+      properties:
+        directDebitMandate:
+          $ref: '#/components/schemas/DirectDebitMandateResource'
+    DirectDebitFlowType:
+      type: string
+      description: 'direct debit flow: payment for payer-side mandates'
+      enum:
+      - payment
+    DirectDebitMandateUpdateConnectContainer:
+      type: object
+      properties:
+        type:
+          type: string
+        serviceProvider:
+          type: string
+    DirectDebitMandateUpdateWorkflow:
+      type: string
+      enum:
+      - client.direct
+      - organization.direct
+    DirectDebitMandateResource:
+      required:
+      - accountId
+      - creditorAccount
+      - flowType
+      - scheme
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the direct debit mandate in UUID format
+          format: uuid
+          readOnly: true
+        owner:
+          $ref: '#/components/schemas/Owner'
+        clientId:
+          type: string
+          description: ID of client in UUID format, required for the client.direct workflow
+          format: uuid
+        accountId:
+          type: string
+          description: ID of the payer account in UUID format
+          format: uuid
+        scheme:
+          $ref: '#/components/schemas/TransferScheme'
+        flowType:
+          $ref: '#/components/schemas/DirectDebitFlowType'
+        status:
+          $ref: '#/components/schemas/DirectDebitMandateStatus'
+        creditorIdentifier:
+          type: string
+          description: identifier of the creditor collecting under the mandate
+        creditorAccount:
+          $ref: '#/components/schemas/DirectDebitBankAccount'
+        reference:
+          type: string
+          description: reference of the mandate
+        cancellationReason:
+          $ref: '#/components/schemas/DirectDebitMandateCancellationReason'
+        rejectionReason:
+          $ref: '#/components/schemas/DirectDebitMandateRejectionReason'
+        attributes:
+          $ref: '#/components/schemas/AttributeMap'
+      description: Direct Debit Mandate Resource Object
+    Owner:
+      type: string
+      enum:
+      - organization
+      - client
+    DirectDebitMandateRejectionReason:
+      type: string
+      description: 'reason the mandate is rejected: user-requested, account-closed, other'
+      enum:
+      - account-closed
+      - user-requested
+      - other
+    DirectDebitMandateGetConnectContainer:
+      type: object
+      properties:
+        connection:
+          $ref: '#/components/schemas/DirectDebitMandateConnectionResource'
+    ServiceProviderConnectionState:
+      type: string
+      enum:
+      - pending
+      - creation-in-progress
+      - update-in-progress
+      - dependency-completed
+      - completed-up-to-date
+      - completed-outdated
+      - dependency-failed
+      - creation-failed
+    DirectDebitMandateUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateWorkflow'
+      description: workflow container
+    DirectDebitMandateGetMetadataContainer:
+      type: object
+      description: metadata container
+    ErrorOrigin:
+      type: string
+      enum:
+      - customer
+      - platform
+      - provider
+    DirectDebitMandateListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/DirectDebitMandateListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/DirectDebitMandateListDataContainer'
+        connect:
+          $ref: '#/components/schemas/DirectDebitMandateListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/DirectDebitMandateListMetadataContainer'
+      description: response model
+    DirectDebitMandateUpdateRequestBody:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateRequestBodyDataContainer'
+        connect:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateMetadataContainer'
+      description: request model
+    DirectDebitMandateResourceQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        accountId:
+          type: string
+          format: uuid
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectDebitMandateStatus'
+        owner:
+          $ref: '#/components/schemas/Owner'
+    DirectDebitMandateConnectionResource:
+      type: object
+      properties:
+        id:
+          type: string
+        reference:
+          type: string
+        serviceProvider:
+          type: string
+        status:
+          $ref: '#/components/schemas/ThirdPartyDirectDebitMandateStatus'
+        state:
+          $ref: '#/components/schemas/ServiceProviderConnectionState'
+        method:
+          $ref: '#/components/schemas/ConnectMethod'
+        error:
+          $ref: '#/components/schemas/ConnectionErrorResource'
+      description: Direct Debit Mandate Connection Resource Object
+    AttributeMap:
+      type: object
+      description: outgoing transfer attributes
+    DirectDebitMandateStatus:
+      type: string
+      description: 'status of the mandate: pending, active, cancelled, rejected'
+      enum:
+      - pending
+      - active
+      - cancelled
+      - rejected
+    DirectDebitMandateUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateMetadataContainer'
+      description: response model
+    DirectDebitMandateListConnectContainer:
+      type: object
+    DirectDebitMandateGetDataContainer:
+      type: object
+      properties:
+        directDebitMandate:
+          $ref: '#/components/schemas/DirectDebitMandateResource'
+    ConnectionErrorResource:
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/ErrorCategory'
+        origin:
+          $ref: '#/components/schemas/ErrorOrigin'
+        code:
+          type: string
+        message:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+    DirectDebitMandateCreateMetadataContainer:
+      type: object
+      description: metadata container
+    DirectDebitMandateUpdateCommandInput:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: 'new status of an active mandate: cancelled or rejected'
+          enum:
+          - cancelled
+          - rejected
+        cancellationReason:
+          $ref: '#/components/schemas/DirectDebitMandateCancellationReason'
+        rejectionReason:
+          $ref: '#/components/schemas/DirectDebitMandateRejectionReason'
+    DirectDebitMandateGetWorkflowContainer:
+      type: object
+      description: workflow container
+    DirectDebitMandateCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/DirectDebitMandateCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/DirectDebitMandateCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/DirectDebitMandateCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/DirectDebitMandateCreateMetadataContainer'
+      description: request model
+    DirectDebitMandateListWorkflowContainer:
+      type: object
+      description: workflow container
+    DirectDebitMandateCreateDataContainer:
+      type: object
+      properties:
+        directDebitMandate:
+          $ref: '#/components/schemas/DirectDebitMandateResource'
+    DirectDebitMandateCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/DirectDebitMandateCreateWorkflow'
+      description: workflow container
+    DirectDebitMandateCreateConnectContainer:
+      type: object
+      properties:
+        type:
+          type: string
+        serviceProvider:
+          type: string
+    ErrorCategory:
+      type: string
+      enum:
+      - functional
+      - technical
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    DirectDebitMandateUpdateMetadataContainer:
+      type: object
+      description: metadata container
+    RoutingCodeMap:
+      type: object
+    TransferScheme:
+      type: string
+      description: transfer scheme depending on the scope of the transfer
+      enum:
+      - swift
+      - local
+      - sepa
+      - sepa-instant
+      - sepa-target-2
+      - sepa-target-2-pacs009
+      - sepa-direct-debit
+      - chaps
+      - bacs
+      - faster-payments
+      - faster-payments-poo
+      - npp
+      - becs
+      - rits
+      - tips-dkk
+      - intradag
+      - t2-dkk
+      - rix-inst
+      - rix-rtgs
+      - swish
+      - nbo
+      - viber
+      - sic-inst
+      - sic-ach
+      - sic-rtgs
+      - chats
+      - ach
+      - wire
+      - eft
+    DirectDebitBankAccount:
+      type: object
+      properties:
+        accountHolderName:
+          type: string
+        alias:
+          type: string
+        currency:
+          type: string
+        routingCodes:
+          $ref: '#/components/schemas/RoutingCodeMap'
+        accountNumber:
+          type: string
+        iban:
+          type: string
+        bankName:
+          type: string
+        country:
+          type: string
+      description: bank account of the creditor
+    DirectDebitMandateListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+      description: metadata container
+    DirectDebitMandateUpdateRequestBodyDataContainer:
+      required:
+      - directDebitMandate
+      type: object
+      properties:
+        directDebitMandate:
+          $ref: '#/components/schemas/DirectDebitMandateUpdateCommandInput'
+      description: data container of the update request
+    DirectDebitMandateListDataContainer:
+      type: object
+      properties:
+        directDebitMandate:
+          $ref: '#/components/schemas/DirectDebitMandateResourceQueryInput'
+        directDebitMandates:
+          type: array
+          description: direct debit mandate list
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DirectDebitMandateResource'
+    ThirdPartyDirectDebitMandateStatus:
+      type: string
+      enum:
+      - active
+      - cancelled
+      - rejected
+    DirectDebitMandateCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/DirectDebitMandateCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/DirectDebitMandateCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/DirectDebitMandateCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/DirectDebitMandateCreateMetadataContainer'
+      description: response model
+    DirectDebitMandateGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/DirectDebitMandateGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/DirectDebitMandateGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/DirectDebitMandateGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/DirectDebitMandateGetMetadataContainer'
+      description: response model
+    DirectDebitMandateCreateWorkflow:
+      type: string
+      enum:
+      - client.direct
+      - organization.direct
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountscreate.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsget.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountslist.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsrequirementsget.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsupdate.md
+  - https://developer.integrated.finance/reference/beneficiariescreate.md
+  - https://developer.integrated.finance/reference/beneficiariesget.md
+  - https://developer.integrated.finance/reference/beneficiarieslist.md
+  - https://developer.integrated.finance/reference/beneficiariesupdate.md
+  - https://developer.integrated.finance/reference/beneficiary-verificationscreate.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatescreate.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatesget.md
+  - https://developer.integrated.finance/reference/direct-debit-mandateslist.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatesupdate.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentsget.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentslist.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentsupdate.md
+  - https://developer.integrated.finance/reference/outgoing-transferscompliance-checkget.md
+  - https://developer.integrated.finance/reference/outgoing-transferscompliance-checkupdate.md
+  - https://developer.integrated.finance/reference/outgoing-transferscreate.md
+  - https://developer.integrated.finance/reference/outgoing-transfersdate-metadataget.md
+  - https://developer.integrated.finance/reference/outgoing-transfersdate-metadataget_1.md
+  - https://developer.integrated.finance/reference/outgoing-transfersget.md
+  - https://developer.integrated.finance/reference/outgoing-transferslist.md
+  - https://developer.integrated.finance/reference/outgoing-transfersupdate.md
+  merge:
+    pages: 25
+    deduped: 237
+    conflicts_kept_first: 0

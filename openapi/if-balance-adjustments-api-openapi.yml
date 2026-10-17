@@ -1,0 +1,181 @@
+openapi: 3.2.0
+info:
+  title: Account Balance Adjustments API
+  description: Operations for Accounts
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Balance Adjustments
+paths:
+  /accounts/{accountId}/balance-adjustments:
+    post:
+      tags:
+      - Balance Adjustments
+      summary: Create an Account Balance Adjustment
+      description: Deprecated, please refer to Generic Transactions
+      operationId: accounts.balance-adjustments.create
+      parameters:
+      - name: accountId
+        in: path
+        description: ID of account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AccountAdjustmentCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Account balance adjustment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountAdjustmentCreateResponse'
+      deprecated: true
+components:
+  schemas:
+    AccountAdjustmentCreateMetadataContainer:
+      type: object
+    AccountAdjustmentResource:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/AccountAdjustmentConfiguration'
+        ledgerNumber:
+          type: string
+        id:
+          type: string
+          description: id of account balance adjustment
+          format: uuid
+          readOnly: true
+        accountId:
+          type: string
+          description: id of account
+          format: uuid
+        direction:
+          $ref: '#/components/schemas/TransactionDirection'
+        transactionNumber:
+          maxLength: 15
+          minLength: 15
+          type: string
+          description: unique transaction number
+          readOnly: true
+        amount:
+          type: number
+          description: adjustment amount
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code
+        description:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: free text description of adjustment
+        unconnectedServiceProvider:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: unconnected service provider name
+    AccountAdjustmentCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountAdjustmentCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountAdjustmentCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountAdjustmentCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountAdjustmentCreateMetadataContainer'
+    TransactionDirection:
+      type: string
+      description: direction of adjustment
+      enum:
+      - credit
+      - debit
+    AccountAdjustmentConfiguration:
+      type: object
+      properties:
+        unconnectedServiceProvider:
+          type: string
+    AccountAdjustmentCreateConnectContainer:
+      type: object
+    AccountAdjustmentCreateWorkflowContainer:
+      required:
+      - code
+      - type
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - correction
+          - synchronization
+        type:
+          type: string
+          enum:
+          - fee
+          - unknown
+        transactionType:
+          type: string
+          enum:
+          - incoming-transfer
+          - outgoing-transfer
+    AccountAdjustmentCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountAdjustmentCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountAdjustmentCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountAdjustmentCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountAdjustmentCreateMetadataContainer'
+    AccountAdjustmentCreateDataContainer:
+      required:
+      - balanceAdjustment
+      type: object
+      properties:
+        balanceAdjustment:
+          $ref: '#/components/schemas/AccountAdjustmentResource'
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/accountsbalance-adjustmentscreate.md
+  - https://developer.integrated.finance/reference/accountscreate.md
+  - https://developer.integrated.finance/reference/accountsdeposit-informationget.md
+  - https://developer.integrated.finance/reference/accountsget.md
+  - https://developer.integrated.finance/reference/accountslist.md
+  - https://developer.integrated.finance/reference/accountsstatementlist.md
+  - https://developer.integrated.finance/reference/accountsupdate.md
+  merge:
+    pages: 7
+    deduped: 37
+    conflicts_kept_first: 0

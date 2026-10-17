@@ -1,0 +1,399 @@
+openapi: 3.2.0
+info:
+  title: Incoming Transfer Provisioned Account Credits API
+  description: Operations for Incoming Transfers
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Provisioned Account Credits
+paths:
+  /provisioned-account-credits:
+    get:
+      tags:
+      - Provisioned Account Credits
+      summary: List Provisioned Account Credits
+      operationId: provisioned-account-credit.list
+      responses:
+        '200':
+          description: Provisioned account credit returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAccountCreditListResponse'
+    post:
+      tags:
+      - Provisioned Account Credits
+      summary: Create a Provisioned Account Credit
+      operationId: provisioned-account-credit.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ProvisionedAccountCreditCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Provisioned account credit created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAccountCreditCreateResponse'
+  /provisioned-account-credits/{id}:
+    get:
+      tags:
+      - Provisioned Account Credits
+      summary: Get a Provisioned Account Credit
+      operationId: provisioned-account-credit.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of provisioned account credit in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Provisioned account credit resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedAccountCreditGetResponse'
+components:
+  schemas:
+    ProvisionedAccountCreditListConnectContainer:
+      type: object
+      description: Provisioned Account Credit List Connect Container
+    ProvisionedAccountCreditResource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of provisioned account credit
+          format: uuid
+        status:
+          $ref: '#/components/schemas/ProvisionedAccountCreditStatus'
+        amount:
+          type: number
+          description: amount
+          format: double
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code of provisioned account credit
+        scope:
+          $ref: '#/components/schemas/TransferScope'
+        scheme:
+          $ref: '#/components/schemas/TransferScheme'
+        senderAccount:
+          $ref: '#/components/schemas/IncomingMoneyTransferBankAccount'
+        senderName:
+          type: string
+          description: name of sender
+        senderAddress:
+          type: string
+          description: address of sender
+        receiverAccount:
+          $ref: '#/components/schemas/IncomingMoneyTransferBankAccount'
+        senderToReceiverInformation:
+          type: string
+          description: sender to receiver information
+        accountId:
+          type: string
+          description: id of account which is credited by this provisioned account credit
+          format: uuid
+        accountType:
+          $ref: '#/components/schemas/ProvisionedAccountType'
+        serviceProvider:
+          type: string
+          description: service provider that provisioned account credit received from
+        serviceProviderId:
+          type: string
+          description: id assigned by service provider
+      description: Provisioned Account Credit Model
+    ProvisionedAccountCreditListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+      description: Provisioned Account Credit List Metadata Container
+    ProvisionedAccountCreditCreateConnectContainer:
+      type: object
+      description: Provisioned Account Credit Create Connect Container
+    IncomingMoneyTransferBankAccount:
+      type: object
+      properties:
+        bankName:
+          type: string
+        accountHolderName:
+          type: string
+          description: name of the legal entity which account belongs to
+        alias:
+          maxLength: 30
+          type: string
+          description: alias of account, refer to Accounts section in Guides for details
+        country:
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code
+        routingCodes:
+          $ref: '#/components/schemas/RoutingCodeMap'
+        accountNumber:
+          maxLength: 20
+          minLength: 8
+          pattern: ^[0-9]{8,20}$
+          type:
+          - string
+          - 'null'
+          description: account number of account
+        iban:
+          maxLength: 31
+          minLength: 15
+          pattern: ^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\d{5}[0-9A-Z]{13}$
+          type:
+          - string
+          - 'null'
+          description: iban of account
+        ledgerNumber:
+          maxLength: 8
+          minLength: 8
+          pattern: ^[0-9]{8,8}$
+          type: string
+          description: unique ledger number of account generated internally
+      description: bank account model of incoming transfers
+      readOnly: true
+    ProvisionedAccountCreditGetWorkflowContainer:
+      type: object
+      description: provisioned account credit workflow container
+    ProvisionedAccountCreditListWorkflowContainer:
+      type: object
+      description: Provisioned Account Credit List Workflow Container
+    ProvisionedAccountCreditCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ProvisionedAccountCreditListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ProvisionedAccountCreditCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/ProvisionedAccountCreditCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ProvisionedAccountCreditCreateMetadataContainer'
+      description: Provisioned Account Credit Create Response
+    ProvisionedAccountCreditListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ProvisionedAccountCreditListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ProvisionedAccountCreditListDataContainer'
+        connect:
+          $ref: '#/components/schemas/ProvisionedAccountCreditListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ProvisionedAccountCreditListMetadataContainer'
+      description: Provisioned Account Credit List Response
+    ProvisionedAccountCreditListDataContainer:
+      type: object
+      properties:
+        provisionedAccountCredit:
+          $ref: '#/components/schemas/ProvisionedAccountCreditResourceQueryInput'
+        provisionedAccountCredits:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvisionedAccountCreditResource'
+      description: Provisioned Account Credit List Data Container
+    ProvisionedAccountCreditGetDataContainer:
+      required:
+      - provisionedAccountCredit
+      type: object
+      properties:
+        provisionedAccountCredit:
+          $ref: '#/components/schemas/ProvisionedAccountCreditResource'
+      description: provisioned account credit data container
+    ProvisionedAccountCreditCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ProvisionedAccountCreditListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ProvisionedAccountCreditCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/ProvisionedAccountCreditCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ProvisionedAccountCreditCreateMetadataContainer'
+      description: Provisioned Account Credit Create Request Model
+    ProvisionedAccountCreditGetMetadataContainer:
+      type: object
+      description: provisioned account credit metadata container
+    ProvisionedAccountCreditGetConnectContainer:
+      type: object
+      description: provisioned account credit connect container
+    ProvisionedAccountCreditStatus:
+      type: string
+      description: status of provisioned account credit
+      enum:
+      - new
+      - unmatched
+      - matched
+      - completed
+      - failed
+      - pending
+    ProvisionedAccountCreditCreateMetadataContainer:
+      type: object
+      description: Provisioned Account Credit Create Metadata Container
+    ProvisionedAccountType:
+      type: string
+      description: type of account which is credited by this provisioned account credit
+      enum:
+      - client-account
+      - transaction-account
+    ProvisionedAccountCreditCreateDataContainer:
+      required:
+      - provisionedAccountCredit
+      type: object
+      properties:
+        provisionedAccountCredit:
+          $ref: '#/components/schemas/ProvisionedAccountCreditResource'
+      description: Provisioned Account Credit Create Data Container
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    RoutingCodeMap:
+      type: object
+      description: routing codes of account as map, refer to Accounts section in Guides for details
+    ProvisionedAccountCreditGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ProvisionedAccountCreditGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ProvisionedAccountCreditGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/ProvisionedAccountCreditGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ProvisionedAccountCreditGetMetadataContainer'
+      description: provisioned account credit response model
+    TransferScheme:
+      type: string
+      description: transfer scheme depending on the scope of the transfer
+      enum:
+      - swift
+      - local
+      - sepa
+      - sepa-instant
+      - sepa-target-2
+      - sepa-target-2-pacs009
+      - chaps
+      - bacs
+      - faster-payments
+      - faster-payments-poo
+      - ach
+      - wire
+      - eft
+    TransferScope:
+      type: string
+      description: transfer scheme depending on the scope of the transfer
+      enum:
+      - internal
+      - external
+      - internal
+      - external
+    ProvisionedAccountCreditResourceQueryInput:
+      type: object
+      properties:
+        amountFrom:
+          type: number
+        amountTo:
+          type: number
+        currency:
+          type: array
+          items:
+            type: string
+        accountId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accountType:
+          $ref: '#/components/schemas/ProvisionedAccountType'
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/incoming-transferscompliance-checkget.md
+  - https://developer.integrated.finance/reference/incoming-transferscompliance-checkupdate.md
+  - https://developer.integrated.finance/reference/incoming-transfersget.md
+  - https://developer.integrated.finance/reference/incoming-transferslist.md
+  - https://developer.integrated.finance/reference/incoming-transfersupdate.md
+  - https://developer.integrated.finance/reference/provisioned-account-creditcreate.md
+  - https://developer.integrated.finance/reference/provisioned-account-creditget.md
+  - https://developer.integrated.finance/reference/provisioned-account-creditlist.md
+  merge:
+    pages: 8
+    deduped: 41
+    conflicts_kept_first: 0

@@ -1,0 +1,206 @@
+openapi: 3.2.0
+info:
+  title: Incoming Transfers - Compliance API
+  description: Operations for Incoming Transfers
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Incoming Transfers - Compliance
+paths:
+  /incoming-transfers/{id}/compliance-check:
+    get:
+      tags:
+      - Incoming Transfers - Compliance
+      summary: Get Compliance Check of an Incoming Transfer
+      operationId: incoming-transfers.compliance-check.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of incoming transfer in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Compliance check of incoming transfer returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceCheckGetResponse'
+    patch:
+      tags:
+      - Incoming Transfers - Compliance
+      summary: Update Compliance Check of an Incoming Transfer
+      operationId: incoming-transfers.compliance-check.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of incoming transfer in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ComplianceCheckUpdateRequest'
+      responses:
+        '202':
+          description: Compliance check updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceCheckUpdateResponse'
+components:
+  schemas:
+    ComplianceProcedureResultResource:
+      type: object
+      properties:
+        result:
+          type: string
+      description: compliance procedure result model
+    ComplianceCheckGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ComplianceCheckGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ComplianceCheckGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/ComplianceCheckGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ComplianceCheckGetMetadataContainer'
+      description: response model
+    ComplianceCheckUpdateDataContainer:
+      required:
+      - complianceCheck
+      type: object
+      properties:
+        complianceCheck:
+          $ref: '#/components/schemas/ComplianceCheckResource'
+      description: data container
+    ComplianceCheckGetWorkflowContainer:
+      type: object
+      description: workflow container
+    ComplianceCheckGetConnectContainer:
+      type: object
+      description: connect container
+    ComplianceCheckGetDataContainer:
+      required:
+      - complianceCheck
+      type: object
+      properties:
+        complianceCheck:
+          $ref: '#/components/schemas/ComplianceCheckResource'
+      description: data container
+    ComplianceCheckUpdateMetadataContainer:
+      type: object
+      description: metadata container
+    ComplianceCheckUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+      description: workflow container
+    ComplianceCheckStatus:
+      type: string
+      description: status of compliance check
+      enum:
+      - in-review
+      - suspended
+      - rejected
+      - approved
+      - redundant
+      - skipped
+    ComplianceCheckGetMetadataContainer:
+      type: object
+      description: metadata container
+    ComplianceCheckUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ComplianceCheckUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ComplianceCheckUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/ComplianceCheckUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ComplianceCheckUpdateMetadataContainer'
+      description: response model
+    ComplianceCheckUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ComplianceCheckUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ComplianceCheckUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/ComplianceCheckUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ComplianceCheckUpdateMetadataContainer'
+      description: request model
+    ComplianceCheckResource:
+      required:
+      - procedureResults
+      - status
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ComplianceCheckStatus'
+        procedureResults:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ComplianceProcedureResultResource'
+          description: procedure results of compliance check
+      description: compliance check model
+      readOnly: true
+    ComplianceCheckUpdateConnectContainer:
+      type: object
+      description: connect container
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/incoming-transferscompliance-checkget.md
+  - https://developer.integrated.finance/reference/incoming-transferscompliance-checkupdate.md
+  - https://developer.integrated.finance/reference/incoming-transfersget.md
+  - https://developer.integrated.finance/reference/incoming-transferslist.md
+  - https://developer.integrated.finance/reference/incoming-transfersupdate.md
+  - https://developer.integrated.finance/reference/provisioned-account-creditcreate.md
+  - https://developer.integrated.finance/reference/provisioned-account-creditget.md
+  - https://developer.integrated.finance/reference/provisioned-account-creditlist.md
+  merge:
+    pages: 8
+    deduped: 41
+    conflicts_kept_first: 0

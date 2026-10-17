@@ -1,0 +1,873 @@
+openapi: 3.2.0
+info:
+  title: Transaction Accounts API
+  description: Operations for Transaction Accounts
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Transaction Accounts
+paths:
+  /transaction-accounts:
+    get:
+      tags:
+      - Transaction Accounts
+      summary: List Transaction Accounts
+      operationId: transaction-accounts.list
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.client.fullName,desc
+      - name: data.transactionAccount.clientId
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccount.status
+        in: query
+        schema:
+          type: string
+          enum:
+          - active
+          - inactive
+      - name: data.transactionAccount.currency
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccount.bankAccountId
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccount.routingCodeKey
+        in: query
+        schema:
+          $ref: '#/components/schemas/RoutingCodeType'
+      - name: data.transactionAccount.routingCodeValue
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccount.iban
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccount.accountNumber
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccount.availableBalanceFrom
+        in: query
+        schema:
+          type: string
+      - name: data.transactionAccount.availableBalanceTo
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transaction account list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountListResponse'
+              example:
+                workflow: {}
+                data:
+                  transactionAccounts:
+                  - id: 00000000-0000-0000-0000-000000000000
+                    clientId: null
+                    bankAccountId: 00000000-0000-0000-0000-000000000000
+                    currency: HUF
+                    availableBalance: 50
+                    inboundTransferSchemes:
+                    - swift
+                    outboundTransferSchemes:
+                    - swift
+                    - local
+                    status: active
+                    depositInformation:
+                      swift:
+                        country: GB
+                        iban: GB60TCCL12345610395112
+                        routingCodes:
+                          bic: TCCLGB3L
+                  - id: 00000000-0000-0000-0000-000000000000
+                    clientId: null
+                    bankAccountId: 00000000-0000-0000-0000-000000000000
+                    currency: SEK
+                    availableBalance: 30
+                    inboundTransferSchemes:
+                    - swift
+                    outboundTransferSchemes:
+                    - swift
+                    - local
+                    status: active
+                    depositInformation:
+                      swift:
+                        country: GB
+                        iban: GB74TCCL12345604865957
+                        routingCodes:
+                          bic: TCCLGB3L
+                connect: {}
+                metadata:
+                  page:
+                    size: 10
+                    number: 0
+                    totalElements: 2
+                    totalPages: 1
+    post:
+      tags:
+      - Transaction Accounts
+      summary: Create a Transaction Account
+      operationId: transaction-accounts.create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionAccountCreateRequest'
+            examples:
+              client-integrated-pool-account:
+                description: client-integrated-pool-account
+                value:
+                  workflow:
+                    code: client.integrated-pool-account
+                  data:
+                    transactionAccount:
+                      clientId: 00000000-0000-0000-0000-000000000002
+                      bankAccountId: 00000000-0000-0000-0000-000000000001
+                      currency: GBP
+                      alias: GBP Pool Account
+                  connect: {}
+                  metadata: {}
+              client-internal-ledger-only-account:
+                description: client-internal-ledger-only-account
+                value:
+                  workflow:
+                    code: client.internal-ledger-only-account
+                  data:
+                    transactionAccount:
+                      clientId: 00000000-0000-0000-0000-000000000002
+                      currency: EUR
+                      alias: EUR Ledger Account
+                  connect: {}
+                  metadata: {}
+              client-sub-account:
+                description: client-sub-account
+                value:
+                  workflow:
+                    code: client.sub-account
+                  data:
+                    transactionAccount:
+                      clientId: 00000000-0000-0000-0000-000000000002
+                      bankAccountId: 00000000-0000-0000-0000-000000000001
+                      mainAccountId: 00000000-0000-0000-0000-000000000005
+                      currency: GBP
+                      alias: GBP Sub Account
+                  connect: {}
+                  metadata: {}
+      responses:
+        '201':
+          description: Transaction Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountCreateResponse'
+              examples:
+                client-integrated-pool-account:
+                  description: client-integrated-pool-account
+                  value:
+                    workflow:
+                      code: client.integrated-pool-account
+                    data:
+                      transactionAccount:
+                        id: 00000000-0000-0000-0000-000000000000
+                        owner: client
+                        type: external-dedicated
+                        hierarchy: standalone-account
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        bankAccountId: 00000000-0000-0000-0000-000000000000
+                        currency: EUR
+                        alias: EUR Client Account
+                        availableBalance: 0
+                        attributes:
+                          purpose: card-expenses
+                        inboundTransferSchemes:
+                        - swift
+                        - sepa
+                        - sepa-instant
+                        outboundTransferSchemes:
+                        - swift
+                        - sepa
+                        - sepa-instant
+                        status: active
+                        depositInformation:
+                          sepa:
+                            country: GB
+                            iban: GB03LHVB04032800006654
+                            routingCodes:
+                              bic: LHVBGB2L
+                          swift:
+                            country: GB
+                            iban: GB03LHVB04032800006654
+                            routingCodes:
+                              bic: LHVBGB2L
+                          sepa-instant:
+                            country: GB
+                            iban: GB03LHVB04032800006654
+                            routingCodes:
+                              bic: LHVBGB2L
+                    connect: {}
+                    metadata: {}
+                client-internal-ledger-only-account:
+                  description: client-internal-ledger-only-account
+                  value:
+                    workflow:
+                      code: client.internal-ledger-only-account
+                    data:
+                      transactionAccount:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        owner: client
+                        type: internal-only
+                        hierarchy: standalone-account
+                        currency: GBP
+                        alias: GBP Ledger Only Account
+                        availableBalance: 0
+                        attributes:
+                          purpose: office-expenses
+                        inboundTransferSchemes: []
+                        outboundTransferSchemes: []
+                        status: active
+                        depositInformation: {}
+                    connect: {}
+                    metadata: {}
+                client-sub-account:
+                  description: client-sub-account
+                  value:
+                    workflow:
+                      code: client.sub-account
+                    data:
+                      transactionAccount:
+                        id: 00000000-0000-0000-0000-000000000000
+                        owner: client
+                        type: external-dedicated
+                        hierarchy: sub-account
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        mainAccountId: 00000000-0000-0000-0000-000000000000
+                        currency: GBP
+                        alias: GBP Client Sub Account
+                        attributes:
+                          purpose: office-expenses
+                        availableBalance: 50
+                        inboundTransferSchemes: []
+                        outboundTransferSchemes: []
+                        status: active
+                        depositInformation: {}
+                    connect: {}
+                    metadata: {}
+        '400':
+          description: Missing required field
+          content:
+            application/json:
+              examples:
+                error-required-validation:
+                  description: error-required-validation
+                  value:
+                    timestamp: '2023-02-12T13:06:35.0286835'
+                    message: Parameter data.transactionAccount.clientId cannot be null or empty.
+                    code: common.coding.functional.invalid_input
+                    messageParameters:
+                    - data.transactionAccount.clientId
+  /transaction-accounts/{id}:
+    get:
+      tags:
+      - Transaction Accounts
+      summary: Get a Transaction Account
+      operationId: transaction-accounts.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of transaction account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Transaction account resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountGetResponse'
+              examples:
+                default:
+                  description: default
+                  value:
+                    workflow: {}
+                    data:
+                      transactionAccount:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientId: null
+                        bankAccountId: 00000000-0000-0000-0000-000000000000
+                        currency: EUR
+                        availableBalance: 20
+                        inboundTransferSchemes:
+                        - swift
+                        - sepa
+                        - sepa-instant
+                        outboundTransferSchemes:
+                        - swift
+                        - sepa
+                        - sepa-instant
+                        status: active
+                        depositInformation:
+                          sepa:
+                            country: GB
+                            iban: GB03LHVB04032800006654
+                            routingCodes:
+                              bic: LHVBGB2L
+                          swift:
+                            country: GB
+                            iban: GB03LHVB04032800006654
+                            routingCodes:
+                              bic: LHVBGB2L
+                          sepa-instant:
+                            country: GB
+                            iban: GB03LHVB04032800006654
+                            routingCodes:
+                              bic: LHVBGB2L
+                    connect: {}
+                    metadata: {}
+    patch:
+      tags:
+      - Transaction Accounts
+      summary: Update an Transaction Account
+      operationId: transaction-accounts.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionAccountUpdateRequest'
+            examples:
+              direct:
+                description: direct
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    transactionAccount:
+                      alias: Updated GBP Transaction Account
+                      attributes:
+                        externalReference: ref-12345
+                  connect: {}
+                  metadata: {}
+      responses:
+        '202':
+          description: Transaction Account updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAccountUpdateResponse'
+              examples:
+                direct:
+                  description: direct
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      transactionAccount:
+                        id: 00000000-0000-0000-0000-000000000006
+                        clientId: 00000000-0000-0000-0000-000000000002
+                        bankAccountId: 00000000-0000-0000-0000-000000000001
+                        currency: GBP
+                        alias: Updated GBP Transaction Account
+                        availableBalance: 0
+                        inboundTransferSchemes:
+                        - swift
+                        outboundTransferSchemes:
+                        - swift
+                        status: active
+                        attributes:
+                          externalReference: ref-12345
+                        depositInformation:
+                          swift:
+                            country: GB
+                            iban: GB60TCCL12345610395112
+                            routingCodes:
+                              bic: TCCLGB3L
+                    connect: {}
+                    metadata: {}
+        '400':
+          description: Missing required field
+          content:
+            application/json:
+              examples:
+                error-required-validation:
+                  description: error-required-validation
+                  value:
+                    timestamp: '2023-02-12T13:06:35.0286835'
+                    message: Parameter data.transactionAccount cannot be null or empty.
+                    code: common.coding.functional.invalid_input
+                    messageParameters:
+                    - data.transactionAccount
+components:
+  schemas:
+    TransactionAccountUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountUpdateMetadataContainer'
+    TransactionAccountCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountCreateMetadataContainer'
+    TransactionAccountListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    TransactionAccountHierarchy:
+      type: string
+      description: hierarchy of transaction account
+      readOnly: true
+      enum:
+      - main-account
+      - sub-account
+      - standalone-account
+    TransactionAccountCreateDataContainer:
+      required:
+      - transactionAccount
+      type: object
+      properties:
+        transactionAccount:
+          $ref: '#/components/schemas/TransactionAccount'
+    TransactionAccountCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.integrated-pool-account
+          - client.internal-ledger-only-account
+          - client.sub-account
+    TransactionAccountUpdateConnectContainer:
+      type: object
+    TransactionAccountGetDataContainer:
+      type: object
+      properties:
+        transactionAccount:
+          $ref: '#/components/schemas/TransactionAccount'
+    RoutingCodeType:
+      type: string
+      enum:
+      - bic
+      - sort-code
+      - aba
+      - rtn-canada
+      - clabe
+      - bsb-code
+      - ifsc
+      - cnaps
+      - bank-code
+      - branch-code
+    Owner:
+      type: string
+      description: owner of transaction account
+      readOnly: true
+      enum:
+      - organization
+      - client
+    TransactionAccountCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountCreateMetadataContainer'
+    TransactionAccountUpdateDataContainer:
+      required:
+      - transactionAccount
+      type: object
+      properties:
+        transactionAccount:
+          $ref: '#/components/schemas/TransactionAccount'
+    TransactionAccountGetMetadataContainer:
+      type: object
+    TransactionAccountGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountGetMetadataContainer'
+    TransactionAccountUpdateMetadataContainer:
+      type: object
+    TransactionAccountGetConnectContainer:
+      type: object
+    TransactionAccountListWorkflowContainer:
+      type: object
+    TransactionAccountListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountListDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountListMetadataContainer'
+    TransactionAccountRoutingType:
+      type: string
+      description: type of transaction account
+      readOnly: true
+      enum:
+      - external-dedicated
+      - external-shared
+      - internal-only
+    DepositInformationMap:
+      type: object
+      description: deposit information of this transaction account
+      readOnly: true
+    AttributeMap:
+      type: object
+      description: attributes of this transaction account
+      readOnly: true
+    TransactionAccountResourceQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        owner:
+          $ref: '#/components/schemas/Owner'
+        currency:
+          type: array
+          items:
+            type: string
+        bankAccountId:
+          type: string
+          format: uuid
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionAccountStatus'
+        availableBalanceFrom:
+          type: number
+        availableBalanceTo:
+          type: number
+        routingCodeKey:
+          $ref: '#/components/schemas/RoutingCodeType'
+        routingCodeValue:
+          type: string
+        iban:
+          type: array
+          items:
+            type: string
+        accountNumber:
+          type: array
+          items:
+            type: string
+    TransactionAccountListDataContainer:
+      type: object
+      properties:
+        transactionAccount:
+          $ref: '#/components/schemas/TransactionAccountResourceQueryInput'
+        transactionAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionAccount'
+    TransactionAccountUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+          - client.direct
+    TransactionAccountCreateConnectContainer:
+      type: object
+    TransactionAccountStatus:
+      type: string
+      description: status of this transaction account
+      readOnly: true
+      enum:
+      - pending
+      - active
+      - inactive
+      - suspended
+      - closed
+      - declined
+    TransactionAccountCreateMetadataContainer:
+      type: object
+    TransactionAccountListConnectContainer:
+      type: object
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    TransferScheme:
+      type: string
+      description: outbound transfer schemes of this transaction account
+      readOnly: true
+      enum:
+      - swift
+      - local
+      - sepa
+      - sepa-instant
+      - sepa-target-2
+      - sepa-target-2-pacs009
+      - sepa-direct-debit
+      - chaps
+      - bacs
+      - faster-payments
+      - faster-payments-poo
+      - npp
+      - becs
+      - rits
+      - tips-dkk
+      - intradag
+      - t2-dkk
+      - rix-inst
+      - rix-rtgs
+      - swish
+      - nbo
+      - viber
+      - sic-inst
+      - sic-ach
+      - sic-rtgs
+      - chats
+      - ach
+      - wire
+      - eft
+    TransactionAccountUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/TransactionAccountUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/TransactionAccountUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/TransactionAccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/TransactionAccountUpdateMetadataContainer'
+    TransactionAccount:
+      required:
+      - currency
+      - hierarchy
+      - id
+      - inboundTransferSchemes
+      - outboundTransferSchemes
+      - owner
+      - status
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of transaction account
+          format: uuid
+          readOnly: true
+        owner:
+          $ref: '#/components/schemas/Owner'
+        type:
+          $ref: '#/components/schemas/TransactionAccountRoutingType'
+        hierarchy:
+          $ref: '#/components/schemas/TransactionAccountHierarchy'
+        clientId:
+          type: string
+          description: client id of transaction account
+          format: uuid
+          readOnly: true
+        bankAccountId:
+          type: string
+          description: bank account id of transaction account
+          format: uuid
+          readOnly: true
+        mainAccountId:
+          type: string
+          description: main account id of transaction account
+          format: uuid
+          readOnly: true
+        currency:
+          type: string
+          description: currency of this transaction account
+          readOnly: true
+        alias:
+          type: string
+          description: alias of this transaction account
+          readOnly: true
+        availableBalance:
+          type: number
+          description: available balance of transaction account
+          format: double
+          readOnly: true
+        receivableBalance:
+          type: number
+          description: receivable balance of transaction account
+          format: double
+          readOnly: true
+        payableBalance:
+          type: number
+          description: payable balance of transaction account
+          format: double
+          readOnly: true
+        inboundTransferSchemes:
+          uniqueItems: true
+          type: array
+          description: inbound transfer schemes of this transaction account
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/TransferScheme'
+        outboundTransferSchemes:
+          uniqueItems: true
+          type: array
+          description: outbound transfer schemes of this transaction account
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/TransferScheme'
+        status:
+          $ref: '#/components/schemas/TransactionAccountStatus'
+        attributes:
+          $ref: '#/components/schemas/AttributeMap'
+        depositInformation:
+          $ref: '#/components/schemas/DepositInformationMap'
+    TransactionAccountGetWorkflowContainer:
+      type: object
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/transaction-accountscreate.md
+  - https://developer.integrated.finance/reference/transaction-accountsget-1.md
+  - https://developer.integrated.finance/reference/transaction-accountslist-1.md
+  - https://developer.integrated.finance/reference/transaction-accountsstatementscreate-1.md
+  - https://developer.integrated.finance/reference/transaction-accountsstatementsfileget-1.md
+  - https://developer.integrated.finance/reference/transaction-accountsstatementsget-1.md
+  - https://developer.integrated.finance/reference/transaction-accountsstatementslist.md
+  - https://developer.integrated.finance/reference/transaction-accountsupdate.md
+  merge:
+    pages: 8
+    deduped: 34
+    conflicts_kept_first: 0

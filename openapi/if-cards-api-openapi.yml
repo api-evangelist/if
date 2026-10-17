@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Card API
+  title: Cards API
   description: Operations for Cards
   version: '1'
 servers:
@@ -10,6 +10,8 @@ servers:
 - url: https://api.integrated.finance/v1/{instanceId}
   description: Production
   variables: {}
+tags:
+- name: Cards
 paths:
   /cards:
     get:
@@ -431,7 +433,7 @@ paths:
     delete:
       tags:
       - Cards
-      summary: ' Remove linked account of a card'
+      summary: Remove linked account of a card
       operationId: cards.linkedAccount.remove
       parameters:
       - name: cardId
@@ -815,15 +817,47 @@ paths:
                     metadata: {}
 components:
   schemas:
-    AccountStatus:
+    ConnectMethod:
       type: string
       enum:
+      - built-in
+      - plug-in
+    CardStatus:
+      type: string
+      description: status of card
+      readOnly: true
+      enum:
       - pending
+      - declined
       - active
       - inactive
       - suspended
-      - closed
-      - declined
+      - terminated
+    CardAccountCreateConnectContainer:
+      type: object
+    CardAccountListConnectContainer:
+      type: object
+    CardGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardGetMetadataContainer'
+    CardGetDataContainer:
+      type: object
+      properties:
+        card:
+          $ref: '#/components/schemas/Card'
     LinkedAccount:
       required:
       - accountId
@@ -837,6 +871,408 @@ components:
         accountStatus:
           $ref: '#/components/schemas/AccountStatus'
       description: Linked Account Resource Object
+    CardType:
+      type: string
+      description: type of card
+      enum:
+      - virtual
+      - physical
+    CardUpdateConnectContainer:
+      type: object
+    CardListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    CardOTPCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardOTPCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardOTPCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardOTPCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardOTPCreateMetadataContainer'
+    CardAccountDeleteMetadataContainer:
+      type: object
+    CardOTPCreateMetadataContainer:
+      type: object
+    CardCreateDataContainer:
+      required:
+      - card
+      type: object
+      properties:
+        card:
+          $ref: '#/components/schemas/Card'
+    CardAccountCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - direct
+    ErrorOrigin:
+      type: string
+      enum:
+      - customer
+      - platform
+      - provider
+    CardAccountListQueryOutput:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        accountStatus:
+          $ref: '#/components/schemas/AccountStatus'
+      description: accounts linked to card
+      readOnly: true
+    ServiceProviderConnectionState:
+      type: string
+      enum:
+      - pending
+      - creation-in-progress
+      - update-in-progress
+      - dependency-completed
+      - completed-up-to-date
+      - completed-outdated
+      - dependency-failed
+      - creation-failed
+    CardOTPCreateConnectContainer:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: service provider selection type
+          enum:
+          - explicit
+        serviceProvider:
+          type: string
+          description: card otp is connected to this service provider
+    CardCreateConnectContainer:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: service provider selection type
+          enum:
+          - explicit
+        serviceProvider:
+          type: string
+          description: card is connected to this service provider
+    CardAccountListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    CardUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardUpdateMetadataContainer'
+    CardAccountDeleteConnectContainer:
+      type: object
+    CardGetConnectContainer:
+      type: object
+      properties:
+        connection:
+          $ref: '#/components/schemas/CardConnection'
+    CardAccountListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardAccountListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardAccountListDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardAccountListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardAccountListMetadataContainer'
+    AccountStatus:
+      type: string
+      enum:
+      - pending
+      - active
+      - inactive
+      - suspended
+      - closed
+      - declined
+    CardSuspensionReason:
+      type: string
+      description: suspension reason of card
+      enum:
+      - user-requested
+      - suspected-fraud
+      - suspended-by-third-party
+    CardOTPCreateDataContainer:
+      required:
+      - card otp
+      type: object
+      properties:
+        card otp:
+          $ref: '#/components/schemas/CardOTP'
+    CardAccountListDataContainer:
+      type: object
+      properties:
+        linkedAccount:
+          $ref: '#/components/schemas/CardAccountResourceQueryInput'
+        linkedAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+    CardAccountDeleteDataContainer:
+      type: object
+      properties:
+        cardAccount:
+          $ref: '#/components/schemas/LinkedAccount'
+    AttributeMap:
+      type: object
+      description: attributes of card
+    CardCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardCreateMetadataContainer'
+    CardAccountResourceQueryInput:
+      type: object
+      properties:
+        accountStatus:
+          $ref: '#/components/schemas/AccountStatus'
+    CardTerminationReason:
+      type: string
+      description: termination reason of card
+      enum:
+      - lost-card
+      - stolen-card
+      - expired-card
+      - termination-requested
+      - terminated-by-third-party
+    CardAccountDeleteResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardAccountDeleteWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardAccountDeleteDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardAccountDeleteConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardAccountDeleteMetadataContainer'
+    CardOTPCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.third-party
+    ConnectionErrorResource:
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/ErrorCategory'
+        origin:
+          $ref: '#/components/schemas/ErrorOrigin'
+        code:
+          type: string
+        message:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+    CardListDataContainer:
+      type: object
+      properties:
+        card:
+          $ref: '#/components/schemas/CardResourceQueryInput'
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+    CardResourceQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        userId:
+          type: string
+          format: uuid
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardType'
+        alias:
+          type: string
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardStatus'
+        serviceProvider:
+          type: array
+          items:
+            type: string
+        pan:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        clientTitle:
+          type: string
+        clientNumber:
+          type: array
+          items:
+            type: string
+        username:
+          type: string
+    CardAccountCreateDataContainer:
+      required:
+      - linkedAccount
+      type: object
+      properties:
+        linkedAccount:
+          $ref: '#/components/schemas/LinkedAccount'
+    Address:
+      required:
+      - city
+      - country
+      - street
+      type: object
+      properties:
+        country:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        houseNumber:
+          type: string
+        refinement:
+          type: string
+      description: delivery address of card
+    CardOTPCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardOTPCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardOTPCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardOTPCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardOTPCreateMetadataContainer'
+    CardListConnectContainer:
+      type: object
+    CardListWorkflowContainer:
+      type: object
+    ThirdPartyCardStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - suspended-user-requested
+      - suspended-suspected-fraud
+      - suspended-by-third-party
+      - terminated-lost-card
+      - terminated-stolen-card
+      - terminated-expired-card
+      - termination-requested
+      - terminated-by-third-party
+    CardAccountCreateMetadataContainer:
+      type: object
+    CardAccountCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardAccountCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardAccountCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardAccountCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardAccountCreateMetadataContainer'
+    CardAccountDeleteWorkflowContainer:
+      type: object
+    CardAccountListWorkflowContainer:
+      type: object
+    ErrorCategory:
+      type: string
+      enum:
+      - functional
+      - technical
     PageMetadata:
       required:
       - number
@@ -867,84 +1303,6 @@ components:
           description: number of total pages
           format: int32
           readOnly: true
-    CardAccountListConnectContainer:
-      type: object
-    CardAccountListDataContainer:
-      type: object
-      properties:
-        linkedAccount:
-          $ref: '#/components/schemas/CardAccountResourceQueryInput'
-        linkedAccounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/LinkedAccount'
-    CardAccountListMetadataContainer:
-      required:
-      - page
-      type: object
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    CardAccountListResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardAccountListWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardAccountListDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardAccountListConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardAccountListMetadataContainer'
-    CardAccountListWorkflowContainer:
-      type: object
-    CardAccountResourceQueryInput:
-      type: object
-      properties:
-        accountStatus:
-          $ref: '#/components/schemas/AccountStatus'
-    CardAccountCreateConnectContainer:
-      type: object
-    CardAccountCreateDataContainer:
-      required:
-      - linkedAccount
-      type: object
-      properties:
-        linkedAccount:
-          $ref: '#/components/schemas/LinkedAccount'
-    CardAccountCreateMetadataContainer:
-      type: object
-    CardAccountCreateResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardAccountCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardAccountCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardAccountCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardAccountCreateMetadataContainer'
-    CardAccountCreateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: string
-          description: workflow code
-          enum:
-          - direct
     CardAccountCreateRequest:
       required:
       - connect
@@ -961,34 +1319,19 @@ components:
           $ref: '#/components/schemas/CardAccountCreateConnectContainer'
         metadata:
           $ref: '#/components/schemas/CardAccountCreateMetadataContainer'
-    Address:
+    CardGetMetadataContainer:
+      type: object
+    CardCreateWorkflowContainer:
       required:
-      - city
-      - country
-      - street
+      - code
       type: object
       properties:
-        country:
-          maxLength: 2
-          minLength: 2
-          pattern: ^[A-Z]{2}$
+        code:
           type: string
-        region:
-          type: string
-        postalCode:
-          type: string
-        city:
-          type: string
-        street:
-          type: string
-        houseNumber:
-          type: string
-        refinement:
-          type: string
-      description: delivery address of card
-    AttributeMap:
-      type: object
-      description: attributes of card
+          description: workflow code
+          enum:
+          - client.debit.issuing
+          - client.credit.issuing
     Card:
       required:
       - clientId
@@ -1056,16 +1399,72 @@ components:
         connection:
           $ref: '#/components/schemas/CardConnection'
       description: Card Resource Object
-    CardAccountListQueryOutput:
+    CardCreateMetadataContainer:
+      type: object
+    CardUpdateDataContainer:
+      required:
+      - card
       type: object
       properties:
-        accountId:
+        card:
+          $ref: '#/components/schemas/Card'
+    CardCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardCreateMetadataContainer'
+    CardListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/CardListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/CardListDataContainer'
+        connect:
+          $ref: '#/components/schemas/CardListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/CardListMetadataContainer'
+    CardUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
           type: string
-          format: uuid
-        accountStatus:
-          $ref: '#/components/schemas/AccountStatus'
-      description: accounts linked to card
-      readOnly: true
+          description: workflow code
+          enum:
+          - client.direct
+    CardOTP:
+      required:
+      - cardServiceProviderEntityId
+      - value
+      type: object
+      properties:
+        value:
+          type: string
+          description: One time password
+          readOnly: true
+        cardServiceProviderEntityId:
+          type: string
+          description: Card service provider entity id
+          readOnly: true
+      description: Card OTP Resource Object
     CardConnection:
       type: object
       properties:
@@ -1085,352 +1484,8 @@ components:
           $ref: '#/components/schemas/ConnectionErrorResource'
       description: Card Connection Resource Object
       readOnly: true
-    CardStatus:
-      type: string
-      description: status of card
-      readOnly: true
-      enum:
-      - pending
-      - declined
-      - active
-      - inactive
-      - suspended
-      - terminated
-    CardSuspensionReason:
-      type: string
-      description: suspension reason of card
-      enum:
-      - user-requested
-      - suspected-fraud
-      - suspended-by-third-party
-    CardTerminationReason:
-      type: string
-      description: termination reason of card
-      enum:
-      - lost-card
-      - stolen-card
-      - expired-card
-      - termination-requested
-      - terminated-by-third-party
-    CardType:
-      type: string
-      description: type of card
-      enum:
-      - virtual
-      - physical
-    ConnectMethod:
-      type: string
-      enum:
-      - built-in
-      - plug-in
-    ConnectionErrorResource:
-      type: object
-      properties:
-        category:
-          $ref: '#/components/schemas/ErrorCategory'
-        origin:
-          $ref: '#/components/schemas/ErrorOrigin'
-        code:
-          type: string
-        message:
-          type: string
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-    ErrorCategory:
-      type: string
-      enum:
-      - functional
-      - technical
-    ErrorOrigin:
-      type: string
-      enum:
-      - customer
-      - platform
-      - provider
-    ServiceProviderConnectionState:
-      type: string
-      enum:
-      - pending
-      - creation-in-progress
-      - update-in-progress
-      - dependency-completed
-      - completed-up-to-date
-      - completed-outdated
-      - dependency-failed
-      - creation-failed
-    ThirdPartyCardStatus:
-      type: string
-      enum:
-      - active
-      - inactive
-      - suspended-user-requested
-      - suspended-suspected-fraud
-      - suspended-by-third-party
-      - terminated-lost-card
-      - terminated-stolen-card
-      - terminated-expired-card
-      - termination-requested
-      - terminated-by-third-party
-    CardListConnectContainer:
-      type: object
-    CardListDataContainer:
-      type: object
-      properties:
-        card:
-          $ref: '#/components/schemas/CardResourceQueryInput'
-        cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/Card'
-    CardListMetadataContainer:
-      required:
-      - page
-      type: object
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    CardListResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardListWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardListDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardListConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardListMetadataContainer'
-    CardListWorkflowContainer:
-      type: object
-    CardResourceQueryInput:
-      type: object
-      properties:
-        clientId:
-          type: array
-          items:
-            type: string
-            format: uuid
-        userId:
-          type: string
-          format: uuid
-        type:
-          type: array
-          items:
-            $ref: '#/components/schemas/CardType'
-        alias:
-          type: string
-        status:
-          type: array
-          items:
-            $ref: '#/components/schemas/CardStatus'
-        serviceProvider:
-          type: array
-          items:
-            type: string
-        pan:
-          type: string
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-        clientTitle:
-          type: string
-        clientNumber:
-          type: array
-          items:
-            type: string
-        username:
-          type: string
-    CardCreateConnectContainer:
-      required:
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-          description: service provider selection type
-          enum:
-          - explicit
-        serviceProvider:
-          type: string
-          description: card is connected to this service provider
-    CardCreateDataContainer:
-      required:
-      - card
-      type: object
-      properties:
-        card:
-          $ref: '#/components/schemas/Card'
-    CardCreateMetadataContainer:
-      type: object
-    CardCreateResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardCreateMetadataContainer'
-    CardCreateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: string
-          description: workflow code
-          enum:
-          - client.debit.issuing
-          - client.credit.issuing
-    CardCreateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardCreateMetadataContainer'
-    CardOTP:
-      required:
-      - cardServiceProviderEntityId
-      - value
-      type: object
-      properties:
-        value:
-          type: string
-          description: One time password
-          readOnly: true
-        cardServiceProviderEntityId:
-          type: string
-          description: Card service provider entity id
-          readOnly: true
-      description: Card OTP Resource Object
-    CardOTPCreateConnectContainer:
-      required:
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-          description: service provider selection type
-          enum:
-          - explicit
-        serviceProvider:
-          type: string
-          description: card otp is connected to this service provider
-    CardOTPCreateDataContainer:
-      required:
-      - card otp
-      type: object
-      properties:
-        card otp:
-          $ref: '#/components/schemas/CardOTP'
-    CardOTPCreateMetadataContainer:
-      type: object
-    CardOTPCreateResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardOTPCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardOTPCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardOTPCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardOTPCreateMetadataContainer'
-    CardOTPCreateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: string
-          description: workflow code
-          enum:
-          - client.third-party
-    CardOTPCreateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardOTPCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardOTPCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardOTPCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardOTPCreateMetadataContainer'
-    CardGetConnectContainer:
-      type: object
-      properties:
-        connection:
-          $ref: '#/components/schemas/CardConnection'
-    CardGetDataContainer:
-      type: object
-      properties:
-        card:
-          $ref: '#/components/schemas/Card'
-    CardGetMetadataContainer:
-      type: object
-    CardGetResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardGetWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardGetDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardGetConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardGetMetadataContainer'
     CardGetWorkflowContainer:
       type: object
-    CardUpdateConnectContainer:
-      type: object
-    CardUpdateDataContainer:
-      required:
-      - card
-      type: object
-      properties:
-        card:
-          $ref: '#/components/schemas/Card'
     CardUpdateMetadataContainer:
       type: object
     CardUpdateResponse:
@@ -1449,59 +1504,6 @@ components:
           $ref: '#/components/schemas/CardUpdateConnectContainer'
         metadata:
           $ref: '#/components/schemas/CardUpdateMetadataContainer'
-    CardUpdateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: string
-          description: workflow code
-          enum:
-          - client.direct
-    CardUpdateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardUpdateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardUpdateDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardUpdateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardUpdateMetadataContainer'
-    CardAccountDeleteConnectContainer:
-      type: object
-    CardAccountDeleteDataContainer:
-      type: object
-      properties:
-        cardAccount:
-          $ref: '#/components/schemas/LinkedAccount'
-    CardAccountDeleteMetadataContainer:
-      type: object
-    CardAccountDeleteResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/CardAccountDeleteWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/CardAccountDeleteDataContainer'
-        connect:
-          $ref: '#/components/schemas/CardAccountDeleteConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/CardAccountDeleteMetadataContainer'
-    CardAccountDeleteWorkflowContainer:
-      type: object
 x-provenance:
   method: searched
   source: https://developer.integrated.finance/reference

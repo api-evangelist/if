@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Open Banking API
+  title: Open Banking Consents API
   description: Operations for Open Banking
   version: '1'
 servers:
@@ -10,6 +10,8 @@ servers:
 - url: https://api.integrated.finance/v1/{instanceId}
   description: Production
   variables: {}
+tags:
+- name: Open Banking Consents
 paths:
   /open-banking/{openBankingCode}/consents:
     get:
@@ -297,16 +299,82 @@ paths:
                 metadata: {}
 components:
   schemas:
-    OpenBakingConsentAccount:
+    AccountOpenBankingConsentUpdateMetadataContainer:
+      type: object
+      description: metadata container
+    AccountOpenBankingConsentUpdateWorkflowContainer:
+      required:
+      - code
       type: object
       properties:
-        accountId:
+        code:
           type: string
-          format: uuid
-        currency:
+          description: workflow code
+          enum:
+          - direct
+      description: workflow container
+    OpenBankingConsentListPlatformQueryInput:
+      type: object
+      properties:
+        userId:
           type: string
-        iban:
+    AccountOpenBankingConsentUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateMetadataContainer'
+      description: request model
+    OpenBankingConsentListDataContainer:
+      type: object
+      properties:
+        consent:
+          $ref: '#/components/schemas/OpenBankingConsentListPlatformQueryInput'
+        consents:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/OpenBankingConsent'
+    OpenBankingConsentListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OpenBankingConsentListWorkflow'
+        data:
+          $ref: '#/components/schemas/OpenBankingConsentListDataContainer'
+        connect:
+          $ref: '#/components/schemas/OpenBankingConsentListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OpenBankingConsentListMetadataContainer'
+    ThirdPartyOpenBankingProvider:
+      type: object
+      properties:
+        name:
           type: string
+        website:
+          type: string
+        applicationName:
+          type: string
+        applicationDescription:
+          type: string
+        applicationWebsite:
+          type: string
+      description: parameters of open banking provider
     OpenBankingConsent:
       type: object
       properties:
@@ -352,232 +420,6 @@ components:
           description: Date & time that the consent was revoked by the account holder
           format: date-time
       description: Open Banking Consent Resource Object
-    OpenBankingConsentContentAccountResource:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/OpenBankingConsentContentResource'
-      - type: object
-        properties:
-          scope:
-            $ref: '#/components/schemas/OpenBankingConsentScope'
-          permissions:
-            $ref: '#/components/schemas/OpenBankingPermissionContentResource'
-    OpenBankingConsentContentPaymentResource:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/OpenBankingConsentContentResource'
-      - type: object
-        properties:
-          scope:
-            $ref: '#/components/schemas/OpenBankingConsentScope'
-          paymentScope:
-            $ref: '#/components/schemas/OpenBankingPaymentScope'
-          paymentType:
-            $ref: '#/components/schemas/OpenBankingPaymentType'
-          instructedAmount:
-            type: number
-          instructedCurrency:
-            type: string
-          creditorAccount:
-            $ref: '#/components/schemas/OpenBankingCreditorAccount'
-          debtorAccount:
-            $ref: '#/components/schemas/OpenBankingDebtorAccount'
-          permissions:
-            $ref: '#/components/schemas/OpenBankingPermissionContentResource'
-          currencyOfTransfer:
-            type: string
-          requestedExecutionDateTime:
-            type: string
-            format: date-time
-    OpenBankingConsentContentResource:
-      required:
-      - scope
-      type: object
-      properties:
-        scope:
-          type: string
-      description: content of open banking consent
-      discriminator:
-        propertyName: scope
-    OpenBankingConsentListConnectContainer:
-      type: object
-    OpenBankingConsentListDataContainer:
-      type: object
-      properties:
-        consent:
-          $ref: '#/components/schemas/OpenBankingConsentListPlatformQueryInput'
-        consents:
-          type: array
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/OpenBankingConsent'
-    OpenBankingConsentListMetadataContainer:
-      type: object
-    OpenBankingConsentListPlatformQueryInput:
-      type: object
-      properties:
-        userId:
-          type: string
-    OpenBankingConsentListResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/OpenBankingConsentListWorkflow'
-        data:
-          $ref: '#/components/schemas/OpenBankingConsentListDataContainer'
-        connect:
-          $ref: '#/components/schemas/OpenBankingConsentListConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/OpenBankingConsentListMetadataContainer'
-    OpenBankingConsentListWorkflow:
-      type: object
-      description: Descriptor that navigates IF platform from which workflow does that operation runs
-    OpenBankingConsentScope:
-      type: string
-      enum:
-      - accounts
-      - payments
-      - funds-confirmations
-    OpenBankingConsentStatus:
-      type: string
-      description: status of open banking consent
-      enum:
-      - awaiting-authorisation
-      - awaiting-exchange
-      - authorisation-declined
-      - authorised
-      - revoked
-      - expired
-      - rejected
-      - consumed
-    OpenBankingCreditorAccount:
-      type: object
-      properties:
-        schemeName:
-          type: string
-        identification:
-          type: string
-        name:
-          type: string
-        iban:
-          type: string
-        currency:
-          type: string
-    OpenBankingDebtorAccount:
-      type: object
-      properties:
-        iban:
-          type: string
-        currency:
-          type: string
-    OpenBankingEUPermissionContentResource:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/OpenBankingPermissionContentResource'
-      - type: object
-        properties:
-          type:
-            type: string
-          accounts:
-            type: array
-            items:
-              $ref: '#/components/schemas/OpenBakingConsentAccount'
-          transactions:
-            type: array
-            items:
-              $ref: '#/components/schemas/OpenBakingConsentAccount'
-          balances:
-            type: array
-            items:
-              $ref: '#/components/schemas/OpenBakingConsentAccount'
-          payments:
-            type: array
-            items:
-              $ref: '#/components/schemas/OpenBakingConsentAccount'
-    OpenBankingGBPermissionContentResource:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/OpenBankingPermissionContentResource'
-      - type: object
-        properties:
-          type:
-            type: string
-          grantedPermissions:
-            type: array
-            items:
-              $ref: '#/components/schemas/OpenBankingPermissionGB'
-    OpenBankingPaymentScope:
-      type: string
-      enum:
-      - domestic
-      - international
-    OpenBankingPaymentType:
-      type: string
-      enum:
-      - standard
-      - scheduled
-      - standing-order
-    OpenBankingPermissionContentResource:
-      required:
-      - openBankingCode
-      type: object
-      properties:
-        openBankingCode:
-          type: string
-      discriminator:
-        propertyName: openBankingCode
-    OpenBankingPermissionGB:
-      type: string
-      enum:
-      - read-accounts-basic
-      - read-accounts-detail
-      - read-balances
-      - read-beneficiaries-basic
-      - read-beneficiaries-detail
-      - read-direct-debits
-      - read-offers
-      - read-pan
-      - read-party
-      - read-party-psu
-      - read-products
-      - read-scheduled-payments-basic
-      - read-scheduled-payments-detail
-      - read-standing-orders-basic
-      - read-standing-orders-detail
-      - read-statements-basic
-      - read-statements-detail
-      - read-transactions-basic
-      - read-transactions-credits
-      - read-transactions-debits
-      - read-transactions-detail
-    ThirdPartyOpenBankingProvider:
-      type: object
-      properties:
-        name:
-          type: string
-        website:
-          type: string
-        applicationName:
-          type: string
-        applicationDescription:
-          type: string
-        applicationWebsite:
-          type: string
-      description: parameters of open banking provider
-    AccountOpenBankingConsentOutput:
-      type: object
-      properties:
-        location:
-          type: string
-        consent:
-          $ref: '#/components/schemas/OpenBankingConsent'
-      description: account open banking consent data model
-      readOnly: true
     AccountOpenBankingConsentUpdateConnectContainer:
       type: object
       description: connect container
@@ -593,9 +435,6 @@ components:
         account open banking consent:
           $ref: '#/components/schemas/AccountOpenBankingConsentOutput'
       description: data container
-    AccountOpenBankingConsentUpdateMetadataContainer:
-      type: object
-      description: metadata container
     AccountOpenBankingConsentUpdateResponse:
       required:
       - connect
@@ -613,34 +452,44 @@ components:
         metadata:
           $ref: '#/components/schemas/AccountOpenBankingConsentUpdateMetadataContainer'
       description: response model
-    AccountOpenBankingConsentUpdateWorkflowContainer:
+    OpenBankingConsentListConnectContainer:
+      type: object
+    OpenBankingConsentListWorkflow:
+      type: object
+      description: Descriptor that navigates IF platform from which workflow does that operation runs
+    OpenBankingConsentContentResource:
       required:
-      - code
+      - scope
       type: object
       properties:
-        code:
+        scope:
           type: string
-          description: workflow code
-          enum:
-          - direct
-      description: workflow container
-    AccountOpenBankingConsentUpdateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
+      description: content of open banking consent
+      discriminator:
+        propertyName: scope
+    AccountOpenBankingConsentOutput:
       type: object
       properties:
-        workflow:
-          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateDataContainer'
-        connect:
-          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/AccountOpenBankingConsentUpdateMetadataContainer'
-      description: request model
+        location:
+          type: string
+        consent:
+          $ref: '#/components/schemas/OpenBankingConsent'
+      description: account open banking consent data model
+      readOnly: true
+    OpenBankingConsentStatus:
+      type: string
+      description: status of open banking consent
+      enum:
+      - awaiting-authorisation
+      - awaiting-exchange
+      - authorisation-declined
+      - authorised
+      - revoked
+      - expired
+      - rejected
+      - consumed
+    OpenBankingConsentListMetadataContainer:
+      type: object
 x-provenance:
   method: searched
   source: https://developer.integrated.finance/reference

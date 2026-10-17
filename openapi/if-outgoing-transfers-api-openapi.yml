@@ -1,0 +1,788 @@
+openapi: 3.2.0
+info:
+  title: Outgoing Transfers API
+  description: Operations for Outgoing Transfers
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Outgoing Transfers
+paths:
+  /outgoing-transfers:
+    get:
+      tags:
+      - Outgoing Transfers
+      summary: List Outgoing Transfers
+      operationId: outgoing-transfers.list
+      responses:
+        '200':
+          description: Outgoing transfer list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferListResponse'
+    post:
+      tags:
+      - Outgoing Transfers
+      summary: Create an Outgoing Transfer
+      operationId: outgoing-transfers.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/OutgoingTransferCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: Outgoing transfer validated successfully using dry run
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferCreateResponse'
+        '201':
+          description: Outgoing transfer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferCreateResponse'
+  /outgoing-transfers/{id}:
+    get:
+      tags:
+      - Outgoing Transfers
+      summary: Get an Outgoing Transfer
+      operationId: outgoing-transfers.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of outgoing transfer in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Outgoing transfer returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferGetResponse'
+    patch:
+      tags:
+      - Outgoing Transfers
+      summary: Update an Outgoing Transfer
+      operationId: outgoing-transfers.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of outgoing transfer in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/OutgoingTransferUpdateRequest'
+        required: true
+      responses:
+        '202':
+          description: Outgoing transfer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferUpdateResponse'
+components:
+  schemas:
+    TriggerType:
+      type: string
+      enum:
+      - manual
+      - automated
+    OutgoingTransferCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.direct
+        dryRun:
+          type: boolean
+          description: dry run flag to validate the request
+          default: false
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowConfiguration'
+      description: workflow container
+    OutgoingTransferUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.direct
+      description: workflow container
+    InformationSourcingMethod:
+      type: string
+      description: configures where the information for pricing will be sourced
+      enum:
+      - explicit
+      - implicit
+    OutgoingTransferListWorkflowContainer:
+      type: object
+      description: workflow container
+    TransactionType:
+      type: string
+      enum:
+      - incoming-transfer
+      - outgoing-transfer
+      - exchange-transaction
+      - generic-transaction
+      - fund-collection-transfer
+      - card-transaction
+    OutgoingTransferGetConnectContainer:
+      type: object
+      description: connect container
+    TransactionRequirementStatus:
+      type: string
+      enum:
+      - not-checked
+      - not-required
+      - not-fulfilled
+      - fulfilled
+    OutgoingTransferCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferCreateMetadataContainer'
+      description: response model
+    Owner:
+      type: string
+      enum:
+      - organization
+      - client
+    OutgoingTransferGetDataContainer:
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResource'
+      description: data container
+    RootTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        transactionType:
+          $ref: '#/components/schemas/TransactionType'
+        transactionNumber:
+          type: string
+        operationalRouteCategory:
+          type: string
+        clientId:
+          type: string
+          format: uuid
+      description: root transaction of outgoing transfer
+    PricingCalculationWorkflowDataInput:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      description: pricing data input
+      discriminator:
+        propertyName: type
+    OutgoingTransferListDataContainer:
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResourceQueryInput'
+        outgoingTransfers:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutgoingTransferResource'
+      description: data container
+    OutgoingTransferSourceResource:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      description: outgoing transfer source container
+      discriminator:
+        propertyName: type
+    OutgoingTransferUpdateDataContainer:
+      required:
+      - outgoingTransfer
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResource'
+      description: data container
+    TransactionNature:
+      type: string
+      enum:
+      - actual
+      - virtual
+    SchemeAttributesMap:
+      type: object
+      description: currency/country specific scheme attributes
+    OutgoingTransferGetWorkflowContainer:
+      type: object
+      description: workflow container
+    OutgoingTransferResourceQueryInput:
+      type: object
+      properties:
+        transferDateFrom:
+          type: string
+          format: date
+        transferDateTo:
+          type: string
+          format: date
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutgoingTransferStatus'
+        transactionNumber:
+          type: array
+          items:
+            type: string
+        amountFrom:
+          type: number
+        amountTo:
+          type: number
+        currency:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accountId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        serviceProviders:
+          type: array
+          items:
+            type: string
+        serviceProviderId:
+          type: string
+        serviceProviderReference:
+          type: string
+        owner:
+          $ref: '#/components/schemas/Owner'
+        triggerType:
+          $ref: '#/components/schemas/TriggerType'
+        hasRelatedTransaction:
+          type: boolean
+        relatedTransactionId:
+          type: string
+          format: uuid
+        relatedTransactionNature:
+          $ref: '#/components/schemas/TransactionNature'
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+    OutgoingTransferCreateDataContainer:
+      required:
+      - outgoingTransfer
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResource'
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowDataInput'
+      description: data container
+    AttributeMap:
+      type: object
+      description: outgoing transfer attributes
+    RelatedTransaction:
+      type: object
+      properties:
+        nature:
+          $ref: '#/components/schemas/TransactionNature'
+        id:
+          type: string
+          format: uuid
+    PricingChargingMethod:
+      type: string
+      description: configures where this action will be charged from
+      enum:
+      - on-source
+    OutgoingTransferGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferGetMetadataContainer'
+      description: response model
+    OutgoingTransferListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferListDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferListMetadataContainer'
+      description: response model
+    OutgoingTransferGetMetadataContainer:
+      type: object
+      description: metadata container
+    Address:
+      required:
+      - city
+      - country
+      - street
+      type: object
+      properties:
+        country:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        houseNumber:
+          type: string
+        refinement:
+          type: string
+    OutgoingTransferDestinationResource:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      description: outgoing transfer destination container
+      discriminator:
+        propertyName: type
+    OutgoingTransferUpdateConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferCreateMetadataContainer:
+      type: object
+      description: metadata container
+    OutgoingTransferUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferMetadataConnectContainer'
+      description: request model
+    OutgoingTransferBeneficiaryResource:
+      type: object
+      properties:
+        fullName:
+          type: string
+        identity:
+          $ref: '#/components/schemas/LegalEntityIdentity'
+        address:
+          $ref: '#/components/schemas/Address'
+        account:
+          $ref: '#/components/schemas/OutgoingTransferAccount'
+      description: beneficiary
+    OutgoingTransferUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferMetadataConnectContainer'
+      description: response model
+    OutgoingTransferCreateConnectContainer:
+      type: object
+      description: connect container
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    OutgoingTransferListConnectContainer:
+      type: object
+      description: connect container
+    LegalEntityIdentity:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          corporate: '#/components/schemas/LegalEntityIdentityCorporate'
+          individual: '#/components/schemas/LegalEntityIdentityIndividual'
+    OutgoingTransferMetadataConnectContainer:
+      type: object
+      description: metadata container
+    RoutingCodeMap:
+      type: object
+    OutgoingTransferAccount:
+      type: object
+      properties:
+        accountHolderName:
+          type: string
+        bankName:
+          type: string
+        country:
+          type: string
+        currency:
+          type: string
+        routingCodes:
+          $ref: '#/components/schemas/RoutingCodeMap'
+        accountNumber:
+          type: string
+        iban:
+          type: string
+        ledgerNumber:
+          type: string
+        alias:
+          type: string
+    PricingCalculationWorkflowConfiguration:
+      type: object
+      properties:
+        dryRun:
+          type: boolean
+        sourcingMethod:
+          $ref: '#/components/schemas/InformationSourcingMethod'
+        enabled:
+          type: boolean
+          description: determines whether pricing will be applied or not
+        chargingType:
+          $ref: '#/components/schemas/PricingChargingType'
+        chargingMethod:
+          $ref: '#/components/schemas/PricingChargingMethod'
+      description: pricing workflow context
+    TransferScheme:
+      type: string
+      description: transfer scheme depending on the scope of the transfer
+      enum:
+      - swift
+      - local
+      - sepa
+      - sepa-instant
+      - sepa-target-2
+      - sepa-target-2-pacs009
+      - sepa-direct-debit
+      - chaps
+      - bacs
+      - faster-payments
+      - faster-payments-poo
+      - npp
+      - becs
+      - rits
+      - tips-dkk
+      - intradag
+      - t2-dkk
+      - rix-inst
+      - rix-rtgs
+      - swish
+      - nbo
+      - viber
+      - sic-inst
+      - sic-ach
+      - sic-rtgs
+      - chats
+      - ach
+      - wire
+      - eft
+    TransferScope:
+      type: string
+      description: transfer scope
+      enum:
+      - internal
+      - external
+      - internal
+      - external
+    OutgoingTransferListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+      description: metadata container
+    OutgoingTransferRequirementConfigurationResource:
+      type: object
+      properties:
+        transferDateStatus:
+          $ref: '#/components/schemas/TransactionRequirementStatus'
+        complianceCheckStatus:
+          $ref: '#/components/schemas/TransactionRequirementStatus'
+        balanceCheckStatus:
+          $ref: '#/components/schemas/TransactionRequirementStatus'
+        authorizationStatus:
+          $ref: '#/components/schemas/TransactionRequirementStatus'
+      description: Requirements configuration field to process the transfer
+    OutgoingTransferCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferCreateMetadataContainer'
+      description: request model
+    PricingChargingType:
+      type: string
+      description: configures how this action will be charged
+      enum:
+      - fee
+      - markup
+      - fee-and-markup
+    OutgoingTransferStatus:
+      type: string
+      description: status of outgoing transfer
+      enum:
+      - pending
+      - on-hold
+      - processing
+      - released
+      - completed
+      - cancelled
+      - failed
+    OutgoingTransferResource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of outgoing transfer
+          format: uuid
+        transactionNumber:
+          maxLength: 15
+          minLength: 15
+          type: string
+          description: unique transaction number
+          readOnly: true
+        clientId:
+          type: string
+          description: id of client
+          format: uuid
+        transferDate:
+          type: string
+          description: date when transfer is executed, if account is not funded transfer will be rolled to next date and this field will be updated
+          format: date
+        status:
+          $ref: '#/components/schemas/OutgoingTransferStatus'
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code of outgoing transfer
+        amount:
+          type: number
+          description: transfer amount
+        feeCurrency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code of fee
+          readOnly: true
+        feeAmount:
+          type: number
+          description: transfer fee amount
+          readOnly: true
+        description:
+          type: string
+          description: free text to send along with transfer
+        incomingTransferId:
+          type: string
+          description: id of created incoming transfer if this is an internal outgoing transfer
+          format: uuid
+        transferCustomReason:
+          type: string
+          description: free text reason if transfer reason selected as other
+        originalTransferDate:
+          type: string
+          description: requested transfer date. this field won't be updated even if the transfer is rolled to next date
+          format: date
+        cutOffDateTime:
+          type: string
+          description: cutoff time in current transfer date
+          format: date-time
+        rollCount:
+          type: integer
+          description: how many times a transfer is rolled since account is unfunded until cutoff time
+          format: int32
+        schemeAttributes:
+          $ref: '#/components/schemas/SchemeAttributesMap'
+        rootTransaction:
+          $ref: '#/components/schemas/RootTransaction'
+        returned:
+          type: boolean
+        triggerType:
+          $ref: '#/components/schemas/TriggerType'
+        relatedTransaction:
+          $ref: '#/components/schemas/RelatedTransaction'
+        transferReasonId:
+          type: string
+          description: id of transfer reason
+          format: uuid
+          readOnly: true
+        totalAmount:
+          type: number
+          description: total amount including fee, filled if charging method is on-source
+        scheme:
+          $ref: '#/components/schemas/TransferScheme'
+        scope:
+          $ref: '#/components/schemas/TransferScope'
+        destination:
+          $ref: '#/components/schemas/OutgoingTransferDestinationResource'
+        source:
+          $ref: '#/components/schemas/OutgoingTransferSourceResource'
+        requirementConfiguration:
+          $ref: '#/components/schemas/OutgoingTransferRequirementConfigurationResource'
+        beneficiary:
+          $ref: '#/components/schemas/OutgoingTransferBeneficiaryResource'
+        owner:
+          type: string
+          description: owner of the outgoing transfer
+          enum:
+          - client
+          - organization
+        attributes:
+          $ref: '#/components/schemas/AttributeMap'
+      description: outgoing transfer model
+      readOnly: true
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountscreate.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsget.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountslist.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsrequirementsget.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsupdate.md
+  - https://developer.integrated.finance/reference/beneficiariescreate.md
+  - https://developer.integrated.finance/reference/beneficiariesget.md
+  - https://developer.integrated.finance/reference/beneficiarieslist.md
+  - https://developer.integrated.finance/reference/beneficiariesupdate.md
+  - https://developer.integrated.finance/reference/beneficiary-verificationscreate.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatescreate.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatesget.md
+  - https://developer.integrated.finance/reference/direct-debit-mandateslist.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatesupdate.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentsget.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentslist.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentsupdate.md
+  - https://developer.integrated.finance/reference/outgoing-transferscompliance-checkget.md
+  - https://developer.integrated.finance/reference/outgoing-transferscompliance-checkupdate.md
+  - https://developer.integrated.finance/reference/outgoing-transferscreate.md
+  - https://developer.integrated.finance/reference/outgoing-transfersdate-metadataget.md
+  - https://developer.integrated.finance/reference/outgoing-transfersdate-metadataget_1.md
+  - https://developer.integrated.finance/reference/outgoing-transfersget.md
+  - https://developer.integrated.finance/reference/outgoing-transferslist.md
+  - https://developer.integrated.finance/reference/outgoing-transfersupdate.md
+  merge:
+    pages: 25
+    deduped: 237
+    conflicts_kept_first: 0

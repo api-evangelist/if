@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Client API
+  title: Clients API
   description: Operations for Clients
   version: '1'
 servers:
@@ -10,6 +10,8 @@ servers:
 - url: https://api.integrated.finance/v1/{instanceId}
   description: Production
   variables: {}
+tags:
+- name: Clients
 paths:
   /clients:
     get:
@@ -67,8 +69,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientListResponse'
-              example: '{  "workflow": {},  "data": {    "clients": [      {        "id": "59f39ef4-31e7-495d-9deb-c483e817a02c",        "clientNumber": "21429493",        "status": "active",        "identity": {          "type": "corporate",          "country": "GB",          "identifications": null,          "legalName": "I.F Technology Ltd",          "incorporationDate": "2019-09-09",          "corporationType": null        },        "profile": {          "identityType": "corporate"          "phone": "+441234567890",          "email": "test@integrated.finance"        },        "fullName": "I.F Technology Ltd"      },      {        "id": "94fdd97a-8f63-4406-9d4e-e946848ae9bb",        "clientNumber": "23668817",        "status": "active",        "identity": {          "type": "individual",          "country": "GB",          "identifications": [            {              "type": "identity-card",              "identificationNumber": "12345678",              "issuingCountry": "GB",              "issueDate":
-                "2022-01-01",              "expirationDate": "2032-01-01"            }          ],          "givenName": "Sherlock",          "familyName": "Holmes",          "birthDate": "1953-01-06"        },        "profile": {          "identityType": "individual",          "phone": "+441234567890"        },        "fullName": "Sherlock Holmes"      }    ]  },  "connect": {},  "metadata": {    "page": {      "size": 20,      "number": 0,      "totalElements": 2,      "totalPages": 1    }  }}'
+              example: '{  "workflow": {},  "data": {    "clients": [      {        "id": "59f39ef4-31e7-495d-9deb-c483e817a02c",        "clientNumber": "21429493",        "status": "active",        "identity": {          "type": "corporate",          "country": "GB",          "identifications": null,          "legalName": "I.F Technology Ltd",          "incorporationDate": "2019-09-09",          "corporationType": null        },        "profile": {          "identityType": "corporate"          "phone": "+441234567890",          "email": "test@integrated.finance"        },        "fullName": "I.F Technology Ltd"      },      {        "id": "94fdd97a-8f63-4406-9d4e-e946848ae9bb",        "clientNumber": "23668817",        "status": "active",        "identity": {          "type": "individual",          "country": "GB",          "identifications": [            {              "type": "identity-card",              "identificationNumber": "12345678",              "issuingCountry": "GB",              "issueDate": "2022-01-01",              "expirationDate": "2032-01-01"            }          ],          "givenName": "Sherlock",          "familyName": "Holmes",          "birthDate": "1953-01-06"        },        "profile": {          "identityType": "individual",          "phone": "+441234567890"        },        "fullName": "Sherlock Holmes"      }    ]  },  "connect": {},  "metadata": {    "page": {      "size": 20,      "number": 0,      "totalElements": 2,      "totalPages": 1    }  }}'
     post:
       tags:
       - Clients
@@ -427,376 +428,6 @@ paths:
                     code: common.coding.functional.invalid_input
                     messageParameters:
                     - data.client.identity
-  /clients/{clientId}/relations:
-    get:
-      tags:
-      - Client Relations
-      summary: List Client Relations
-      operationId: client-relations.list
-      parameters:
-      - name: metadata.page.number
-        in: query
-        description: 0-indexed page number
-        schema:
-          minimum: 0
-          type: integer
-          format: int32
-          default: 0
-      - name: metadata.page.size
-        in: query
-        description: page size
-        schema:
-          maximum: 100
-          minimum: 1
-          type: integer
-          format: int32
-          default: 20
-      - name: metadata.sort
-        in: query
-        description: default direction is ascending
-        schema:
-          type: string
-        example: data.clientRelation.fullName,desc
-      - name: data.clientRelation.identity.type
-        in: query
-        schema:
-          $ref: '#/components/schemas/LegalEntityType'
-      - name: data.clientRelation.relation
-        in: query
-        schema:
-          $ref: '#/components/schemas/ClientRelatedLegalEntityRelation'
-      - name: clientId
-        in: path
-        description: ID of the client in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        '200':
-          description: Client relation list returned
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientRelationListResponse'
-              example:
-                workflow: '{}'
-                data:
-                  clientRelations:
-                  - id: 81dd82d1-7ef0-491c-b7b8-56b1ba6e7659
-                    clientId: e4b3c646-53d6-48e0-8560-1a510923af62
-                    relation: director
-                    identity:
-                      type: individual
-                      country: GB
-                      identifications:
-                      - type: passport
-                        identificationNumber: '12345678'
-                        issuingCountry: GB
-                        issueDate: null
-                        expirationDate: null
-                      givenName: John
-                      familyName: Doe
-                      birthDate: '2000-01-01'
-                    profile:
-                      identityType: individual
-                      phone: '+441234567890'
-                      email: test@integrated.finance
-                      residentialAddress:
-                        country: GB
-                        region: England
-                        city: London
-                        street: Baker Street
-                        postalCode: XYZ ABC
-                        houseNumber: 221B
-                    percentageOfOwnership: '55'
-                    fullName: John Doe
-                connect: '{}'
-                metadata:
-                  page:
-                    size: 20
-                    number: 0
-                    totalElements: 1
-                    totalPages: 1
-        '500':
-          description: Unknown system error
-          content:
-            application/json:
-              examples:
-                error-unknown:
-                  description: error-unknown
-                  value:
-                    timestamp: '2023-02-12T13:06:35.0286835'
-                    message: An unexpected error has occurred. Please contact the support team.
-    post:
-      tags:
-      - Client Relations
-      summary: Create a Client Relation
-      operationId: client-relations.create
-      parameters:
-      - name: clientId
-        in: path
-        description: ID of the client in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientRelationCreateRequest'
-            examples:
-              direct-individual:
-                description: direct-individual
-                value:
-                  workflow:
-                    code: direct
-                  data:
-                    clientRelation:
-                      relation: director
-                      identity:
-                        type: individual
-                        givenName: John
-                        familyName: Doe
-                        country: GB
-                        birthDate: '2000-01-01'
-                      profile:
-                        identityType: individual
-                        phone: '+441234567890'
-                        email: test@integrated.finance
-                        residentialAddress:
-                          country: GB
-                          region: England
-                          city: London
-                          street: Baker Street
-                          postalCode: XYZ ABC
-                          houseNumber: 221B
-                      percentageOfOwnership: '55'
-                  connect: {}
-                  metadata: {}
-      responses:
-        '201':
-          description: Client relation created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientRelationCreateResponse'
-              examples:
-                direct-individual:
-                  description: direct-individual
-                  value:
-                    workflow:
-                      code: direct
-                    data:
-                      clientRelation:
-                        id: d740cb17-fde3-4a8f-942f-d82ddd8f7dda
-                        clientId: e4b3c646-53d6-48e0-8560-1a510923af62
-                        relation: director
-                        identity:
-                          type: individual
-                          country: GB
-                          identifications: null
-                          givenName: John
-                          familyName: Doe
-                          birthDate: '2000-01-01'
-                        profile:
-                          identityType: individual
-                          phone: '+441234567890'
-                          email: test@integrated.finance
-                          residentialAddress:
-                            country: GB
-                            region: England
-                            city: London
-                            street: Baker Street
-                            postalCode: XYZ ABC
-                            houseNumber: 221B
-                        percentageOfOwnership: '55'
-                        fullName: John Doe
-                    connect: '{}'
-                    metadata: '{}'
-  /clients/{clientId}/relations/{id}:
-    get:
-      tags:
-      - Client Relations
-      summary: Get a Client Relation
-      operationId: client-relations.get
-      parameters:
-      - name: clientId
-        in: path
-        description: ID of the client in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: id
-        in: path
-        description: ID of the client relation in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        '200':
-          description: Client relation resource returned
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientRelationGetResponse'
-              example:
-                workflow: '{}'
-                data:
-                  clientRelation:
-                    id: 81dd82d1-7ef0-491c-b7b8-56b1ba6e7659
-                    clientId: e4b3c646-53d6-48e0-8560-1a510923af62
-                    relation: director
-                    identity:
-                      type: individual
-                      country: GB
-                      identifications:
-                      - type: passport
-                        identificationNumber: '12345678'
-                        issuingCountry: GB
-                        issueDate: null
-                        expirationDate: null
-                      givenName: John
-                      familyName: Doe
-                      birthDate: '2000-01-01'
-                    profile:
-                      identityType: individual
-                      phone: '+441234567890'
-                      email: test@integrated.finance
-                      residentialAddress:
-                        country: GB
-                        region: England
-                        city: London
-                        street: Baker Street
-                        postalCode: XYZ ABC
-                        houseNumber: 221B
-                    percentageOfOwnership: '55'
-                    fullName: John Doe
-                connect: '{}'
-                metadata: '{}'
-        '500':
-          description: Unknown system error
-          content:
-            application/json:
-              examples:
-                error-unknown:
-                  description: error-unknown
-                  value:
-                    timestamp: '2023-02-12T13:06:35.0286835'
-                    message: An unexpected error has occurred. Please contact the support team.
-    delete:
-      tags:
-      - Client Relations
-      summary: Delete a Client Relation
-      operationId: client-relations.delete
-      parameters:
-      - name: clientId
-        in: path
-        description: ID of the client in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: id
-        in: path
-        description: ID of the client relation in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        '202':
-          description: Client relation deleted successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientRelationDeleteResponse'
-              example:
-                workflow: '{}'
-                data:
-                  clientRelation:
-                    id: 81dd82d1-7ef0-491c-b7b8-56b1ba6e7659
-                    clientId: e4b3c646-53d6-48e0-8560-1a510923af62
-                    relation: director
-                    identity:
-                      type: individual
-                      country: GB
-                      identifications:
-                      - type: passport
-                        identificationNumber: '12345678'
-                        issuingCountry: GB
-                        issueDate: null
-                        expirationDate: null
-                      givenName: John
-                      familyName: Doe
-                      birthDate: '2000-01-01'
-                    profile:
-                      identityType: individual
-                      phone: '+441234567890'
-                      email: test@integrated.finance
-                      residentialAddress:
-                        country: GB
-                        region: England
-                        city: London
-                        street: Baker Street
-                        postalCode: XYZ ABC
-                        houseNumber: 221B
-                    percentageOfOwnership: '55'
-                    fullName: John Doe
-                connect: '{}'
-                metadata: '{}'
-    patch:
-      tags:
-      - Client Relations
-      summary: Update a Client Relation
-      operationId: client-relations.update
-      parameters:
-      - name: clientId
-        in: path
-        description: ID of the client in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: id
-        in: path
-        description: ID of the client relation in UUID format
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientRelationUpdateRequest'
-            examples:
-              direct-individual:
-                description: direct-individual
-                value:
-                  workflow:
-                    code: direct
-                  data:
-                    clientRelation:
-                      identity:
-                        type: individual
-                        birthDate: '1950-01-01'
-                  connect: '{}'
-                  metadata: '{}'
-      responses:
-        '202':
-          description: Client relation updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientRelationUpdateResponse'
-              examples:
-                direct-individual:
-                  description: direct-individual
-                  value: '{    "workflow": {        "code": "direct"    },    "data": {        "clientRelation": {            "id": "d740cb17-fde3-4a8f-942f-d82ddd8f7dda",            "clientId": "e4b3c646-53d6-48e0-8560-1a510923af62",            "relation": "director",            "identity": {                "type": "individual",                "country": "GB",                "identifications": null,                "givenName": "John",                "familyName": "Doe",                "birthDate": "1950-01-01"            },            "profile": {                "identityType": "individual"                "phone": "+441234567890",                "email": "test@integrated.finance"            },            "percentageOfOwnership": "55",            "fullName": "John Doe"        }    },    "connect": "{}",    "metadata": "{}"}'
   /clients/{id}:
     get:
       tags:
@@ -1087,6 +718,337 @@ paths:
                     metadata: {}
 components:
   schemas:
+    ClientCreateWorkflow:
+      type: string
+      description: unique workflow code
+      enum:
+      - direct
+      - migration
+    BankingUserProfile:
+      type: object
+      properties:
+        phone:
+          type: string
+        residentialAddress:
+          $ref: '#/components/schemas/Address'
+    ClientUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ClientUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ClientUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/ClientUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ClientUpdateMetadataContainer'
+    ClientRisk:
+      type: string
+      description: client risk level
+      enum:
+      - low
+      - medium
+      - high
+      - severe
+    ClientUpdateConnect:
+      type: string
+      description: connect type
+      enum:
+      - explicit
+      - explicit
+    UserIdentityResource:
+      required:
+      - familyName
+      - givenName
+      - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/LegalEntityType'
+        givenName:
+          type: string
+          description: user given name
+        familyName:
+          type: string
+          description: user family name
+        birthDate:
+          type: string
+          description: user birthdate
+          format: date
+      description: user identity information
+    ClientCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ClientCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ClientCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/ClientCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ClientCreateMetadataContainer'
+    LegalEntityIdentityIndividual:
+      required:
+      - familyName
+      - givenName
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LegalEntityIdentity'
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/LegalEntityType'
+          country:
+            maxLength: 2
+            minLength: 2
+            pattern: ^[A-Z]{2}$
+            type: string
+          identifications:
+            type: array
+            items:
+              $ref: '#/components/schemas/LegalEntityIdentification'
+          givenName:
+            type: string
+          familyName:
+            type: string
+          birthDate:
+            type: string
+            format: date
+    ClientUpdateDataContainer:
+      type: object
+      properties:
+        client:
+          type: object
+          additionalProperties:
+            type: object
+            description: custom map including fields to update, required if workflow is direct
+          description: custom map including fields to update, required if workflow is direct
+        sourceId:
+          type: string
+          description: id of the client to be migrated, required if workflow is migration
+          writeOnly: true
+    ClientUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ClientUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ClientUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/ClientUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ClientUpdateMetadataContainer'
+    ClientListDataContainer:
+      required:
+      - clients
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/ClientResourceListQueryInput'
+        clients:
+          type: array
+          description: collection of clients
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Client'
+    ClientRelatedLegalEntityRelation:
+      type: string
+      description: relation of legal entity with client
+      enum:
+      - director
+      - shareholder
+      - director-and-shareholder
+      - authorized-person
+    UserClientStatus:
+      type: string
+      readOnly: true
+      enum:
+      - allowed
+      - revoked
+    BankingUserStatus:
+      type: string
+      readOnly: true
+      enum:
+      - active
+      - inactive
+    ClientRelation:
+      required:
+      - clientId
+      - id
+      - identity
+      - relation
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/AttributeMap'
+        id:
+          type: string
+          description: client relation id
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          description: id of client
+          format: uuid
+          readOnly: true
+        relation:
+          $ref: '#/components/schemas/ClientRelatedLegalEntityRelation'
+        identity:
+          type: object
+          description: client relation identity object
+          oneOf:
+          - $ref: '#/components/schemas/LegalEntityIdentityCorporate'
+          - $ref: '#/components/schemas/LegalEntityIdentityIndividual'
+        percentageOfOwnership:
+          type: number
+          description: percentage of ownership
+        profile:
+          type: object
+          description: client relation profile object
+          oneOf:
+          - $ref: '#/components/schemas/ClientProfileCorporate'
+          - $ref: '#/components/schemas/ClientProfileIndividual'
+      description: client relation data model
+    ClientUpdateWorkflow:
+      type: string
+      description: unique workflow code
+      enum:
+      - direct
+      - migration
+    ClientGetConnectContainer:
+      type: object
+      properties:
+        connections:
+          type: array
+          description: client connection data models
+          items:
+            $ref: '#/components/schemas/ClientConnection'
+    ClientCreateMetadataContainer:
+      type: object
+    ClientGetDataContainer:
+      required:
+      - client
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/Client'
+    LegalEntityIdentityCorporate:
+      required:
+      - legalName
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LegalEntityIdentity'
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/LegalEntityType'
+          country:
+            maxLength: 2
+            minLength: 2
+            pattern: ^[A-Z]{2}$
+            type: string
+          identifications:
+            type: array
+            items:
+              $ref: '#/components/schemas/LegalEntityIdentification'
+          legalName:
+            type: string
+          incorporationDate:
+            type: string
+            format: date
+          corporationType:
+            $ref: '#/components/schemas/CorporationType'
+    ClientCreateConnect:
+      type: string
+      description: connection source type
+      enum:
+      - explicit
+    ClientGetWorkflowContainer:
+      type: object
+    ClientUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ClientUpdateWorkflow'
+    ClientGetMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    ClientProfileIndividual:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ClientProfile'
+      - type: object
+        properties:
+          identityType:
+            $ref: '#/components/schemas/LegalEntityType'
+          phone:
+            type: string
+            description: client contact phone number
+          email:
+            type: string
+            description: client contact email
+          residentialAddress:
+            $ref: '#/components/schemas/Address'
+    ClientListWorkflowContainer:
+      type: object
+    AttributeMap:
+      type: object
+    ClientListConnectContainer:
+      type: object
+    ClientListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    ClientUpdateMetadataContainer:
+      type: object
+    ClientStatus:
+      type: string
+      description: status of the client
+      readOnly: true
+      enum:
+      - active
+      - inactive
+    ClientProfileCorporate:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ClientProfile'
+      - type: object
+        properties:
+          identityType:
+            $ref: '#/components/schemas/LegalEntityType'
+          phone:
+            type: string
+            description: client contact phone number
+          email:
+            type: string
+            description: client contact email
+          registrationAddress:
+            $ref: '#/components/schemas/Address'
     Address:
       required:
       - city
@@ -1112,8 +1074,183 @@ components:
         refinement:
           type: string
       description: residential address object for individual clients
-    AttributeMap:
+    ClientResourceListQueryInput:
       type: object
+      properties:
+        identityType:
+          $ref: '#/components/schemas/LegalEntityType'
+        fullName:
+          type: string
+        status:
+          $ref: '#/components/schemas/ClientStatus'
+        clientNumber:
+          type: string
+        risk:
+          $ref: '#/components/schemas/ClientRisk'
+      writeOnly: true
+    ClientGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ClientGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ClientGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/ClientGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ClientGetMetadataContainer'
+    CorporationType:
+      type: string
+      enum:
+      - ltd
+      - plc
+      - llp
+      - lp
+      - gp
+      - st
+      - other
+    LegalEntityType:
+      type: string
+      enum:
+      - corporate
+      - individual
+    ClientListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ClientListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/ClientListDataContainer'
+        connect:
+          $ref: '#/components/schemas/ClientListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/ClientListMetadataContainer'
+    UserClientRelation:
+      required:
+      - clientId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/UserClientStatus'
+      description: automatically created user client resource. Convenient for individual clients
+      readOnly: true
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    ClientUpdateConnectContainer:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ClientUpdateConnect'
+        serviceProvider:
+          type: string
+          description: service provider that will be used to source the client data
+    ClientCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ClientCreateWorkflow'
+        createUser:
+          type: boolean
+          description: create a user related with the client
+    LegalEntityIdentity:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          corporate: '#/components/schemas/LegalEntityIdentityCorporate'
+          individual: '#/components/schemas/LegalEntityIdentityIndividual'
+    User:
+      required:
+      - category
+      - email
+      - identity
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+        givenName:
+          type: string
+        familyName:
+          type: string
+        identity:
+          $ref: '#/components/schemas/UserIdentityResource'
+        category:
+          type: string
+          readOnly: true
+          enum:
+          - external
+        type:
+          type: string
+          readOnly: true
+          enum:
+          - human
+        profile:
+          $ref: '#/components/schemas/BankingUserProfile'
+        status:
+          $ref: '#/components/schemas/BankingUserStatus'
+      description: automatically created user resource. Convenient for individual clients
+      readOnly: true
     Client:
       required:
       - clientNumber
@@ -1157,121 +1294,15 @@ components:
             $ref: '#/components/schemas/ClientRelation'
         risk:
           $ref: '#/components/schemas/ClientRisk'
-    ClientProfile:
-      required:
-      - identityType
+    ClientConnection:
       type: object
       properties:
-        identityType:
+        serviceProvider:
           type: string
-      discriminator:
-        propertyName: identityType
-        mapping:
-          corporate: '#/components/schemas/ClientProfileCorporate'
-          individual: '#/components/schemas/ClientProfileIndividual'
-    ClientProfileCorporate:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ClientProfile'
-      - type: object
-        properties:
-          identityType:
-            $ref: '#/components/schemas/LegalEntityType'
-          phone:
-            type: string
-            description: client contact phone number
-          email:
-            type: string
-            description: client contact email
-          registrationAddress:
-            $ref: '#/components/schemas/Address'
-    ClientProfileIndividual:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ClientProfile'
-      - type: object
-        properties:
-          identityType:
-            $ref: '#/components/schemas/LegalEntityType'
-          phone:
-            type: string
-            description: client contact phone number
-          email:
-            type: string
-            description: client contact email
-          residentialAddress:
-            $ref: '#/components/schemas/Address'
-    ClientRelatedLegalEntityRelation:
-      type: string
-      description: relation of legal entity with client
-      enum:
-      - director
-      - shareholder
-      - director-and-shareholder
-      - authorized-person
-    ClientRelation:
-      required:
-      - clientId
-      - id
-      - identity
-      - relation
-      type: object
-      properties:
-        attributes:
-          $ref: '#/components/schemas/AttributeMap'
+          description: service provider which this client connected to
         id:
           type: string
-          description: client relation id
-          format: uuid
-          readOnly: true
-        clientId:
-          type: string
-          description: id of client
-          format: uuid
-          readOnly: true
-        relation:
-          $ref: '#/components/schemas/ClientRelatedLegalEntityRelation'
-        identity:
-          type: object
-          description: client relation identity object
-          oneOf:
-          - $ref: '#/components/schemas/LegalEntityIdentityCorporate'
-          - $ref: '#/components/schemas/LegalEntityIdentityIndividual'
-        percentageOfOwnership:
-          type: number
-          description: percentage of ownership
-        profile:
-          type: object
-          description: client relation profile object
-          oneOf:
-          - $ref: '#/components/schemas/ClientProfileCorporate'
-          - $ref: '#/components/schemas/ClientProfileIndividual'
-      description: client relation data model
-    ClientRisk:
-      type: string
-      description: client risk level
-      enum:
-      - low
-      - medium
-      - high
-      - severe
-    ClientStatus:
-      type: string
-      description: status of the client
-      readOnly: true
-      enum:
-      - active
-      - inactive
-    CorporationType:
-      type: string
-      enum:
-      - ltd
-      - plc
-      - llp
-      - lp
-      - gp
-      - st
-      - other
+      description: client connection data models
     LegalEntityIdentification:
       type: object
       properties:
@@ -1290,108 +1321,7 @@ components:
         expirationDate:
           type: string
           format: date
-    LegalEntityIdentificationType:
-      type: string
-      enum:
-      - registration-number
-      - passport
-      - identity-card
-      - driving-licence
-      - foreign-identity-card
-      - tax-number
-    LegalEntityIdentity:
-      required:
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-      discriminator:
-        propertyName: type
-        mapping:
-          corporate: '#/components/schemas/LegalEntityIdentityCorporate'
-          individual: '#/components/schemas/LegalEntityIdentityIndividual'
-    LegalEntityIdentityCorporate:
-      required:
-      - legalName
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LegalEntityIdentity'
-      - type: object
-        properties:
-          type:
-            $ref: '#/components/schemas/LegalEntityType'
-          country:
-            maxLength: 2
-            minLength: 2
-            pattern: ^[A-Z]{2}$
-            type: string
-          identifications:
-            type: array
-            items:
-              $ref: '#/components/schemas/LegalEntityIdentification'
-          legalName:
-            type: string
-          incorporationDate:
-            type: string
-            format: date
-          corporationType:
-            $ref: '#/components/schemas/CorporationType'
-    LegalEntityIdentityIndividual:
-      required:
-      - familyName
-      - givenName
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LegalEntityIdentity'
-      - type: object
-        properties:
-          type:
-            $ref: '#/components/schemas/LegalEntityType'
-          country:
-            maxLength: 2
-            minLength: 2
-            pattern: ^[A-Z]{2}$
-            type: string
-          identifications:
-            type: array
-            items:
-              $ref: '#/components/schemas/LegalEntityIdentification'
-          givenName:
-            type: string
-          familyName:
-            type: string
-          birthDate:
-            type: string
-            format: date
-    LegalEntityType:
-      type: string
-      enum:
-      - corporate
-      - individual
-    ClientListConnectContainer:
-      type: object
-    ClientListDataContainer:
-      required:
-      - clients
-      type: object
-      properties:
-        client:
-          $ref: '#/components/schemas/ClientResourceListQueryInput'
-        clients:
-          type: array
-          description: collection of clients
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/Client'
-    ClientListMetadataContainer:
-      required:
-      - page
-      type: object
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    ClientListResponse:
+    ClientCreateResponse:
       required:
       - connect
       - data
@@ -1400,85 +1330,15 @@ components:
       type: object
       properties:
         workflow:
-          $ref: '#/components/schemas/ClientListWorkflowContainer'
+          $ref: '#/components/schemas/ClientCreateWorkflowContainer'
         data:
-          $ref: '#/components/schemas/ClientListDataContainer'
+          $ref: '#/components/schemas/ClientCreateDataContainer'
         connect:
-          $ref: '#/components/schemas/ClientListConnectContainer'
+          $ref: '#/components/schemas/ClientCreateConnectContainer'
         metadata:
-          $ref: '#/components/schemas/ClientListMetadataContainer'
-    ClientListWorkflowContainer:
+          $ref: '#/components/schemas/PlatformAPIMetadataContainer'
+    PlatformAPIMetadataContainer:
       type: object
-    ClientResourceListQueryInput:
-      type: object
-      properties:
-        identityType:
-          $ref: '#/components/schemas/LegalEntityType'
-        fullName:
-          type: string
-        status:
-          $ref: '#/components/schemas/ClientStatus'
-        clientNumber:
-          type: string
-        risk:
-          $ref: '#/components/schemas/ClientRisk'
-      writeOnly: true
-    PageMetadata:
-      required:
-      - number
-      - size
-      - totalElements
-      - totalPages
-      type: object
-      properties:
-        size:
-          minimum: 0
-          type: integer
-          description: number of elements in this page
-          format: int32
-        number:
-          minimum: 0
-          type: integer
-          description: index of page starting from 0
-          format: int32
-        totalElements:
-          minimum: 0
-          type: integer
-          description: total number of elements in all of the pages
-          format: int64
-          readOnly: true
-        totalPages:
-          minimum: 0
-          type: integer
-          description: number of total pages
-          format: int32
-          readOnly: true
-    BankingUserProfile:
-      type: object
-      properties:
-        phone:
-          type: string
-        residentialAddress:
-          $ref: '#/components/schemas/Address'
-    BankingUserStatus:
-      type: string
-      readOnly: true
-      enum:
-      - active
-      - inactive
-    ClientCreateConnect:
-      type: string
-      description: connection source type
-      enum:
-      - explicit
-    ClientCreateConnectContainer:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ClientCreateConnect'
-        serviceProvider:
-          type: string
-          description: service provider that will be used to source the client data
     ClientCreateDataContainer:
       type: object
       properties:
@@ -1496,486 +1356,35 @@ components:
           readOnly: true
           items:
             $ref: '#/components/schemas/UserClientRelation'
-    ClientCreateResponse:
+    ClientProfile:
       required:
-      - connect
-      - data
-      - metadata
-      - workflow
+      - identityType
       type: object
       properties:
-        workflow:
-          $ref: '#/components/schemas/ClientCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/PlatformAPIMetadataContainer'
-    ClientCreateWorkflow:
+        identityType:
+          type: string
+      discriminator:
+        propertyName: identityType
+        mapping:
+          corporate: '#/components/schemas/ClientProfileCorporate'
+          individual: '#/components/schemas/ClientProfileIndividual'
+    LegalEntityIdentificationType:
       type: string
-      description: unique workflow code
       enum:
-      - direct
-      - migration
-    ClientCreateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ClientCreateWorkflow'
-        createUser:
-          type: boolean
-          description: create a user related with the client
-    PlatformAPIMetadataContainer:
-      type: object
-    User:
-      required:
-      - category
-      - email
-      - identity
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        email:
-          type: string
-        givenName:
-          type: string
-        familyName:
-          type: string
-        identity:
-          $ref: '#/components/schemas/UserIdentityResource'
-        category:
-          type: string
-          readOnly: true
-          enum:
-          - external
-        type:
-          type: string
-          readOnly: true
-          enum:
-          - human
-        profile:
-          $ref: '#/components/schemas/BankingUserProfile'
-        status:
-          $ref: '#/components/schemas/BankingUserStatus'
-      description: automatically created user resource. Convenient for individual clients
-      readOnly: true
-    UserClientRelation:
-      required:
-      - clientId
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        userId:
-          type: string
-          format: uuid
-          readOnly: true
-        clientId:
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/UserClientStatus'
-      description: automatically created user client resource. Convenient for individual clients
-      readOnly: true
-    UserClientStatus:
-      type: string
-      readOnly: true
-      enum:
-      - allowed
-      - revoked
-    UserIdentityResource:
-      required:
-      - familyName
-      - givenName
-      - type
+      - registration-number
+      - passport
+      - identity-card
+      - driving-licence
+      - foreign-identity-card
+      - tax-number
+    ClientCreateConnectContainer:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/LegalEntityType'
-        givenName:
-          type: string
-          description: user given name
-        familyName:
-          type: string
-          description: user family name
-        birthDate:
-          type: string
-          description: user birthdate
-          format: date
-      description: user identity information
-    ClientCreateMetadataContainer:
-      type: object
-    ClientCreateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientCreateMetadataContainer'
-    ClientConnection:
-      type: object
-      properties:
-        serviceProvider:
-          type: string
-          description: service provider which this client connected to
-        id:
-          type: string
-      description: client connection data models
-    ClientGetConnectContainer:
-      type: object
-      properties:
-        connections:
-          type: array
-          description: client connection data models
-          items:
-            $ref: '#/components/schemas/ClientConnection'
-    ClientGetDataContainer:
-      required:
-      - client
-      type: object
-      properties:
-        client:
-          $ref: '#/components/schemas/Client'
-    ClientGetMetadataContainer:
-      type: object
-      properties:
-        include:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    ClientGetResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientGetWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientGetDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientGetConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientGetMetadataContainer'
-    ClientGetWorkflowContainer:
-      type: object
-    ClientUpdateConnect:
-      type: string
-      description: connect type
-      enum:
-      - explicit
-      - explicit
-    ClientUpdateConnectContainer:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ClientUpdateConnect'
+          $ref: '#/components/schemas/ClientCreateConnect'
         serviceProvider:
           type: string
           description: service provider that will be used to source the client data
-    ClientUpdateDataContainer:
-      type: object
-      properties:
-        client:
-          type: object
-          additionalProperties:
-            type: object
-            description: custom map including fields to update, required if workflow is direct
-          description: custom map including fields to update, required if workflow is direct
-        sourceId:
-          type: string
-          description: id of the client to be migrated, required if workflow is migration
-          writeOnly: true
-    ClientUpdateMetadataContainer:
-      type: object
-    ClientUpdateResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientUpdateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientUpdateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientUpdateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientUpdateMetadataContainer'
-    ClientUpdateWorkflow:
-      type: string
-      description: unique workflow code
-      enum:
-      - direct
-      - migration
-    ClientUpdateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ClientUpdateWorkflow'
-    ClientUpdateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientUpdateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientUpdateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientUpdateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientUpdateMetadataContainer'
-    ClientRelationListConnectContainer:
-      type: object
-    ClientRelationListDataContainer:
-      type: object
-      properties:
-        clientRelation:
-          $ref: '#/components/schemas/ClientRelationResourceListQueryInput'
-        clientRelations:
-          type: array
-          description: collection of client relations
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/ClientRelation'
-    ClientRelationListMetadataContainer:
-      required:
-      - page
-      type: object
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    ClientRelationListResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientRelationListWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientRelationListDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientRelationListConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientRelationListMetadataContainer'
-    ClientRelationListWorkflowContainer:
-      type: object
-    ClientRelationResourceListQueryInput:
-      type: object
-      properties:
-        relation:
-          $ref: '#/components/schemas/ClientRelatedLegalEntityRelation'
-        identityType:
-          $ref: '#/components/schemas/LegalEntityType'
-      description: filter options of client relations
-      writeOnly: true
-    ClientRelationCreateConnectContainer:
-      type: object
-    ClientRelationCreateDataContainer:
-      type: object
-      properties:
-        clientRelation:
-          $ref: '#/components/schemas/ClientRelation'
-        clientRelations:
-          type: array
-          description: client relation data models, optional
-          items:
-            $ref: '#/components/schemas/ClientRelation'
-    ClientRelationCreateMetadataContainer:
-      type: object
-    ClientRelationCreateResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientRelationCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientRelationCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientRelationCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientRelationCreateMetadataContainer'
-    ClientRelationCreateWorkflow:
-      type: string
-      description: unique workflow code
-      enum:
-      - direct
-    ClientRelationCreateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ClientRelationCreateWorkflow'
-    ClientRelationCreateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientRelationCreateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientRelationCreateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientRelationCreateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientRelationCreateMetadataContainer'
-    ClientRelationGetConnectContainer:
-      type: object
-    ClientRelationGetDataContainer:
-      required:
-      - clientRelation
-      type: object
-      properties:
-        clientRelation:
-          $ref: '#/components/schemas/ClientRelation'
-    ClientRelationGetMetadataContainer:
-      type: object
-    ClientRelationGetResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientRelationGetWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientRelationGetDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientRelationGetConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientRelationGetMetadataContainer'
-    ClientRelationGetWorkflowContainer:
-      type: object
-    ClientRelationDeleteConnectContainer:
-      type: object
-    ClientRelationDeleteDataContainer:
-      required:
-      - clientRelation
-      type: object
-      properties:
-        clientRelation:
-          $ref: '#/components/schemas/ClientRelation'
-    ClientRelationDeleteMetadataContainer:
-      type: object
-    ClientRelationDeleteResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientRelationDeleteWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientRelationDeleteDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientRelationDeleteConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientRelationDeleteMetadataContainer'
-    ClientRelationDeleteWorkflowContainer:
-      type: object
-    ClientRelationUpdateConnectContainer:
-      type: object
-    ClientRelationUpdateDataContainer:
-      required:
-      - clientRelation
-      type: object
-      properties:
-        clientRelation:
-          type: object
-          additionalProperties:
-            type: object
-            description: client relation data model
-          description: client relation data model
-    ClientRelationUpdateMetadataContainer:
-      type: object
-    ClientRelationUpdateResponse:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientRelationUpdateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientRelationUpdateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientRelationUpdateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientRelationUpdateMetadataContainer'
-    ClientRelationUpdateWorkflow:
-      type: string
-      description: unique workflow code
-      enum:
-      - direct
-    ClientRelationUpdateWorkflowContainer:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ClientRelationUpdateWorkflow'
-    ClientRelationUpdateRequest:
-      required:
-      - connect
-      - data
-      - metadata
-      - workflow
-      type: object
-      properties:
-        workflow:
-          $ref: '#/components/schemas/ClientRelationUpdateWorkflowContainer'
-        data:
-          $ref: '#/components/schemas/ClientRelationUpdateDataContainer'
-        connect:
-          $ref: '#/components/schemas/ClientRelationUpdateConnectContainer'
-        metadata:
-          $ref: '#/components/schemas/ClientRelationUpdateMetadataContainer'
 x-provenance:
   method: searched
   source: https://developer.integrated.finance/reference

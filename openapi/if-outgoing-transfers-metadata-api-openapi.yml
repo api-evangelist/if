@@ -1,0 +1,213 @@
+openapi: 3.2.0
+info:
+  title: Outgoing Transfers Metadata API
+  description: Operations for Outgoing Transfers
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Outgoing Transfers Metadata
+paths:
+  /accounts/{accountId}/outgoing-transfer-date-metadata/{transferScope}/{transferScheme}:
+    get:
+      tags:
+      - Outgoing Transfers Metadata
+      summary: Get Date Metadata
+      operationId: outgoing-transfers.date-metadata.get
+      parameters:
+      - name: accountId
+        in: path
+        description: ID of source account
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: transferScope
+        in: path
+        description: transfer scope
+        required: true
+        schema:
+          $ref: '#/components/schemas/TransferScope'
+      - name: transferScheme
+        in: path
+        description: transfer scheme
+        required: true
+        schema:
+          $ref: '#/components/schemas/TransferScheme'
+      responses:
+        '200':
+          description: Date metadata returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferDateMetadataResponse'
+  /transaction-accounts/{transactionAccountId}/outgoing-transfer-date-metadata/{transferScope}/{transferScheme}:
+    get:
+      tags:
+      - Outgoing Transfers Metadata
+      summary: Get Transfer Date Metadata
+      operationId: outgoing-transfers.date-metadata.get_1
+      parameters:
+      - name: transactionAccountId
+        in: path
+        description: ID of source account
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: transferScope
+        in: path
+        description: transfer scope
+        required: true
+        schema:
+          $ref: '#/components/schemas/TransferScope'
+      - name: transferScheme
+        in: path
+        description: transfer scheme
+        required: true
+        schema:
+          $ref: '#/components/schemas/TransferScheme'
+      responses:
+        '200':
+          description: Date metadata returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferDateMetadataResponse'
+components:
+  schemas:
+    OutgoingTransferDateMetadataMetadataContainer:
+      type: object
+      description: metadata container
+    TransferScheme:
+      type: string
+      description: transfer scheme depending on the scope of the transfer
+      enum:
+      - swift
+      - local
+      - sepa
+      - sepa-instant
+      - sepa-target-2
+      - sepa-target-2-pacs009
+      - sepa-direct-debit
+      - chaps
+      - bacs
+      - faster-payments
+      - faster-payments-poo
+      - npp
+      - becs
+      - rits
+      - tips-dkk
+      - intradag
+      - t2-dkk
+      - rix-inst
+      - rix-rtgs
+      - swish
+      - nbo
+      - viber
+      - sic-inst
+      - sic-ach
+      - sic-rtgs
+      - chats
+      - ach
+      - wire
+      - eft
+    TransferScope:
+      type: string
+      description: transfer scope
+      enum:
+      - internal
+      - external
+      - internal
+      - external
+    OutgoingTransferDateMetadataConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferDateMetadataWorkflowContainer:
+      type: object
+      description: workflow container
+    OutgoingTransferDateMetadataDataContainer:
+      type: object
+      properties:
+        nextAvailableDateFrom:
+          type: string
+          format: date
+        nextAvailableDate:
+          type: string
+          description: next available date for transfers with given properties
+          format: date
+          readOnly: true
+        nextCutoffDateTime:
+          type: string
+          description: cutoff date time for next available date, null if payment scheme supports 24/7
+          format: date-time
+          readOnly: true
+        unavailableDates:
+          uniqueItems: true
+          type: array
+          description: array of unavailable dates for transfer with given properties
+          readOnly: true
+          items:
+            type: string
+            description: array of unavailable dates for transfer with given properties
+            format: date
+            readOnly: true
+      description: data container
+    OutgoingTransferDateMetadataResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataMetadataContainer'
+      description: response model
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountscreate.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsget.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountslist.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsrequirementsget.md
+  - https://developer.integrated.finance/reference/beneficiariesbankaccountsupdate.md
+  - https://developer.integrated.finance/reference/beneficiariescreate.md
+  - https://developer.integrated.finance/reference/beneficiariesget.md
+  - https://developer.integrated.finance/reference/beneficiarieslist.md
+  - https://developer.integrated.finance/reference/beneficiariesupdate.md
+  - https://developer.integrated.finance/reference/beneficiary-verificationscreate.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatescreate.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatesget.md
+  - https://developer.integrated.finance/reference/direct-debit-mandateslist.md
+  - https://developer.integrated.finance/reference/direct-debit-mandatesupdate.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentsget.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentslist.md
+  - https://developer.integrated.finance/reference/direct-debit-paymentsupdate.md
+  - https://developer.integrated.finance/reference/outgoing-transferscompliance-checkget.md
+  - https://developer.integrated.finance/reference/outgoing-transferscompliance-checkupdate.md
+  - https://developer.integrated.finance/reference/outgoing-transferscreate.md
+  - https://developer.integrated.finance/reference/outgoing-transfersdate-metadataget.md
+  - https://developer.integrated.finance/reference/outgoing-transfersdate-metadataget_1.md
+  - https://developer.integrated.finance/reference/outgoing-transfersget.md
+  - https://developer.integrated.finance/reference/outgoing-transferslist.md
+  - https://developer.integrated.finance/reference/outgoing-transfersupdate.md
+  merge:
+    pages: 25
+    deduped: 237
+    conflicts_kept_first: 0

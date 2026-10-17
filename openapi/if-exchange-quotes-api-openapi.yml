@@ -1,0 +1,334 @@
+openapi: 3.2.0
+info:
+  title: Exchange Quotes API
+  description: Operations for Exchanges
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Exchange Quotes
+paths:
+  /exchange-quotes:
+    post:
+      tags:
+      - Exchange Quotes
+      summary: Create an Exchange Quote
+      operationId: exchanges.quote.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/QuoteCreateRequest'
+      responses:
+        '201':
+          description: Exchange quote created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteCreateResponse'
+  /exchange-quotes/{id}:
+    post:
+      tags:
+      - Exchange Quotes
+      summary: Refresh an Exchange Quote
+      operationId: exchanges.quote.refresh
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/QuoteRefreshRequest'
+      responses:
+        '201':
+          description: Exchange quote refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteRefreshResponse'
+components:
+  schemas:
+    PricingCalculationWorkflowDataInput:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      description: pricing data input
+      discriminator:
+        propertyName: type
+    QuoteCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/QuoteCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/QuoteCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/QuoteCreateConnect'
+        metadata:
+          $ref: '#/components/schemas/QuoteCreateMetadataContainer'
+    QuoteCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.direct.spot
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowConfiguration'
+    QuoteRefreshRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/QuoteRefreshWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/QuoteRefreshDataContainer'
+        connect:
+          $ref: '#/components/schemas/QuoteRefreshConnect'
+        metadata:
+          $ref: '#/components/schemas/QuoteRefreshMetadataContainer'
+    PricingCalculationWorkflowConfiguration:
+      type: object
+      properties:
+        dryRun:
+          type: boolean
+        sourcingMethod:
+          $ref: '#/components/schemas/InformationSourcingMethod'
+        enabled:
+          type: boolean
+          description: determines whether pricing will be applied or not
+        chargingType:
+          $ref: '#/components/schemas/PricingChargingType'
+        chargingMethod:
+          $ref: '#/components/schemas/PricingChargingMethod'
+      description: pricing workflow context
+    QuoteResource:
+      required:
+      - buyAmount
+      - buyCurrency
+      - creditAmount
+      - cutOffDateTime
+      - debitAmount
+      - exchangeDate
+      - expiryDateTime
+      - id
+      - rate
+      - sellAmount
+      - sellCurrency
+      - settlementDate
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of quote
+          format: uuid
+        rate:
+          type: number
+          description: Rate
+        buyCurrency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code
+        buyAmount:
+          type: number
+          description: Buy amount of exchange
+        sellCurrency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code
+        sellAmount:
+          type: number
+          description: Sell amount of exchange
+        feeAmount:
+          type: number
+          description: Fee amount
+        feeCurrency:
+          type: string
+          description: Fee currency
+        exchangeDate:
+          type: string
+          description: Calculated exchange date
+          format: date
+        expiryDateTime:
+          type: string
+          description: Calculated exchange expiry date time
+          format: date-time
+        cutOffDateTime:
+          type: string
+          description: Exchange cut-off date time
+          format: date-time
+        settlementDate:
+          type: string
+          description: Calculated exchange settlement date
+          format: date
+        offline:
+          type: boolean
+          description: Indicates if rate is provided by secondary source where primary source is offline
+        debitAmount:
+          type: number
+          description: amount to be debited from the account, equals to sell amount if fee amount is 0
+        creditAmount:
+          type: number
+          description: amount to be credited to the account, equals to buy amount if fee amount is 0
+      description: quote data model
+      readOnly: true
+    QuoteCreateConnect:
+      required:
+      - serviceProvider
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: service provider selection type
+          enum:
+          - explicit
+        serviceProvider:
+          type: string
+          description: 'account is connected to this service provider '
+          enum:
+          - railsbank
+    QuoteRefreshWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.direct.spot
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowConfiguration'
+    QuoteCreateMetadataContainer:
+      type: object
+    InformationSourcingMethod:
+      type: string
+      description: configures where the information for pricing will be sourced
+      enum:
+      - explicit
+      - implicit
+    QuoteCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/QuoteCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/QuoteCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/QuoteCreateConnect'
+        metadata:
+          $ref: '#/components/schemas/QuoteCreateMetadataContainer'
+    QuoteRefreshResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/QuoteRefreshWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/QuoteRefreshDataContainer'
+        connect:
+          $ref: '#/components/schemas/QuoteRefreshConnect'
+        metadata:
+          $ref: '#/components/schemas/QuoteRefreshMetadataContainer'
+    QuoteCreateDataContainer:
+      required:
+      - quote
+      type: object
+      properties:
+        quote:
+          $ref: '#/components/schemas/QuoteResource'
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowDataInput'
+    QuoteRefreshDataContainer:
+      required:
+      - quote
+      type: object
+      properties:
+        quote:
+          $ref: '#/components/schemas/QuoteResource'
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowDataInput'
+    PricingChargingMethod:
+      type: string
+      description: configures where this action will be charged from
+      enum:
+      - on-source
+    QuoteRefreshMetadataContainer:
+      type: object
+    QuoteRefreshConnect:
+      required:
+      - serviceProvider
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: service provider selection type
+          enum:
+          - explicit
+        serviceProvider:
+          type: string
+          description: 'account is connected to this service provider '
+          enum:
+          - railsbank
+    PricingChargingType:
+      type: string
+      description: configures how this action will be charged
+      enum:
+      - fee
+      - markup
+      - fee-and-markup
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/exchangesquotecreate.md
+  - https://developer.integrated.finance/reference/exchangesquoterefresh.md
+  - https://developer.integrated.finance/reference/exchangestransactioncreate.md
+  - https://developer.integrated.finance/reference/exchangestransactionget.md
+  - https://developer.integrated.finance/reference/exchangestransactionlist.md
+  - https://developer.integrated.finance/reference/exchangestransactionupdate.md
+  merge:
+    pages: 6
+    deduped: 50
+    conflicts_kept_first: 0

@@ -1,0 +1,403 @@
+openapi: 3.2.0
+info:
+  title: User Invitations API
+  description: Operations for Users
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: User Invitations
+paths:
+  /users/{email}/invitations:
+    get:
+      tags:
+      - User Invitations
+      summary: List User Invitations
+      operationId: users.list_1
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.userInvitation.clientId,desc
+      - name: data.userInvitation.clientId
+        in: query
+        schema:
+          type: string
+      - name: data.userInvitation.userClientRelation
+        in: query
+        schema:
+          $ref: '#/components/schemas/UserClientRelationType'
+      - name: data.userInvitation.status
+        in: query
+        schema:
+          $ref: '#/components/schemas/UserInvitationStatus'
+      - name: email
+        in: path
+        description: email of user
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User invitation list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInvitationListResponse'
+              example:
+                workflow: {}
+                data:
+                  userInvitations:
+                  - id: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    userClientRelation: director
+                    status: pending
+                connect: {}
+                metadata:
+                  page:
+                    size: 10
+                    number: 0
+                    totalElements: 1
+                    totalPages: 1
+  /users/{email}/invitations/{id}:
+    get:
+      tags:
+      - User Invitations
+      summary: Get a User Invitation
+      operationId: user-invitations.get
+      parameters:
+      - name: email
+        in: path
+        description: email of user invitation
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of user invitation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: User invitation resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInvitationGetResponse'
+              example:
+                workflow: {}
+                data:
+                  userInvitation:
+                    id: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    userClientRelation: director
+                    status: pending
+                connect: {}
+                metadata: {}
+    patch:
+      tags:
+      - User Invitations
+      summary: Update a User Invitation
+      operationId: user-invitations.update
+      parameters:
+      - name: email
+        in: path
+        description: email of user invitation
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of user invitation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInvitationUpdatePlatformRequest'
+            examples:
+              invitation-cancellation:
+                description: invitation-cancellation
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    userInvitation:
+                      status: cancelled
+                  connect: {}
+                  metadata: {}
+      responses:
+        '202':
+          description: User invitation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInvitationUpdatePlatformResponse'
+              examples:
+                invitation-cancellation:
+                  description: invitation-cancellation
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      userInvitation:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        userClientRelation: director
+                        status: cancelled
+                    connect: {}
+                    metadata: {}
+components:
+  schemas:
+    UserInvitationListWorkflowContainer:
+      type: object
+    UserInvitationUpdatePlatformDataContainer:
+      type: object
+      properties:
+        userInvitation:
+          $ref: '#/components/schemas/UserInvitation'
+    UserInvitationUpdatePlatformResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformMetadataContainer'
+    UserInvitationGetMetadataContainer:
+      type: object
+    UserInvitationListDataContainer:
+      required:
+      - userInvitations
+      type: object
+      properties:
+        userInvitation:
+          $ref: '#/components/schemas/UserInvitationListQueryInput'
+        userInvitations:
+          type: array
+          description: collection of user invitations
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/UserInvitation'
+    UserInvitationGetConnectContainer:
+      type: object
+    UserInvitationListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    UserInvitationUpdateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+      - direct
+    UserInvitationListConnectContainer:
+      type: object
+    UserInvitationGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationGetMetadataContainer'
+    UserInvitationStatus:
+      type: string
+      description: status of invitation
+      readOnly: true
+      enum:
+      - accepted
+      - pending
+      - rejected
+      - cancelled
+    UserInvitationUpdatePlatformWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/UserInvitationUpdateWorkflow'
+    UserInvitationGetWorkflowContainer:
+      type: object
+    UserInvitationGetDataContainer:
+      required:
+      - userInvitation
+      type: object
+      properties:
+        userInvitation:
+          $ref: '#/components/schemas/UserInvitation'
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    UserInvitationUpdatePlatformRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationUpdatePlatformMetadataContainer'
+    UserInvitationUpdatePlatformMetadataContainer:
+      type: object
+    UserInvitationListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserInvitationListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserInvitationListDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserInvitationListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserInvitationListMetadataContainer'
+    UserInvitation:
+      required:
+      - clientId
+      - id
+      - status
+      - userClientRelation
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          format: uuid
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelationType'
+        status:
+          $ref: '#/components/schemas/UserInvitationStatus'
+    UserInvitationListQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelationType'
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserInvitationStatus'
+      writeOnly: true
+    UserClientRelationType:
+      type: string
+      description: user's relation with client
+      enum:
+      - director
+      - shareholder
+      - director-and-shareholder
+      - authorized-person
+    UserInvitationUpdatePlatformConnectContainer:
+      type: object
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/user-client-relationscreate.md
+  - https://developer.integrated.finance/reference/user-client-relationsget.md
+  - https://developer.integrated.finance/reference/user-client-relationslist.md
+  - https://developer.integrated.finance/reference/user-client-relationsupdate.md
+  - https://developer.integrated.finance/reference/user-invitationsget.md
+  - https://developer.integrated.finance/reference/user-invitationsupdate.md
+  - https://developer.integrated.finance/reference/userscreate.md
+  - https://developer.integrated.finance/reference/usersget.md
+  - https://developer.integrated.finance/reference/userslist.md
+  - https://developer.integrated.finance/reference/userslist_1.md
+  - https://developer.integrated.finance/reference/usersupdate.md
+  merge:
+    pages: 11
+    deduped: 43
+    conflicts_kept_first: 0

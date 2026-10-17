@@ -1,0 +1,1145 @@
+openapi: 3.2.0
+info:
+  title: Accounts API
+  description: Operations for Accounts
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: Accounts
+paths:
+  /accounts:
+    get:
+      tags:
+      - Accounts
+      summary: List Accounts
+      operationId: accounts.list
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.client.fullName,desc
+      - name: data.account.clientId
+        in: query
+        schema:
+          type: string
+      - name: data.account.currency
+        in: query
+        schema:
+          type: string
+      - name: data.account.status
+        in: query
+        schema:
+          type: string
+          enum:
+          - pending
+          - active
+          - inactive
+          - suspended
+          - closed
+          - declined
+      - name: data.account.alias
+        in: query
+        schema:
+          type: string
+      - name: data.account.iban
+        in: query
+        schema:
+          type: string
+      - name: data.account.accountNumber
+        in: query
+        schema:
+          type: string
+      - name: data.account.routingCodeKey
+        in: query
+        schema:
+          $ref: '#/components/schemas/RoutingCodeType'
+      - name: data.account.routingCodeValue
+        in: query
+        schema:
+          type: string
+      - name: data.account.accountHolderName
+        in: query
+        schema:
+          type: string
+      - name: data.account.ledgerNumber
+        in: query
+        schema:
+          type: string
+      - name: data.account.serviceProvider
+        in: query
+        schema:
+          type: string
+      - name: data.account.availableBalanceFrom
+        in: query
+        schema:
+          type: string
+      - name: data.account.availableBalanceTo
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Account list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountListResponse'
+              example:
+                workflow: '{}'
+                data:
+                  accounts:
+                  - id: 045f4568-3a75-4bcf-97f3-54cfeeb45137
+                    clientId: afcbd6f0-d34b-4512-bd24-c229815f53e5
+                    status: active
+                    country: GB
+                    currency: GBP
+                    alias: TCC GBP Test Account
+                    routingCodes: {}
+                    iban: null
+                    accountNumber: null
+                    ledgerNumber: '41858872'
+                    availableBalance: 0
+                    receivableBalance: 0
+                    accountHolderName: I.F Technology Ltd
+                    accountHolderIdentityType: corporate
+                    serviceProvider: currencycloud
+                connect: '{}'
+                metadata:
+                  page:
+                    size: 20
+                    number: 0
+                    totalElements: 1
+                    totalPages: 1
+    post:
+      tags:
+      - Accounts
+      summary: Create an Account
+      operationId: accounts.create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateRequest'
+            examples:
+              client-issuing:
+                description: client-issuing
+              client-migration:
+                description: client-migration
+      responses:
+        '201':
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCreateResponse'
+              examples:
+                client-issuing:
+                  description: client-issuing
+                client-migration:
+                  description: client-migration
+        '400':
+          description: Missing required field
+          content:
+            application/json:
+              examples:
+                error-required-validation:
+                  description: error-required-validation
+  /accounts/{id}:
+    get:
+      tags:
+      - Accounts
+      summary: Get an Account
+      operationId: accounts.get
+      parameters:
+      - name: metadata.expand
+        in: query
+        description: expand a resource of the account
+        style: form
+        schema:
+          type: string
+          enum:
+          - data.account.clientId
+      - name: metadata.include
+        in: query
+        description: include additional information about the account
+        style: form
+        schema:
+          type: string
+          enum:
+          - connect.connection
+      - name: id
+        in: path
+        description: ID of account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Account resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountGetResponse'
+              examples:
+                default:
+                  description: default
+                  value:
+                    workflow: {}
+                    data:
+                      account:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: pending
+                        country: US
+                        currency: USD
+                        alias: USD account
+                        routingCodes: {}
+                        iban: null
+                        accountNumber: null
+                        ledgerNumber: '00000000'
+                        availableBalance: 0
+                        receivableBalance: 0
+                        serviceProvider: currencycloud
+                        accountHolderName: I.F Technology Ltd
+                        accountHolderIdentityType: corporate
+                        mainAccountId: null
+                    connect: {}
+                    metadata: {}
+                expand-client-id:
+                  description: expand-client-id
+                  value:
+                    workflow: {}
+                    data:
+                      account:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: pending
+                        country: US
+                        currency: USD
+                        alias: USD account
+                        routingCodes: {}
+                        iban: null
+                        accountNumber: null
+                        ledgerNumber: '00000000'
+                        availableBalance: 0
+                        receivableBalance: 0
+                        serviceProvider: currencycloud
+                        accountHolderName: Sherlock Holmes
+                        accountHolderIdentityType: individual
+                        mainAccountId: null
+                      client:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientNumber: '00000000'
+                        status: active
+                        identity:
+                          type: individual
+                          country: GB
+                          identifications:
+                          - type: identity-card
+                            identificationNumber: '12345677'
+                            issuingCountry: GB
+                            issueDate: '2022-01-01'
+                            expirationDate: '2032-01-01'
+                          givenName: Sherlock
+                          familyName: Holmes
+                          birthDate: '1987-01-01'
+                        fullName: Sherlock Holmes
+                    connect: {}
+                    metadata: {}
+                include-connect-connection:
+                  description: include-connect-connection
+                  value:
+                    workflow: {}
+                    data:
+                      account:
+                        id: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        mainAccountId: 00000000-0000-0000-0000-000000000000
+                        status: active
+                        country: GB
+                        currency: EUR
+                        alias: EUR Account
+                        routingCodes: {}
+                        iban: null
+                        accountNumber: null
+                        ledgerNumber: '12345678'
+                        availableBalance: 0
+                        serviceProvider: railsbank
+                        accountHolderName: I.F Technology Ltd
+                        accountHolderIdentityType: corporate
+                    connect:
+                      connection:
+                        id: 00000000-0000-0000-0000-000000000000
+                        serviceProvider: railsbank
+                    metadata: {}
+    patch:
+      tags:
+      - Accounts
+      summary: Update an Account
+      operationId: accounts.update
+      parameters:
+      - name: id
+        in: path
+        description: ID of account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AccountUpdateRequest'
+      responses:
+        '202':
+          description: Account updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountUpdateResponse'
+  /accounts/{id}/deposit-information:
+    get:
+      tags:
+      - Accounts
+      summary: Get Deposit Information of an Account
+      operationId: accounts.deposit-information.get
+      parameters:
+      - name: id
+        in: path
+        description: ID of account in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Account deposit information options returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDepositInformationResponse'
+components:
+  schemas:
+    AccountUpdateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountUpdateMetadataContainer'
+    AccountGetConnectContainer:
+      type: object
+      properties:
+        connection:
+          $ref: '#/components/schemas/AccountConnectionResource'
+    AccountResourceQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountStatus'
+        currency:
+          type: array
+          items:
+            type: string
+        alias:
+          type: string
+        routingCodeKey:
+          $ref: '#/components/schemas/RoutingCodeType'
+        routingCodeValue:
+          type: string
+        iban:
+          type: array
+          items:
+            type: string
+        accountNumber:
+          type: array
+          items:
+            type: string
+        ledgerNumber:
+          type: array
+          items:
+            type: string
+        availableBalanceFrom:
+          type: number
+        availableBalanceTo:
+          type: number
+        serviceProvider:
+          type: array
+          items:
+            type: string
+        accountHolderName:
+          type: string
+        accountType:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType'
+        mainAccountId:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+    ConnectMethod:
+      type: string
+      enum:
+      - built-in
+      - plug-in
+    AccountCreateDataContainer:
+      required:
+      - account
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
+        sourceId:
+          type: string
+          description: id of the account to be migrated, required if workflow is migration
+          writeOnly: true
+    AccountUpdateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.direct
+    AccountType:
+      type: string
+      enum:
+      - main-account
+      - sub-account
+      - standalone-account
+    AccountDepositInformationResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountDepositInformationGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountDepositInformationGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountDepositInformationGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountDepositInformationGetMetadataContainer'
+    AccountGetMetadataContainer:
+      type: object
+    AccountGetDataContainer:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
+        client:
+          $ref: '#/components/schemas/Client'
+    AccountCreateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountCreateMetadataContainer'
+    LegalEntityIdentityIndividual:
+      required:
+      - familyName
+      - givenName
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LegalEntityIdentity'
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/LegalEntityType'
+          country:
+            maxLength: 2
+            minLength: 2
+            pattern: ^[A-Z]{2}$
+            type: string
+          identifications:
+            type: array
+            items:
+              $ref: '#/components/schemas/LegalEntityIdentification'
+          givenName:
+            type: string
+          familyName:
+            type: string
+          birthDate:
+            type: string
+            format: date
+    ClientRelatedLegalEntityRelation:
+      type: string
+      description: relation of legal entity with client
+      enum:
+      - director
+      - shareholder
+      - director-and-shareholder
+      - authorized-person
+    RoutingCodeType:
+      type: string
+      enum:
+      - bic
+      - sort-code
+      - aba
+      - rtn-canada
+      - clabe
+      - bsb-code
+      - ifsc
+      - cnaps
+      - bank-code
+      - branch-code
+    AccountDepositInformationGetMetadataContainer:
+      type: object
+    AccountGetWorkflowContainer:
+      type: object
+    AccountListDataContainer:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/AccountResourceQueryInput'
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+    AccountUpdateConnectContainer:
+      type: object
+    ClientRelation:
+      required:
+      - clientId
+      - id
+      - identity
+      - relation
+      type: object
+      properties:
+        id:
+          type: string
+          description: client relation id
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          description: id of client
+          format: uuid
+          readOnly: true
+        relation:
+          $ref: '#/components/schemas/ClientRelatedLegalEntityRelation'
+        identity:
+          type: object
+          description: client relation identity object
+          oneOf:
+          - $ref: '#/components/schemas/LegalEntityIdentityCorporate'
+          - $ref: '#/components/schemas/LegalEntityIdentityIndividual'
+        percentageOfOwnership:
+          type: number
+          description: percentage of ownership
+        profile:
+          type: object
+          description: client relation profile object
+          oneOf:
+          - $ref: '#/components/schemas/ClientProfileCorporate'
+          - $ref: '#/components/schemas/ClientProfileIndividual'
+      description: client related legal entities
+    ErrorOrigin:
+      type: string
+      enum:
+      - customer
+      - platform
+      - provider
+    ServiceProviderConnectionState:
+      type: string
+      enum:
+      - pending
+      - creation-in-progress
+      - update-in-progress
+      - dependency-completed
+      - completed-up-to-date
+      - completed-outdated
+      - dependency-failed
+      - creation-failed
+    LegalEntityIdentityCorporate:
+      required:
+      - legalName
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LegalEntityIdentity'
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/LegalEntityType'
+          country:
+            maxLength: 2
+            minLength: 2
+            pattern: ^[A-Z]{2}$
+            type: string
+          identifications:
+            type: array
+            items:
+              $ref: '#/components/schemas/LegalEntityIdentification'
+          legalName:
+            type: string
+          incorporationDate:
+            type: string
+            format: date
+          corporationType:
+            $ref: '#/components/schemas/CorporationType'
+    AccountListConnectContainer:
+      type: object
+    AccountCreateRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountCreateMetadataContainer'
+    AccountStatus:
+      type: string
+      description: status of account
+      readOnly: true
+      enum:
+      - pending
+      - active
+      - inactive
+      - suspended
+      - closed
+      - declined
+    ClientProfileIndividual:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ClientProfile'
+      - type: object
+        properties:
+          identityType:
+            $ref: '#/components/schemas/LegalEntityType'
+          phone:
+            type: string
+            description: client contact phone number
+          email:
+            type: string
+            description: client contact email
+          residentialAddress:
+            $ref: '#/components/schemas/Address'
+    AttributeMap:
+      type: object
+      description: attributes of account
+    AccountConnectionResource:
+      type: object
+      properties:
+        id:
+          type: string
+        serviceProvider:
+          type: string
+        reference:
+          type: string
+        state:
+          $ref: '#/components/schemas/ServiceProviderConnectionState'
+        status:
+          $ref: '#/components/schemas/ThirdPartyAccountStatus'
+        method:
+          $ref: '#/components/schemas/ConnectMethod'
+        error:
+          $ref: '#/components/schemas/ConnectionErrorResource'
+      description: Account Connection Resource Object
+      readOnly: true
+    ClientStatus:
+      type: string
+      description: status of the client
+      readOnly: true
+      enum:
+      - active
+      - inactive
+    AccountDepositInformationResourceMap:
+      type: object
+    AccountDepositInformationGetWorkflowContainer:
+      type: object
+    ConnectionErrorResource:
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/ErrorCategory'
+        origin:
+          $ref: '#/components/schemas/ErrorOrigin'
+        code:
+          type: string
+        message:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+    ClientProfileCorporate:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ClientProfile'
+      - type: object
+        properties:
+          identityType:
+            $ref: '#/components/schemas/LegalEntityType'
+          phone:
+            type: string
+            description: client contact phone number
+          email:
+            type: string
+            description: client contact email
+          registrationAddress:
+            $ref: '#/components/schemas/Address'
+    AccountUpdateDataContainer:
+      required:
+      - account
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
+    Address:
+      required:
+      - city
+      - country
+      - street
+      type: object
+      properties:
+        country:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        houseNumber:
+          type: string
+        refinement:
+          type: string
+      description: residential address object for individual clients
+    CorporationType:
+      type: string
+      enum:
+      - ltd
+      - plc
+      - llp
+      - lp
+      - gp
+      - st
+      - other
+    LegalEntityType:
+      type: string
+      description: type of account holder client's identity
+      readOnly: true
+      enum:
+      - corporate
+      - individual
+    AccountListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountListDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountListMetadataContainer'
+    AccountUpdateResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountUpdateMetadataContainer'
+    ErrorCategory:
+      type: string
+      enum:
+      - functional
+      - technical
+    AccountDepositInformationGetConnectContainer:
+      type: object
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    ThirdPartyAccountStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - closed
+    LegalEntityIdentity:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          corporate: '#/components/schemas/LegalEntityIdentityCorporate'
+          individual: '#/components/schemas/LegalEntityIdentityIndividual'
+    Account:
+      required:
+      - accountHolderIdentityType
+      - clientId
+      - country
+      - currency
+      - id
+      - ledgerNumber
+      - mainAccountId
+      - routingCodes
+      - serviceProvider
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of account
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          description: id of client
+          format: uuid
+        status:
+          $ref: '#/components/schemas/AccountStatus'
+        country:
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          readOnly: true
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code
+        alias:
+          maxLength: 30
+          type: string
+          description: alias of account, refer to Accounts section in Guides for details
+        routingCodes:
+          $ref: '#/components/schemas/RoutingCodeMap'
+        iban:
+          maxLength: 31
+          minLength: 15
+          pattern: ^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\d{5}[0-9A-Z]{13}$
+          type:
+          - string
+          - 'null'
+          description: iban assigned to account
+          readOnly: true
+        accountNumber:
+          maxLength: 20
+          minLength: 8
+          pattern: ^[0-9]{8,20}$
+          type:
+          - string
+          - 'null'
+          description: account number assigned to account
+          readOnly: true
+        accountHolderName:
+          type: string
+        ledgerNumber:
+          maxLength: 8
+          minLength: 8
+          pattern: ^[0-9]{8,8}$
+          type: string
+          description: unique ledger number of account generated internally
+          readOnly: true
+        availableBalance:
+          type: number
+          description: available balance of account
+          format: double
+          readOnly: true
+        receivableBalance:
+          type: number
+          description: receivable balance of account
+          format: double
+          readOnly: true
+        payableBalance:
+          type: number
+          description: payable balance of account
+          format: double
+          readOnly: true
+        accountHolderIdentityType:
+          $ref: '#/components/schemas/LegalEntityType'
+        connection:
+          $ref: '#/components/schemas/AccountConnectionResource'
+        serviceProvider:
+          type: string
+          description: service provider which this account connected to
+          readOnly: true
+        mainAccountId:
+          type: string
+          description: the main account id which the given account is linked to
+          format: uuid
+          readOnly: true
+        attributes:
+          $ref: '#/components/schemas/AttributeMap'
+    Client:
+      required:
+      - clientNumber
+      - id
+      - identity
+      - status
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/AttributeMap'
+        id:
+          type: string
+          description: client id
+          format: uuid
+          readOnly: true
+        clientNumber:
+          maxLength: 8
+          minLength: 8
+          pattern: ^d{8}$
+          type: string
+          description: user friendly client identifier
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/ClientStatus'
+        identity:
+          type: object
+          description: client identity object
+          oneOf:
+          - $ref: '#/components/schemas/LegalEntityIdentityCorporate'
+          - $ref: '#/components/schemas/LegalEntityIdentityIndividual'
+        profile:
+          type: object
+          description: client profile object
+          oneOf:
+          - $ref: '#/components/schemas/ClientProfileCorporate'
+          - $ref: '#/components/schemas/ClientProfileIndividual'
+        relations:
+          type: array
+          description: client related legal entities
+          items:
+            $ref: '#/components/schemas/ClientRelation'
+    RoutingCodeMap:
+      type: object
+      description: routing codes of account as map, refer to Accounts section in Guides for details
+      readOnly: true
+    LegalEntityIdentification:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/LegalEntityIdentificationType'
+        identificationNumber:
+          type: string
+        issuingCountry:
+          maxLength: 2
+          minLength: 2
+          pattern: ^[A-Z]{2}$
+          type: string
+        issueDate:
+          type: string
+          format: date
+        expirationDate:
+          type: string
+          format: date
+    AccountCreateConnectContainer:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: service provider selection type
+          enum:
+          - explicit
+        serviceProvider:
+          type: string
+          description: account is connected to this service provider
+        method:
+          $ref: '#/components/schemas/ConnectMethod'
+    AccountCreateMetadataContainer:
+      type: object
+    AccountUpdateMetadataContainer:
+      type: object
+    AccountListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    AccountDepositInformationGetDataContainer:
+      type: object
+      properties:
+        depositInformation:
+          $ref: '#/components/schemas/AccountDepositInformationResourceMap'
+    AccountGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/AccountGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/AccountGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/AccountGetMetadataContainer'
+    ClientProfile:
+      required:
+      - identityType
+      type: object
+      properties:
+        identityType:
+          type: string
+      discriminator:
+        propertyName: identityType
+        mapping:
+          corporate: '#/components/schemas/ClientProfileCorporate'
+          individual: '#/components/schemas/ClientProfileIndividual'
+    AccountCreateWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+          - client.issuing
+          - client.sub-account
+          - client.migration
+    LegalEntityIdentificationType:
+      type: string
+      enum:
+      - registration-number
+      - passport
+      - identity-card
+      - driving-licence
+      - foreign-identity-card
+      - tax-number
+    AccountListWorkflowContainer:
+      type: object
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/accountsbalance-adjustmentscreate.md
+  - https://developer.integrated.finance/reference/accountscreate.md
+  - https://developer.integrated.finance/reference/accountsdeposit-informationget.md
+  - https://developer.integrated.finance/reference/accountsget.md
+  - https://developer.integrated.finance/reference/accountslist.md
+  - https://developer.integrated.finance/reference/accountsstatementlist.md
+  - https://developer.integrated.finance/reference/accountsupdate.md
+  merge:
+    pages: 7
+    deduped: 37
+    conflicts_kept_first: 0

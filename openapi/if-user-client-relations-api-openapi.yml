@@ -1,0 +1,597 @@
+openapi: 3.2.0
+info:
+  title: User & Client Relations API
+  description: Operations for Users
+  version: '1'
+servers:
+- url: https://sandbox-api.integrated.finance/v1/{instanceId}
+  description: Sandbox
+  variables: {}
+- url: https://api.integrated.finance/v1/{instanceId}
+  description: Production
+  variables: {}
+tags:
+- name: User & Client Relations
+paths:
+  /users/{userId}/client-relations:
+    get:
+      tags:
+      - User & Client Relations
+      summary: List User Client Relations
+      operationId: user-client-relations.list
+      parameters:
+      - name: metadata.page.number
+        in: query
+        description: 0-indexed page number
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: metadata.page.size
+        in: query
+        description: page size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 20
+      - name: metadata.sort
+        in: query
+        description: default direction is ascending
+        schema:
+          type: string
+        example: data.userClientRelation.clientId,desc
+      - name: data.userClientRelation.clientId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: id of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: User client relation list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationListResponse'
+              example:
+                workflow: {}
+                data:
+                  userClientRelations:
+                  - id: 00000000-0000-0000-0000-000000000000
+                    userId: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    status: allowed
+                connect: {}
+                metadata:
+                  page:
+                    size: 20
+                    number: 0
+                    totalElements: 1
+                    totalPages: 1
+    post:
+      tags:
+      - User & Client Relations
+      summary: Create a User Client Relation
+      operationId: user-client-relations.create
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserClientRelationCreatePlatformRequest'
+            examples:
+              direct:
+                description: direct
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    userClientRelations:
+                    - clientId: 00000000-0000-0000-0000-000000000000
+                    - clientId: 00000000-0000-0000-0000-000000000000
+                  connect: '{}'
+                  metadata: '{}'
+      responses:
+        '201':
+          description: User client relation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationCreatePlatformResponse'
+              examples:
+                direct:
+                  description: direct
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      userClientRelations:
+                      - id: 00000000-0000-0000-0000-000000000000
+                        userId: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: allowed
+                      - id: 00000000-0000-0000-0000-000000000000
+                        userId: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: allowed
+                    connect: '{}'
+                    metadata: '{}'
+  /users/{userId}/client-relations/{id}:
+    get:
+      tags:
+      - User & Client Relations
+      summary: Get a User Client Relation
+      operationId: user-client-relations.get
+      parameters:
+      - name: userId
+        in: path
+        description: id of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: id of user client relation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: User client relation returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationGetResponse'
+              example:
+                workflow: {}
+                data:
+                  userClientRelation:
+                    id: 00000000-0000-0000-0000-000000000000
+                    userId: 00000000-0000-0000-0000-000000000000
+                    clientId: 00000000-0000-0000-0000-000000000000
+                    status: allowed
+                connect: {}
+                metadata: {}
+    patch:
+      tags:
+      - User & Client Relations
+      summary: Update a User Client Relation
+      operationId: user-client-relations.update
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: ID of user client relation in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserClientRelationUpdatePlatformRequest'
+            examples:
+              revoking-user-access:
+                description: revoking-user-access
+                value:
+                  workflow:
+                    code: direct
+                  data:
+                    userClientRelation:
+                      status: revoked
+                  connect: '{}'
+                  metadata: '{}'
+      responses:
+        '202':
+          description: User client relation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserClientRelationUpdatePlatformResponse'
+              examples:
+                revoking-user-access:
+                  description: revoking-user-access
+                  value:
+                    workflow:
+                      code: direct
+                    data:
+                      userClientRelation:
+                        id: 00000000-0000-0000-0000-000000000000
+                        userId: 00000000-0000-0000-0000-000000000000
+                        clientId: 00000000-0000-0000-0000-000000000000
+                        status: revoked
+                    connect: {}
+                    metadata: {}
+components:
+  schemas:
+    UserClientRelationCreatePlatformRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformMetadataContainer'
+    UserClientRelationUpdatePlatformDataContainer:
+      type: object
+      properties:
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelation'
+    UserClientRelationCreatePlatformResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationCreatePlatformMetadataContainer'
+    Order:
+      type: object
+      properties:
+        direction:
+          $ref: '#/components/schemas/Direction'
+        property:
+          type: string
+        ignoreCase:
+          type: boolean
+        nullHandling:
+          $ref: '#/components/schemas/NullHandling'
+        ascending:
+          type: boolean
+        descending:
+          type: boolean
+    UserClientRelationListConnectContainer:
+      type: object
+    HateoasPageableHandlerMethodArgumentResolver:
+      type: object
+      properties:
+        fallbackPageable:
+          $ref: '#/components/schemas/Pageable'
+        pageParameterName:
+          type: string
+        sizeParameterName:
+          type: string
+        prefix:
+          type: string
+        qualifierDelimiter:
+          type: string
+        maxPageSize:
+          type: integer
+          format: int32
+        oneIndexedParameters:
+          type: boolean
+        sortResolver:
+          $ref: '#/components/schemas/HateoasSortHandlerMethodArgumentResolver'
+    Sort:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        empty:
+          type: boolean
+        unsorted:
+          type: boolean
+        sorted:
+          type: boolean
+    UserClientRelationListMetadataContainer:
+      required:
+      - page
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    UserClientStatus:
+      type: string
+      readOnly: true
+      enum:
+      - allowed
+      - revoked
+    UserClientRelationUpdatePlatformRequest:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformMetadataContainer'
+    UserClientRelationListResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationListDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationListMetadataContainer'
+    Direction:
+      type: string
+      enum:
+      - ASC
+      - DESC
+    UserClientRelationUpdatePlatformWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/UserClientRelationUpdateWorkflow'
+    UserClientRelationUpdateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+      - direct
+    UserClientRelationResourceQueryInput:
+      type: object
+      properties:
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        pagingAssembler:
+          $ref: '#/components/schemas/PagedResourcesAssemblerUserClient'
+        userId:
+          type: string
+          format: uuid
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserClientStatus'
+        clientId:
+          type: string
+          format: uuid
+      writeOnly: true
+    UserClientRelationGetDataContainer:
+      type: object
+      properties:
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelation'
+    UserClientRelationUpdatePlatformResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationUpdatePlatformMetadataContainer'
+    UserClientRelationCreatePlatformDataContainer:
+      type: object
+      properties:
+        userClientRelations:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserClientRelation'
+    UserClientRelationCreatePlatformWorkflowContainer:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/UserClientRelationCreateWorkflow'
+    Pageable:
+      type: object
+      properties:
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
+    EmbeddedWrappers:
+      type: object
+      properties:
+        preferCollections:
+          type: boolean
+    UserClientRelationGetMetadataContainer:
+      type: object
+    HateoasSortHandlerMethodArgumentResolver:
+      type: object
+      properties:
+        fallbackSort:
+          $ref: '#/components/schemas/Sort'
+        sortParameter:
+          type: string
+        propertyDelimiter:
+          type: string
+        qualifierDelimiter:
+          type: string
+    UserClientRelationListDataContainer:
+      type: object
+      properties:
+        userClientRelation:
+          $ref: '#/components/schemas/UserClientRelationResourceQueryInput'
+        userClientRelations:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/UserClientRelation'
+    NullHandling:
+      type: string
+      enum:
+      - NATIVE
+      - NULLS_FIRST
+      - NULLS_LAST
+    UserClientRelation:
+      required:
+      - clientId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+          readOnly: true
+        clientId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/UserClientStatus'
+    UserClientRelationGetConnectContainer:
+      type: object
+    UserClientRelationCreatePlatformMetadataContainer:
+      type: object
+    PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+    UserClientRelationCreatePlatformConnectContainer:
+      type: object
+    UserClientRelationUpdatePlatformMetadataContainer:
+      type: object
+    UserClientRelationGetResponse:
+      required:
+      - connect
+      - data
+      - metadata
+      - workflow
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/UserClientRelationGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/UserClientRelationGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/UserClientRelationGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/UserClientRelationGetMetadataContainer'
+    UserClientRelationListWorkflowContainer:
+      type: object
+    UserClientRelationGetWorkflowContainer:
+      type: object
+    PagedResourcesAssemblerUserClient:
+      type: object
+      properties:
+        pageableResolver:
+          $ref: '#/components/schemas/HateoasPageableHandlerMethodArgumentResolver'
+        baseUri:
+          $ref: '#/components/schemas/UriComponents'
+        wrappers:
+          $ref: '#/components/schemas/EmbeddedWrappers'
+        forceFirstAndLastRels:
+          type: boolean
+    UriComponents:
+      type: object
+      properties:
+        scheme:
+          type: string
+        fragment:
+          type: string
+    UserClientRelationCreateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+      - direct
+    UserClientRelationUpdatePlatformConnectContainer:
+      type: object
+x-provenance:
+  method: searched
+  source: https://developer.integrated.finance/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.integrated.finance/reference/user-client-relationscreate.md
+  - https://developer.integrated.finance/reference/user-client-relationsget.md
+  - https://developer.integrated.finance/reference/user-client-relationslist.md
+  - https://developer.integrated.finance/reference/user-client-relationsupdate.md
+  - https://developer.integrated.finance/reference/user-invitationsget.md
+  - https://developer.integrated.finance/reference/user-invitationsupdate.md
+  - https://developer.integrated.finance/reference/userscreate.md
+  - https://developer.integrated.finance/reference/usersget.md
+  - https://developer.integrated.finance/reference/userslist.md
+  - https://developer.integrated.finance/reference/userslist_1.md
+  - https://developer.integrated.finance/reference/usersupdate.md
+  merge:
+    pages: 11
+    deduped: 43
+    conflicts_kept_first: 0
